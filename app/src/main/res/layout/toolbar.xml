@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/toolbar"
+    android:background="@color/black_gray"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+    app:titleMargin="20dp"
+    app:menu="@menu/navigation_view">
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_user"
+        android:background="@color/black_gray"
+        android:contentDescription="show user profile picture" />
+
+    <TextView
+        android:paddingStart="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/home"
+        android:textSize="30sp"
+        android:textStyle="bold"/>
+
+</androidx.appcompat.widget.Toolbar>

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "422281817402",
+    "project_id": "online-music-stream-app",
+    "storage_bucket": "online-music-stream-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:422281817402:android:34f8c00342849aa057f403",
+        "android_client_info": {
+          "package_name": "com.example.onlinemusicstreamapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "422281817402-44pv0jd55npcl1jpfc70iuk30r53nh2q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.onlinemusicstreamapp",
+            "certificate_hash": "03ee7a760d72b85566248900a4014c93a324458e"
+          }
+        },
+        {
+          "client_id": "422281817402-s3mbn1jfvco16t5sf06qgfn3hfqkdj8d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeD9I5f2S8_kUaNHWXkeOXf6iPbqPv6fg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "422281817402-s3mbn1jfvco16t5sf06qgfn3hfqkdj8d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

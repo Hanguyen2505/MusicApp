@@ -1,0 +1,14 @@
+
+=kotlin:S125f"Remove this commented out code.(»¤ò±8„€­‡–2
+>kotlin:S1128"Remove this unused import.(£íş¹şÿÿÿÿ8Š€­‡–2
+9kotlin:S1128
+"Remove this unused import.(´Ùí8Š€­‡–2
+okotlin:S1192@"PDefine a constant instead of duplicating this literal "activity result" 3 times.(ì¾æ8Š€­‡–2
+Bkotlin:S1874>"#Deprecated code should not be used.(‚´Ã¬8‹€­‡–2
+Gkotlin:S1874Z"#Deprecated code should not be used.(Ë©É‘ıÿÿÿÿ8‹€­‡–2
+Bkotlin:S1874"#Deprecated code should not be used.(’µ¦8‹€­‡–2
+Gkotlin:S1874"#Deprecated code should not be used.(†Ô§‚ÿÿÿÿÿ8‹€­‡–2
+Gkotlin:S1874"#Deprecated code should not be used.(•ŠàŞşÿÿÿÿ8‹€­‡–2
+Bkotlin:S1874"#Deprecated code should not be used.(£Š’†8‹€­‡–2
+Gkotlin:S1874A"#Deprecated code should not be used.(Îè–‡øÿÿÿÿ8‹€­‡–2
+Gkotlin:S1874T"#Deprecated code should not be used.(ƒšíÛúÿÿÿÿ8‹€­‡–2

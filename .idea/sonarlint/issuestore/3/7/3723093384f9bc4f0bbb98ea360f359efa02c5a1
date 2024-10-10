@@ -1,0 +1,11 @@
+
+\kotlin:S6619"">Remove this useless non-null assertion !!, it always succeeds.(ÑØÑ|8±©”©§2
+]kotlin:S6619H">Remove this useless non-null assertion !!, it always succeeds.(Õ¤Û¿8³©”©§2
+bkotlin:S6619J">Remove this useless non-null assertion !!, it always succeeds.(²žŽÁþÿÿÿÿ8³©”©§2
+]kotlin:S6619M">Remove this useless non-null assertion !!, it always succeeds.(ŸÂÌ„8³©”©§2
+[kotlin:S6619<"<Remove this useless null-safe access ?., it always succeeds.(êÂóˆ8³©”©§2
+`kotlin:S6619>"<Remove this useless null-safe access ?., it always succeeds.(–™Ë§ÿÿÿÿÿ8´©”©§2
+[kotlin:S6619?"<Remove this useless null-safe access ?., it always succeeds.(ÄàÓ8´©”©§2
+`kotlin:S6619="<Remove this useless null-safe access ?., it always succeeds.(àÎìžýÿÿÿÿ8´©”©§2
+Bkotlin:S1252"Remove this commented out code.(õ°™þþÿÿÿÿ8Õž—©§2
+>kotlin:S1128"Remove this unused import.(ËÝÅÉýÿÿÿÿ8ëñüˆœ2

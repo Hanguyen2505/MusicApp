@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group>
+        <item android:title="@string/your_profile"
+            android:icon="@drawable/ic_user">
+        </item>
+    </group>
+
+
+    <group>
+        <item
+            android:id="@+id/historyFragment"
+            android:title="@string/listening_history"
+            android:icon="@drawable/ic_history" />
+
+        <item
+            android:id="@+id/settingFragment"
+            android:title="@string/setting_and_privacy"
+            android:icon="@drawable/ic_settings"/>
+    </group>
+
+    <item android:title="">
+        <menu>
+            <item android:id="@+id/logout"
+                android:title="@string/log_out"/>
+        </menu>
+    </item>
+</menu>
