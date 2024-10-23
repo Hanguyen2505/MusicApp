@@ -27,9 +27,9 @@ class SongAdapter (
 
             binding.root.setOnClickListener {
                 Log.d("binding", "$song")
-                MusicService.startPlaying(binding.root.context, song).apply {
-
-                }
+//                MusicService.startPlaying(binding.root.context, song).apply {
+//
+//                }
                 it.context.startActivity(Intent(it.context, PlayerActivity::class.java))
 
             }

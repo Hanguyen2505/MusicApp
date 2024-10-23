@@ -6,6 +6,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -14,6 +15,8 @@ import com.example.onlinemusicstreamapp.R
 import com.example.onlinemusicstreamapp.adapter.ArtistAdapter
 import com.example.onlinemusicstreamapp.adapter.SongAdapter
 import com.example.onlinemusicstreamapp.databinding.FragmentHomeBinding
+import com.example.onlinemusicstreamapp.exoplayer.FirebaseMusicSource
+import com.example.onlinemusicstreamapp.exoplayer.MusicService
 import com.example.onlinemusicstreamapp.ui.viewmodel.ArtistViewModel
 import com.example.onlinemusicstreamapp.ui.viewmodel.SongViewModel
 import com.google.android.material.navigation.NavigationView
@@ -23,8 +26,12 @@ import dagger.hilt.android.AndroidEntryPoint
 class HomeFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    private lateinit var mSongViewModel: SongViewModel
+
+    private val mSongViewModel: SongViewModel by viewModels()
+
     private lateinit var mArtistViewModel: ArtistViewModel
+
+    private val musicService = MusicService()
 
 
     override fun onCreateView(
@@ -32,11 +39,12 @@ class HomeFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        mSongViewModel = ViewModelProvider(this)[SongViewModel::class.java]
+//        mSongViewModel = ViewModelProvider(this)[SongViewModel::class.java]
         mArtistViewModel = ViewModelProvider(this)[ArtistViewModel::class.java]
         subscribeToObserver()
-        return _binding!!.root
 
+
+        return _binding!!.root
     }
 
     override fun onNavigationItemSelected(p0: MenuItem): Boolean {

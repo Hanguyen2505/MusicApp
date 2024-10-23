@@ -34,16 +34,15 @@ class MainActivity : AppCompatActivity() {
     private var shouldUpdateSeekbar = true
     private val handler = Handler(Looper.getMainLooper())
 
-    private val updateSeekBarRunnable = object: Runnable {
-        override fun run() {
-            if (shouldUpdateSeekbar) {
-                val currentPosition = MusicService.getInstance()!!.currentPosition
-                binding.seekBar.progress = currentPosition.toInt()
-
-                handler.postDelayed(this, 1000) // Update every second
-            }
-        }
-    }
+//    private val updateSeekBarRunnable = object: Runnable {
+//        override fun run() {
+//            if (shouldUpdateSeekbar) {
+//                binding.seekBar.progress = currentPosition.toInt()
+//
+//                handler.postDelayed(this, 1000) // Update every second
+//            }
+//        }
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,7 +69,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        showPlayerView()
+//        showPlayerView()
 
     }
 
@@ -125,17 +124,17 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun showPlayerView() {
-        MusicService.getCurrentSong()?.let {
-            binding.playerView.visibility = View.VISIBLE
-            binding.songTitle.text = it?.title
-            Glide.with(binding.songCover).load(it?.imageUrl).apply(
-                RequestOptions().transform(RoundedCorners(12))
-            ).into(binding.songCover)
-            }?: run {
-                binding.playerView.visibility = View.GONE
-        }
-    }
+//    private fun showPlayerView() {
+//        MusicService.getCurrentSong()?.let {
+//            binding.playerView.visibility = View.VISIBLE
+//            binding.songTitle.text = it?.title
+//            Glide.with(binding.songCover).load(it?.imageUrl).apply(
+//                RequestOptions().transform(RoundedCorners(12))
+//            ).into(binding.songCover)
+//            }?: run {
+//                binding.playerView.visibility = View.GONE
+//        }
+//    }
 
     private fun showUserInNavigationView() {
         val header = binding.navView.getHeaderView(0)

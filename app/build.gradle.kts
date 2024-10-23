@@ -125,6 +125,8 @@ android {
         implementation("androidx.media3:media3-exoplayer:1.3.1")
         implementation("androidx.media3:media3-exoplayer-dash:1.3.1")
         implementation("androidx.media3:media3-ui:1.3.1")
+        implementation ("androidx.media:media:1.6.0")
+        implementation ("androidx.appcompat:appcompat:1.6.1")
 
         //Navigation fragment
         implementation("androidx.navigation:navigation-ui-ktx:2.7.7")

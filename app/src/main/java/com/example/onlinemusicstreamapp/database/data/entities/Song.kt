@@ -2,7 +2,7 @@ package com.example.onlinemusicstreamapp.database.data.entities
 
 
 data class Song(
-    val id: String =  "",
+    val mediaId: String =  "",
     val title: String= "",
     val artist: List<String> = emptyList(),
     val songUrl: String = "",

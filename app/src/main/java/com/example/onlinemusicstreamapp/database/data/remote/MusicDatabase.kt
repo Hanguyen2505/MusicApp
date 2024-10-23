@@ -14,7 +14,7 @@ class MusicDatabase {
     private val songList = mutableListOf<Song>()
     private val songs = ArtistRepository.getSongs()
 
-    suspend fun getAllSong(): List<Song> {
+    suspend fun getAllSongs(): List<Song> {
         return try {
             songCollection.get().await().toObjects<Song>()
         }
