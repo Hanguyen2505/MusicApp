@@ -39,7 +39,6 @@ class HomeFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-//        mSongViewModel = ViewModelProvider(this)[SongViewModel::class.java]
         mArtistViewModel = ViewModelProvider(this)[ArtistViewModel::class.java]
         subscribeToObserver()
 

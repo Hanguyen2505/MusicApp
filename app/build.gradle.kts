@@ -56,22 +56,22 @@ android {
         androidTestImplementation(libs.androidx.junit)
         androidTestImplementation(libs.androidx.espresso.core)
 
-        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
-        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
-        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.10")
+        implementation(libs.kotlinx.coroutines.core)
+        implementation(libs.kotlinx.coroutines.android)
+        implementation(libs.kotlin.stdlib.jdk7)
 
         //Material Design
-        implementation("com.google.android.material:material:1.9.0")
+        implementation(libs.material.v190)
 
 
         //Architectural Components
-        implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.3")
+        implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
         //Lifecycle
-        implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
-        implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.3")
-        implementation("androidx.lifecycle:lifecycle-runtime:2.8.3")
-        implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.3")
+        implementation(libs.androidx.lifecycle.extensions)
+        implementation(libs.androidx.lifecycle.livedata.ktx)
+        implementation(libs.androidx.lifecycle.runtime)
+        implementation(libs.androidx.lifecycle.runtime.ktx)
 
         //Coroutines
         implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
@@ -94,9 +94,9 @@ android {
 
         //Dagger Hilt
         val hilt_version = "2.49"
-        implementation("com.google.dagger:hilt-android:$hilt_version")
-        kapt("com.google.dagger:hilt-android-compiler:$hilt_version")
-        kapt("androidx.hilt:hilt-compiler:1.0.0")
+        implementation(libs.hilt.android)
+        kapt(libs.hilt.android.compiler)
+        kapt(libs.androidx.hilt.compiler)
 
         //Timber
         implementation("com.jakewharton.timber:timber:5.0.1")

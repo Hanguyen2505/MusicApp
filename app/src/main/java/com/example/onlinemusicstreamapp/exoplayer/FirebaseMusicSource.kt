@@ -46,8 +46,7 @@ class FirebaseMusicSource @Inject constructor(
                 .putString(METADATA_KEY_GENRE, song.genre.toString())
                 .build()
         }
-        Log.d("Fetch Data", "$allSongs")
-        Log.d("Fetch Data", "$songs")
+
     }
 
     fun asMediaItems() = songs.map { song ->

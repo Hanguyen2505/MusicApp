@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
@@ -16,13 +17,19 @@ import com.example.onlinemusicstreamapp.adapter.SongAdapter
 import com.example.onlinemusicstreamapp.databinding.FragmentSearchViewBinding
 import com.example.onlinemusicstreamapp.ui.viewmodel.ArtistViewModel
 import com.example.onlinemusicstreamapp.ui.viewmodel.SongViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class SearchViewFragment : Fragment(), SearchView.OnQueryTextListener {
+    //Binding
     private var _binding: FragmentSearchViewBinding? = null
     private val binding get() = _binding!!
+
+    //ViewModel
     private lateinit var mArtistViewModel: ArtistViewModel
-    private lateinit var mSongViewModel: SongViewModel
+    private val mSongViewModel: SongViewModel by viewModels()
+
+    //Adapter
     private var songAdapter = SongAdapter(emptyList())
     private var artistAdapter = ArtistAdapter(emptyList(), "SearchViewFragment")
 
@@ -39,7 +46,6 @@ class SearchViewFragment : Fragment(), SearchView.OnQueryTextListener {
         _binding = FragmentSearchViewBinding.inflate(inflater, container, false)
 
         //ViewModel Provider
-        mSongViewModel = ViewModelProvider(this)[SongViewModel::class.java]
         mArtistViewModel = ViewModelProvider(this)[ArtistViewModel::class.java]
 
         subscribeSearchView()

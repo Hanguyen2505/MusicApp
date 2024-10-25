@@ -34,17 +34,4 @@ class MusicDatabase {
         return songList
     }
 
-    suspend fun searchSong(searchQuery: String): List<Song> {
-        return try {
-            // Step 1: Fetch a broad range of songs (you can refine the range if needed)
-            val songsCol = songCollection.get().await().toObjects<Song>()
-
-            // Step 2: Client-side filtering to find songs whose titles contain the search query
-            songsCol.filter { it.title.contains(searchQuery, ignoreCase = true) }
-        }
-        catch (e: Exception) {
-            emptyList()
-        }
-    }
-
 }
