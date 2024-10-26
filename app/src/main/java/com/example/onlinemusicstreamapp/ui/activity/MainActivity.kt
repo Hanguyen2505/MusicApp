@@ -5,8 +5,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import android.view.MenuItem
-import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -18,13 +16,9 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.RequestOptions
 import com.example.onlinemusicstreamapp.R
 import com.example.onlinemusicstreamapp.database.repository.UserAuthorization
 import com.example.onlinemusicstreamapp.databinding.ActivityMainBinding
-import com.example.onlinemusicstreamapp.exoplayer.MusicService
-import com.example.onlinemusicstreamapp.ui.fragments.library.BottomSheetFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

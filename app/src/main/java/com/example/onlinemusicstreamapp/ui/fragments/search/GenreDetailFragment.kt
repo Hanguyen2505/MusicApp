@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -18,13 +19,15 @@ import com.example.onlinemusicstreamapp.adapter.SongAdapter
 import com.example.onlinemusicstreamapp.databinding.FragmentGenreDetailBinding
 import com.example.onlinemusicstreamapp.ui.fragments.album.AlbumFragmentArgs
 import com.example.onlinemusicstreamapp.ui.viewmodel.GenreViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class GenreDetailFragment : Fragment() {
 
     private var _binding: FragmentGenreDetailBinding? = null
     private val binding get() = _binding!!
-    private lateinit var mGenreViewModel: GenreViewModel
+
+    private val mGenreViewModel: GenreViewModel by viewModels()
 
     private val args by navArgs<GenreDetailFragmentArgs>()
 
@@ -38,19 +41,18 @@ class GenreDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentGenreDetailBinding.inflate(inflater, container, false)
-        mGenreViewModel = ViewModelProvider(this)[GenreViewModel::class.java]
         binding.backToSearchBtn.setOnClickListener {
             findNavController().navigate(R.id.action_genreDetailFragment_to_searchFragment)
         }
 
         Log.d("NameTAG", "${args.genre.name}")
 
-        subscribeToObsever()
+        subscribeToObserver()
 
         return binding.root
     }
 
-    private fun subscribeToObsever() {
+    private fun subscribeToObserver() {
 
         //*a view where will show a list of song base on its genre
         val songRecyclerView = binding.recyclerViewSong
@@ -61,7 +63,7 @@ class GenreDetailFragment : Fragment() {
         )
 
         //*display all songs
-        mGenreViewModel.searchSong(args.genre.name).observe(viewLifecycleOwner, Observer { song ->
+        mGenreViewModel.filterSongsByGenre(args.genre.name).observe(viewLifecycleOwner, Observer { song ->
             song.forEach {
                 Log.d("genre", "${it.title}")
             }

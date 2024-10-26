@@ -26,7 +26,7 @@ class SearchViewFragment : Fragment(), SearchView.OnQueryTextListener {
     private val binding get() = _binding!!
 
     //ViewModel
-    private lateinit var mArtistViewModel: ArtistViewModel
+    private val mArtistViewModel: ArtistViewModel by viewModels()
     private val mSongViewModel: SongViewModel by viewModels()
 
     //Adapter
@@ -44,9 +44,6 @@ class SearchViewFragment : Fragment(), SearchView.OnQueryTextListener {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSearchViewBinding.inflate(inflater, container, false)
-
-        //ViewModel Provider
-        mArtistViewModel = ViewModelProvider(this)[ArtistViewModel::class.java]
 
         subscribeSearchView()
         binding.cancel.setOnClickListener {
@@ -82,7 +79,7 @@ class SearchViewFragment : Fragment(), SearchView.OnQueryTextListener {
             false
         )
 
-        mArtistViewModel.searchArtist(query).observe(this) {list ->
+        mArtistViewModel.filterSongsByArtist(query).observe(this) {list ->
             list.let {
                 artistAdapter.updateData(it)
             }

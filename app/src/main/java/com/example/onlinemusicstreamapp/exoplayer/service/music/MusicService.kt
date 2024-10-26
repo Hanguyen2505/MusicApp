@@ -1,4 +1,4 @@
-package com.example.onlinemusicstreamapp.exoplayer
+package com.example.onlinemusicstreamapp.exoplayer.service.music
 
 import android.content.Context
 import android.net.Uri
@@ -10,7 +10,14 @@ import androidx.media.MediaBrowserServiceCompat
 import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.ExoPlayer
 import com.example.onlinemusicstreamapp.database.data.entities.Song
-import com.example.onlinemusicstreamapp.database.data.remote.MusicDatabase
+import com.example.onlinemusicstreamapp.database.other.Constants.MEDIA_ARTIST_ID
+import com.example.onlinemusicstreamapp.database.other.Constants.MEDIA_GENRE_ID
+import com.example.onlinemusicstreamapp.database.other.Constants.MEDIA_ROOT_ID
+import com.example.onlinemusicstreamapp.database.other.Constants.MEDIA_SONG_ID
+import com.example.onlinemusicstreamapp.database.other.Constants.SERVICE_TAG
+import com.example.onlinemusicstreamapp.exoplayer.source.FirebaseArtistSource
+import com.example.onlinemusicstreamapp.exoplayer.source.FirebaseGenreSource
+import com.example.onlinemusicstreamapp.exoplayer.source.FirebaseMusicSource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -20,8 +27,6 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MusicService: MediaBrowserServiceCompat() {
-
-    private val SERVICE_TAG = "MusicService"
 
     //    private var exoPlayer: ExoPlayer? = null
     private var currentSong: Song? = null
@@ -37,6 +42,12 @@ class MusicService: MediaBrowserServiceCompat() {
     @Inject
     lateinit var firebaseMusicSource: FirebaseMusicSource
 
+    @Inject
+    lateinit var firebaseArtistSource: FirebaseArtistSource
+
+    @Inject
+    lateinit var firebaseGenreSource: FirebaseGenreSource
+
     override fun onCreate() {
         super.onCreate()
 
@@ -49,6 +60,8 @@ class MusicService: MediaBrowserServiceCompat() {
 
         serviceScope.launch {
             firebaseMusicSource.fetchMediaData()
+            firebaseArtistSource.fetchArtistData()
+            firebaseGenreSource.fetchMediaData()
         }
 
     }
@@ -81,7 +94,7 @@ class MusicService: MediaBrowserServiceCompat() {
         rootHints: Bundle?
     ): BrowserRoot {
         // Provide the root of the media tree for browsing
-        return BrowserRoot("root_id", null)
+        return BrowserRoot(MEDIA_ROOT_ID, null)
     }
 
     //*no data showing [firebaseMusicSource.asMediaItems()]
@@ -98,19 +111,41 @@ class MusicService: MediaBrowserServiceCompat() {
         result.detach()
         when(parentId) {
 
-            "root_id" -> {
+            MEDIA_SONG_ID -> {
                 serviceScope.launch {
                     // Ensure that the data is fetched before proceeding
                     if (firebaseMusicSource.songs.isEmpty()) {
                         firebaseMusicSource.fetchMediaData()
                     }
                     val mediaItems = firebaseMusicSource.asMediaItems()
-                    Log.d("musicService", "Loaded MediaItems: $mediaItems")
-
                     // Send the result after data is ready
                     result.sendResult(mediaItems.toMutableList())
                 }
 
+            }
+
+            MEDIA_ARTIST_ID -> {
+                serviceScope.launch {
+                    // Ensure that the data is fetched before proceeding
+                    if (firebaseArtistSource.artists.isEmpty()) {
+                        firebaseArtistSource.fetchArtistData()
+                    }
+                    val mediaItems = firebaseArtistSource.asMediaItems()
+                    // Send the result after data is ready
+                    result.sendResult(mediaItems.toMutableList())
+                }
+            }
+
+            MEDIA_GENRE_ID -> {
+                serviceScope.launch {
+                    // Ensure that the data is fetched before proceeding
+                    if (firebaseGenreSource.genres.isEmpty()) {
+                        firebaseGenreSource.fetchMediaData()
+                    }
+                    val mediaItems = firebaseGenreSource.asMediaItems()
+                    // Send the result after data is ready
+                    result.sendResult(mediaItems.toMutableList())
+                }
             }
         }
     }

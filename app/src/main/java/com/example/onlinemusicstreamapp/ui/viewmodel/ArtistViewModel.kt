@@ -1,53 +1,52 @@
 package com.example.onlinemusicstreamapp.ui.viewmodel
 
-import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.onlinemusicstreamapp.database.data.remote.ArtistDatabase
-import com.example.onlinemusicstreamapp.database.data.remote.MusicDatabase
 import com.example.onlinemusicstreamapp.database.data.entities.Artist
 import com.example.onlinemusicstreamapp.database.data.entities.Song
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.example.onlinemusicstreamapp.database.other.Constants.MEDIA_ARTIST_ID
+import com.example.onlinemusicstreamapp.database.other.Constants.MEDIA_SONG_ID
+import com.example.onlinemusicstreamapp.exoplayer.callbacks.MyMediaBrowser
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class ArtistViewModel: ViewModel() {
+@HiltViewModel
+class ArtistViewModel @Inject constructor(
+    private val myMediaBrowser: MyMediaBrowser
+): ViewModel() {
     val music = MutableLiveData<List<Song>>()
     val artist = MutableLiveData<List<Artist>>()
-    private val search = MutableLiveData<List<Artist>>()
-    private val musicDatabase = MusicDatabase()
-    private val artistDatabase = ArtistDatabase()
+    private val searchArtist = MutableLiveData<List<Artist>>()
 
     init {
-        getArtists()
-        getAlbum()
+        getAllArtists()
     }
 
-    private fun getAlbum() {
-        viewModelScope.launch(Dispatchers.IO) {
-            music.postValue(musicDatabase.getAlbumSong())
+
+    private fun getAllArtists(): MutableLiveData<List<Artist>> {
+        myMediaBrowser.fetchArtistFromMediaBrowser(MEDIA_ARTIST_ID) { items ->
+            artist.postValue(items)
         }
+        return artist
     }
 
-    private fun getArtists() {
-        viewModelScope.launch(Dispatchers.IO) {
-            artist.postValue(artistDatabase.getAllArtist())
+    fun getSong(artist: String): MutableLiveData<List<Song>> {
+        myMediaBrowser.fetchSongsFromMediaBrowser(MEDIA_SONG_ID) { items ->
+            val filteredSongs = items.filter { song ->
+                song.artist.any {
+                    it.contains(artist, ignoreCase = true)
+                }
+            }
+            music.postValue(filteredSongs)
         }
-    }
-
-    fun getSong(artist: String): LiveData<List<Song>> {
-        viewModelScope.launch(Dispatchers.IO) {
-            music.postValue(artistDatabase.fetchSong(artist))
-        }
-        Log.d("songlistLiveData", "${music.value}")
         return music
     }
 
-    fun searchArtist(searchQuery: String): LiveData<List<Artist>> {
-        viewModelScope.launch(Dispatchers.IO) {
-            search.postValue(artistDatabase.searchArtist(searchQuery))
+    fun filterSongsByArtist(searchQuery: String): MutableLiveData<List<Artist>> {
+        myMediaBrowser.fetchArtistFromMediaBrowser(MEDIA_ARTIST_ID) { searchItems ->
+            val filteredArtists = searchItems.filter { it.name.contains(searchQuery, ignoreCase = true) }
+            searchArtist.postValue(filteredArtists)
         }
-        return search
+        return searchArtist
     }
 }

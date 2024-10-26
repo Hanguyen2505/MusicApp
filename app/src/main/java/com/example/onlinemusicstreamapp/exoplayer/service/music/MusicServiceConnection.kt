@@ -1,4 +1,4 @@
-package com.example.onlinemusicstreamapp.exoplayer
+package com.example.onlinemusicstreamapp.exoplayer.service.music
 
 import android.content.ComponentName
 import android.content.Context
@@ -25,23 +25,16 @@ class MusicServiceConnection(
             mediaController = MediaControllerCompat(context, mediaBrowser.sessionToken).apply {
                 registerCallback(MediaControllerCallback())
             }
-//            _isConnected.postValue(Event(Resource.success(true)))
         }
 
         override fun onConnectionSuspended() {
             Log.d("MusicServiceConnection", "SUSPENDED")
 
-//            _isConnected.postValue(Event(Resource.error(
-//                "The connection was suspended", false
-//            )))
         }
 
         override fun onConnectionFailed() {
             Log.d("MusicServiceConnection", "FAILED")
 
-//            _isConnected.postValue(Event(Resource.error(
-//                "Couldn't connect to media browser", false
-//            )))
         }
     }
 

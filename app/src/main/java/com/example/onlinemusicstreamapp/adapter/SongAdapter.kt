@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.onlinemusicstreamapp.database.data.entities.Song
-import com.example.onlinemusicstreamapp.exoplayer.MusicService
 import com.example.onlinemusicstreamapp.databinding.CardviewSongBinding
 import com.example.onlinemusicstreamapp.ui.activity.PlayerActivity
 

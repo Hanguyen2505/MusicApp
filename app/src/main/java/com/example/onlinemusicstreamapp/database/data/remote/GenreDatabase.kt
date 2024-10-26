@@ -2,15 +2,16 @@ package com.example.onlinemusicstreamapp.database.data.remote
 
 import com.example.onlinemusicstreamapp.database.data.entities.Genre
 import com.example.onlinemusicstreamapp.database.data.entities.Song
+import com.example.onlinemusicstreamapp.database.other.Constants.GENRE_COLLECTION
+import com.example.onlinemusicstreamapp.database.other.Constants.SONG_COLLECTION
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.toObjects
 import kotlinx.coroutines.tasks.await
 
 class GenreDatabase {
     private val fireStore = FirebaseFirestore.getInstance()
-    private val genreCollection = fireStore.collection("genre")
-    private val songCollection = fireStore.collection("songs")
-    val string = "Gaming"
+    private val genreCollection = fireStore.collection(GENRE_COLLECTION)
+    private val songCollection = fireStore.collection(SONG_COLLECTION)
 
     suspend fun getAllGenre(): List<Genre> {
         return try {

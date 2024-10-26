@@ -11,21 +11,23 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.onlinemusicstreamapp.R
 import com.example.onlinemusicstreamapp.adapter.GenreAdapter
 import com.example.onlinemusicstreamapp.databinding.FragmentSearchBinding
 import com.example.onlinemusicstreamapp.ui.viewmodel.GenreViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SearchFragment : Fragment(), MenuProvider {
 
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
-    private lateinit var mGenreViewModel: GenreViewModel
+    private val mGenreViewModel: GenreViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +39,6 @@ class SearchFragment : Fragment(), MenuProvider {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
-        mGenreViewModel = ViewModelProvider(this)[GenreViewModel::class.java]
 
         binding.searchLinearLayout.setOnClickListener {
             goToSearchActivity()
@@ -62,9 +63,6 @@ class SearchFragment : Fragment(), MenuProvider {
 
         //*display all genres
         mGenreViewModel.genre.observe(viewLifecycleOwner, Observer { genre ->
-            genre.forEach {
-                Log.d("genre", "${it.name}")
-            }
 
             val genreAdapter = GenreAdapter(genre)
             genreRecyclerView.adapter = genreAdapter

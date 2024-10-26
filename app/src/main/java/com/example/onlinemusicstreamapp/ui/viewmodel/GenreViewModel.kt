@@ -7,29 +7,42 @@ import androidx.lifecycle.viewModelScope
 import com.example.onlinemusicstreamapp.database.data.remote.GenreDatabase
 import com.example.onlinemusicstreamapp.database.data.entities.Genre
 import com.example.onlinemusicstreamapp.database.data.entities.Song
+import com.example.onlinemusicstreamapp.database.other.Constants.MEDIA_GENRE_ID
+import com.example.onlinemusicstreamapp.database.other.Constants.MEDIA_SONG_ID
+import com.example.onlinemusicstreamapp.exoplayer.callbacks.MyMediaBrowser
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class GenreViewModel: ViewModel() {
+@HiltViewModel
+class GenreViewModel @Inject constructor(
+    private val myMediaBrowser: MyMediaBrowser
+): ViewModel() {
     private val genreDatabase = GenreDatabase()
-    val song = MutableLiveData<List<Song>>()
+    val songs = MutableLiveData<List<Song>>()
     val genre = MutableLiveData<List<Genre>>()
 
     init {
-        getGenre()
+        getAllGenres()
     }
 
-    private fun getGenre() {
-        viewModelScope.launch(Dispatchers.IO) {
-            genre.postValue(genreDatabase.getAllGenre())
-
+    private fun getAllGenres(): MutableLiveData<List<Genre>> {
+        myMediaBrowser.fetchGenreFromMediaBrowser(MEDIA_GENRE_ID) { items ->
+            genre.postValue(items)
         }
+        return genre
     }
 
-    fun searchSong(genre: String): LiveData<List<Song>> {
-        viewModelScope.launch(Dispatchers.IO) {
-            song.postValue(genreDatabase.fetchSong(genre))
+    fun filterSongsByGenre(genre: String): MutableLiveData<List<Song>> {
+        myMediaBrowser.fetchSongsFromMediaBrowser(MEDIA_SONG_ID) { items ->
+            val filteredSongs = items.filter { song ->
+                song.genre.any {
+                    it.contains(genre, ignoreCase = true)
+                }
+            }
+            songs.postValue(filteredSongs)
         }
-        return song
+        return songs
     }
 }

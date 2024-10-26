@@ -1,7 +1,7 @@
 package com.example.onlinemusicstreamapp.di.module
 
 import android.content.Context
-import com.example.onlinemusicstreamapp.exoplayer.MusicServiceConnection
+import com.example.onlinemusicstreamapp.exoplayer.service.music.MusicServiceConnection
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,4 +18,5 @@ object AppModule {
     fun provideMusicServiceConnection(
         @ApplicationContext context: Context
     ) = MusicServiceConnection(context)
+
 }

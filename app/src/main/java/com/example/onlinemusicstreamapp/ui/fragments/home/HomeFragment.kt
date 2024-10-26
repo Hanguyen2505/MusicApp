@@ -15,8 +15,7 @@ import com.example.onlinemusicstreamapp.R
 import com.example.onlinemusicstreamapp.adapter.ArtistAdapter
 import com.example.onlinemusicstreamapp.adapter.SongAdapter
 import com.example.onlinemusicstreamapp.databinding.FragmentHomeBinding
-import com.example.onlinemusicstreamapp.exoplayer.FirebaseMusicSource
-import com.example.onlinemusicstreamapp.exoplayer.MusicService
+import com.example.onlinemusicstreamapp.exoplayer.service.music.MusicService
 import com.example.onlinemusicstreamapp.ui.viewmodel.ArtistViewModel
 import com.example.onlinemusicstreamapp.ui.viewmodel.SongViewModel
 import com.google.android.material.navigation.NavigationView
@@ -29,7 +28,7 @@ class HomeFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
 
     private val mSongViewModel: SongViewModel by viewModels()
 
-    private lateinit var mArtistViewModel: ArtistViewModel
+    private val mArtistViewModel: ArtistViewModel by viewModels()
 
     private val musicService = MusicService()
 
@@ -39,7 +38,6 @@ class HomeFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        mArtistViewModel = ViewModelProvider(this)[ArtistViewModel::class.java]
         subscribeToObserver()
 
 

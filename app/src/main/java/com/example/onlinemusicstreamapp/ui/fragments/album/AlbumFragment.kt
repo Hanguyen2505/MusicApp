@@ -6,29 +6,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.example.onlinemusicstreamapp.R
 import com.example.onlinemusicstreamapp.adapter.SongAdapter
 import com.example.onlinemusicstreamapp.databinding.FragmentAlbumBinding
-import com.example.onlinemusicstreamapp.exoplayer.MusicService
 import com.example.onlinemusicstreamapp.ui.viewmodel.ArtistViewModel
-import com.example.onlinemusicstreamapp.ui.viewmodel.SongViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-
+import dagger.hilt.android.AndroidEntryPoint
 
 //TODO display the song list in album in the first time create this fragment
+@AndroidEntryPoint
 class AlbumFragment : Fragment() {
 
     private lateinit var binding: FragmentAlbumBinding
-    private lateinit var mArtistViewModel: ArtistViewModel
+    private val mArtistViewModel: ArtistViewModel by viewModels()
 
     private val args by navArgs<AlbumFragmentArgs>()
 
@@ -37,7 +32,6 @@ class AlbumFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentAlbumBinding.inflate(inflater, container, false)
-        mArtistViewModel = ViewModelProvider(this)[ArtistViewModel::class.java]
         showAlbumDetail()
         subscribeToObserve()
 

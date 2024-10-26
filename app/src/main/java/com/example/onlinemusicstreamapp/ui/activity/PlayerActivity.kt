@@ -1,19 +1,14 @@
 package com.example.onlinemusicstreamapp.ui.activity
 
 import android.os.Bundle
-import android.widget.SeekBar
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.media3.common.Player
-import com.bumptech.glide.Glide
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import androidx.lifecycle.ViewModelProvider
 import com.example.onlinemusicstreamapp.R
-import com.example.onlinemusicstreamapp.exoplayer.MusicService
 import com.example.onlinemusicstreamapp.databinding.ActivityPlayerBinding
 import com.example.onlinemusicstreamapp.ui.viewmodel.SongViewModel
 import dagger.hilt.android.AndroidEntryPoint

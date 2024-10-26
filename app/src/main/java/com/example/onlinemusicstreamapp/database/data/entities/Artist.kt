@@ -7,8 +7,7 @@ import kotlinx.parcelize.RawValue
 
 @Parcelize
 data class Artist (
+    val artistId: String = "",
     val name: String = "",
-    val imageUrl: String = "",
-    val songs: List<String> = emptyList(),
-//    val songRef : @RawValue DocumentReference
+    val imageUrl: String = ""
 ): Parcelable

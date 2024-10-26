@@ -3,9 +3,11 @@ import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.onlinemusicstreamapp.R
 import com.example.onlinemusicstreamapp.database.data.entities.Genre
 import com.example.onlinemusicstreamapp.databinding.CardviewGenreBinding
 import com.example.onlinemusicstreamapp.ui.fragments.search.SearchFragment
@@ -19,10 +21,15 @@ class GenreAdapter(
         private val binding: CardviewGenreBinding
     ): RecyclerView.ViewHolder(binding.root) {
         fun bindData(genre: Genre) {
+
             binding.titleGenre.text = genre.name
+
             Glide.with(binding.imgGenre).load(genre.genreImg).into(binding.imgGenre)
+
             val parseColor = Color.parseColor(genre.color)
             binding.layoutCardView.setBackgroundColor(parseColor)
+
+
         }
         fun genreListener(genre: Genre) {
             binding.layoutCardView.setOnClickListener {
