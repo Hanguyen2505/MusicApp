@@ -13,9 +13,9 @@ import com.example.onlinemusicstreamapp.databinding.CardviewGenreBinding
 import com.example.onlinemusicstreamapp.ui.fragments.search.SearchFragment
 import com.example.onlinemusicstreamapp.ui.fragments.search.SearchFragmentDirections
 
-class GenreAdapter(
-    private val genre: List<Genre>
-): RecyclerView.Adapter<GenreAdapter.MyViewHolder>() {
+class GenreAdapter: RecyclerView.Adapter<GenreAdapter.MyViewHolder>() {
+
+    var genre = emptyList<Genre>()
 
     class MyViewHolder(
         private val binding: CardviewGenreBinding

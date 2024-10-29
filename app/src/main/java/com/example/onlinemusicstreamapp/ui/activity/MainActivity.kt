@@ -2,8 +2,6 @@ package com.example.onlinemusicstreamapp.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
@@ -25,18 +23,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
-    private var shouldUpdateSeekbar = true
-    private val handler = Handler(Looper.getMainLooper())
-
-//    private val updateSeekBarRunnable = object: Runnable {
-//        override fun run() {
-//            if (shouldUpdateSeekbar) {
-//                binding.seekBar.progress = currentPosition.toInt()
-//
-//                handler.postDelayed(this, 1000) // Update every second
-//            }
-//        }
-//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,7 +49,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-//        showPlayerView()
 
     }
 
@@ -116,19 +101,6 @@ class MainActivity : AppCompatActivity() {
             throw IllegalStateException("NavHostFragment not found")
         }
     }
-
-
-//    private fun showPlayerView() {
-//        MusicService.getCurrentSong()?.let {
-//            binding.playerView.visibility = View.VISIBLE
-//            binding.songTitle.text = it?.title
-//            Glide.with(binding.songCover).load(it?.imageUrl).apply(
-//                RequestOptions().transform(RoundedCorners(12))
-//            ).into(binding.songCover)
-//            }?: run {
-//                binding.playerView.visibility = View.GONE
-//        }
-//    }
 
     private fun showUserInNavigationView() {
         val header = binding.navView.getHeaderView(0)

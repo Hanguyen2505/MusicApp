@@ -63,6 +63,8 @@ android {
         //Material Design
         implementation(libs.material.v190)
 
+        //google play service
+        implementation(libs.play.services.maps)
 
         //Architectural Components
         implementation(libs.androidx.lifecycle.viewmodel.ktx)
@@ -122,11 +124,11 @@ android {
         implementation("com.google.android.gms:play-services-auth:21.2.0")
 
         //ExoPlayer
-        implementation("androidx.media3:media3-exoplayer:1.3.1")
-        implementation("androidx.media3:media3-exoplayer-dash:1.3.1")
-        implementation("androidx.media3:media3-ui:1.3.1")
-        implementation ("androidx.media:media:1.6.0")
-        implementation ("androidx.appcompat:appcompat:1.6.1")
+        implementation(libs.androidx.media3.exoplayer)
+        implementation(libs.androidx.media3.exoplayer.dash)
+        implementation(libs.androidx.media3.ui)
+        implementation (libs.androidx.media)
+        implementation (libs.androidx.appcompat)
 
         //Navigation fragment
         implementation("androidx.navigation:navigation-ui-ktx:2.7.7")

@@ -1,6 +1,8 @@
 package com.example.onlinemusicstreamapp.di.module
 
 import android.content.Context
+import androidx.media3.common.util.Util
+import androidx.media3.datasource.DefaultDataSource
 import androidx.media3.exoplayer.ExoPlayer
 import com.example.onlinemusicstreamapp.database.data.entities.Song
 import com.example.onlinemusicstreamapp.database.data.remote.ArtistDatabase
@@ -37,5 +39,11 @@ object ServiceModule {
     fun provideExoPlayer(
         @ApplicationContext context: Context
     ) = ExoPlayer.Builder(context).build()
+
+    @ServiceScoped
+    @Provides
+    fun provideDataSourceFactory(
+        @ApplicationContext context: Context
+    ) = DefaultDataSource.Factory(context)
 
 }

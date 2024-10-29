@@ -7,13 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.onlinemusicstreamapp.R
 import com.example.onlinemusicstreamapp.adapter.ArtistAdapter
 import com.example.onlinemusicstreamapp.adapter.SongAdapter
+import com.example.onlinemusicstreamapp.database.other.Constants.SEARCH_VIEW_FRAGMENT
 import com.example.onlinemusicstreamapp.databinding.FragmentSearchViewBinding
 import com.example.onlinemusicstreamapp.ui.viewmodel.ArtistViewModel
 import com.example.onlinemusicstreamapp.ui.viewmodel.SongViewModel
@@ -30,12 +30,14 @@ class SearchViewFragment : Fragment(), SearchView.OnQueryTextListener {
     private val mSongViewModel: SongViewModel by viewModels()
 
     //Adapter
-    private var songAdapter = SongAdapter(emptyList())
-    private var artistAdapter = ArtistAdapter(emptyList(), "SearchViewFragment")
+    private var songAdapter = SongAdapter()
+    private var artistAdapter = ArtistAdapter()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        artistAdapter.navFromFragment = SEARCH_VIEW_FRAGMENT
 
     }
 

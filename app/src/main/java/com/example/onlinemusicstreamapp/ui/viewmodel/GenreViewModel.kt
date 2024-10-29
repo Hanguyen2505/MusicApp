@@ -1,9 +1,6 @@
 package com.example.onlinemusicstreamapp.ui.viewmodel
-
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.onlinemusicstreamapp.database.data.remote.GenreDatabase
 import com.example.onlinemusicstreamapp.database.data.entities.Genre
 import com.example.onlinemusicstreamapp.database.data.entities.Song
@@ -11,8 +8,6 @@ import com.example.onlinemusicstreamapp.database.other.Constants.MEDIA_GENRE_ID
 import com.example.onlinemusicstreamapp.database.other.Constants.MEDIA_SONG_ID
 import com.example.onlinemusicstreamapp.exoplayer.callbacks.MyMediaBrowser
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel

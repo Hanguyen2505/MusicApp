@@ -17,4 +17,8 @@ object Constants {
 
     const val SERVICE_TAG = "MusicService"
 
+    const val HOME_FRAGMENT = "HomeFragment"
+
+    const val SEARCH_VIEW_FRAGMENT = "SearchViewFragment"
+
 }

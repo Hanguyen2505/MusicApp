@@ -1,7 +1,6 @@
 package com.example.onlinemusicstreamapp.adapter
 
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -10,9 +9,15 @@ import com.example.onlinemusicstreamapp.database.data.entities.Song
 import com.example.onlinemusicstreamapp.databinding.CardviewSongBinding
 import com.example.onlinemusicstreamapp.ui.activity.PlayerActivity
 
-class SongAdapter (
-    private var song: List<Song>
-): RecyclerView.Adapter<SongAdapter.MyViewHolder>() {
+class SongAdapter : RecyclerView.Adapter<SongAdapter.MyViewHolder>() {
+
+    var songs = emptyList<Song>()
+
+    private var onItemClickListener: ((Song) -> Unit)? = null
+
+    fun setOnItemClickListener(listener: (Song) -> Unit) {
+        onItemClickListener = listener
+    }
 
     class MyViewHolder(
         private val binding: CardviewSongBinding
@@ -22,13 +27,10 @@ class SongAdapter (
             binding.songTitle.text = song.title
             binding.desc.text = song.artist.toString()
             Glide.with(binding.songImage).load(song.imageUrl).into(binding.songImage)
-            Log.d("soadapter", "${song.title}")
+        }
 
+        fun onClickMediaItem() {
             binding.root.setOnClickListener {
-                Log.d("binding", "$song")
-//                MusicService.startPlaying(binding.root.context, song).apply {
-//
-//                }
                 it.context.startActivity(Intent(it.context, PlayerActivity::class.java))
 
             }
@@ -46,16 +48,25 @@ class SongAdapter (
     }
 
     override fun getItemCount(): Int {
-        return song.size
+        return songs.size
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.bindData(song[position])
+        val currentSong = songs[position]
+        holder.bindData(currentSong)
+        holder.onClickMediaItem()
+
+        holder.itemView.setOnClickListener {
+            onItemClickListener?.let { click ->
+                click(currentSong)
+            }
+
+        }
 
     }
 
     fun updateData(newSong: List<Song>) {
-        song = newSong
+        songs = newSong
         notifyDataSetChanged()
     }
 

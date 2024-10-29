@@ -1,7 +1,6 @@
 package com.example.onlinemusicstreamapp.ui.fragments.search
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
@@ -29,6 +28,8 @@ class SearchFragment : Fragment(), MenuProvider {
     private val binding get() = _binding!!
     private val mGenreViewModel: GenreViewModel by viewModels()
 
+    private val genreAdapter = GenreAdapter()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -48,12 +49,12 @@ class SearchFragment : Fragment(), MenuProvider {
         val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
-        subscribeToObsever()
+        subscribeToObserver()
 
         return _binding!!.root
     }
 
-    private fun subscribeToObsever() {
+    private fun subscribeToObserver() {
         //*a view where will show a list of genre
         val genreRecyclerView = binding.recyclerViewGenre
         genreRecyclerView.layoutManager = GridLayoutManager(
@@ -64,7 +65,7 @@ class SearchFragment : Fragment(), MenuProvider {
         //*display all genres
         mGenreViewModel.genre.observe(viewLifecycleOwner, Observer { genre ->
 
-            val genreAdapter = GenreAdapter(genre)
+            genreAdapter.genre = genre
             genreRecyclerView.adapter = genreAdapter
         })
     }

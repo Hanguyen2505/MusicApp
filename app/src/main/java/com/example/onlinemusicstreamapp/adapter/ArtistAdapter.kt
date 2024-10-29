@@ -6,15 +6,20 @@ import android.view.ViewGroup
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.onlinemusicstreamapp.R
 import com.example.onlinemusicstreamapp.database.data.entities.Artist
+import com.example.onlinemusicstreamapp.database.other.Constants.HOME_FRAGMENT
+import com.example.onlinemusicstreamapp.database.other.Constants.SEARCH_VIEW_FRAGMENT
 import com.example.onlinemusicstreamapp.database.repository.ArtistRepository
 import com.example.onlinemusicstreamapp.databinding.CardviewArtistBinding
 import com.example.onlinemusicstreamapp.ui.fragments.home.HomeFragmentDirections
 import com.example.onlinemusicstreamapp.ui.fragments.search.SearchViewFragmentDirections
 
 
-class ArtistAdapter(private var artist: List<Artist>, private val navFromFragment: String): RecyclerView.Adapter<ArtistAdapter.MyViewHolder>() {
+class ArtistAdapter: RecyclerView.Adapter<ArtistAdapter.MyViewHolder>() {
+
+    var artist = emptyList<Artist>()
+
+    var navFromFragment = String()
 
     class MyViewHolder(
         private val binding: CardviewArtistBinding, private val navFromFragment: String
@@ -29,14 +34,14 @@ class ArtistAdapter(private var artist: List<Artist>, private val navFromFragmen
         fun artistListener(artist: Artist) {
             binding.root.setOnClickListener {
                 when (navFromFragment) {
-                    "HomeFragment" -> {
+                    HOME_FRAGMENT -> {
                         // Navigate from HomeFragment
                         val action =
                             HomeFragmentDirections.actionHomeFragmentToAlbumFragment(artist)
                         itemView.findNavController().navigate(action)
                     }
 
-                    "SearchViewFragment" -> {
+                    SEARCH_VIEW_FRAGMENT -> {
                         // Navigate from SearchFragment
                         val action =
                             SearchViewFragmentDirections.actionSearchViewFragmentToAlbumFragment(
@@ -53,7 +58,6 @@ class ArtistAdapter(private var artist: List<Artist>, private val navFromFragmen
             }
         }
 
-        val artistCard = binding.artistCard
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {

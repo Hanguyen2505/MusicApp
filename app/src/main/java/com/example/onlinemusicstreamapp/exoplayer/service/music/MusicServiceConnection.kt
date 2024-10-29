@@ -15,6 +15,13 @@ class MusicServiceConnection(
 
     private val mediaBrowserConnectionCallback = MediaBrowserConnectionCallback(context)
 
+    //* mediaController: Once the MusicService is connected, this MediaControllerCompat allows the client to control the playback (e.g., play, pause, skip).
+    lateinit var mediaController: MediaControllerCompat
+
+    //* transportControls: Provides easy access to transport controls (play, pause, skip, etc.) through the MediaControllerCompat
+    val transportControls: MediaControllerCompat.TransportControls
+        get() = mediaController.transportControls
+
     //* handling the different states of connection and disconnection between the app and the *media service*
     private inner class MediaBrowserConnectionCallback(
         private val context: Context
@@ -38,9 +45,6 @@ class MusicServiceConnection(
         }
     }
 
-    //* mediaController: Once the MusicService is connected, this MediaControllerCompat allows the client to control the playback (e.g., play, pause, skip).
-    lateinit var mediaController: MediaControllerCompat
-
     private inner class MediaControllerCallback : MediaControllerCompat.Callback() {
 
         override fun onPlaybackStateChanged(state: PlaybackStateCompat?) {
@@ -60,10 +64,6 @@ class MusicServiceConnection(
             mediaBrowserConnectionCallback.onConnectionSuspended()
         }
     }
-
-    //* transportControls: Provides easy access to transport controls (play, pause, skip, etc.) through the MediaControllerCompat
-    val transportControls: MediaControllerCompat.TransportControls
-        get() = mediaController.transportControls
 
     //* manage the connection between the app's components (like activities or fragments) and the MusicService
     private val mediaBrowser = MediaBrowserCompat(
