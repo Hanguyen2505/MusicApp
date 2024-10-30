@@ -29,13 +29,6 @@ class SongAdapter : RecyclerView.Adapter<SongAdapter.MyViewHolder>() {
             Glide.with(binding.songImage).load(song.imageUrl).into(binding.songImage)
         }
 
-        fun onClickMediaItem() {
-            binding.root.setOnClickListener {
-                it.context.startActivity(Intent(it.context, PlayerActivity::class.java))
-
-            }
-        }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -54,15 +47,12 @@ class SongAdapter : RecyclerView.Adapter<SongAdapter.MyViewHolder>() {
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val currentSong = songs[position]
         holder.bindData(currentSong)
-        holder.onClickMediaItem()
 
         holder.itemView.setOnClickListener {
             onItemClickListener?.let { click ->
                 click(currentSong)
             }
-
         }
-
     }
 
     fun updateData(newSong: List<Song>) {

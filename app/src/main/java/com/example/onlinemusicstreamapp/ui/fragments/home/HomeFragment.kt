@@ -1,5 +1,6 @@
 package com.example.onlinemusicstreamapp.ui.fragments.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,7 +17,6 @@ import com.example.onlinemusicstreamapp.adapter.ArtistAdapter
 import com.example.onlinemusicstreamapp.adapter.SongAdapter
 import com.example.onlinemusicstreamapp.database.other.Constants.HOME_FRAGMENT
 import com.example.onlinemusicstreamapp.databinding.FragmentHomeBinding
-import com.example.onlinemusicstreamapp.exoplayer.service.music.MusicService
 import com.example.onlinemusicstreamapp.ui.viewmodel.ArtistViewModel
 import com.example.onlinemusicstreamapp.ui.viewmodel.PlayerControlViewModel
 import com.example.onlinemusicstreamapp.ui.viewmodel.SongViewModel
@@ -65,8 +65,6 @@ class HomeFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
             }
 
         }
-
-
         return true
     }
 

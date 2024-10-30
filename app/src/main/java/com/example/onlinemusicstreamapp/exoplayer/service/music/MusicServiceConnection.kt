@@ -8,10 +8,18 @@ import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 
 class MusicServiceConnection(
     context: Context
 )  {
+
+    private val _playbackState = MutableLiveData<PlaybackStateCompat?>() // Mutable, internal use
+    val playbackState: LiveData<PlaybackStateCompat?> = _playbackState
+
+    private val _currentPlayingSong = MutableLiveData<MediaMetadataCompat?>()
+    val currentPlayingSong: LiveData<MediaMetadataCompat?> = _currentPlayingSong
 
     private val mediaBrowserConnectionCallback = MediaBrowserConnectionCallback(context)
 
@@ -48,15 +56,19 @@ class MusicServiceConnection(
     private inner class MediaControllerCallback : MediaControllerCompat.Callback() {
 
         override fun onPlaybackStateChanged(state: PlaybackStateCompat?) {
-
+            Log.d("playbackCurrentState", "PLAYBACK STATE CHANGED : $state")
+            _playbackState.postValue(state)
         }
 
         override fun onMetadataChanged(metadata: MediaMetadataCompat?) {
+            Log.d("playbackCurrentSong", "PLAYBACK STATE CHANGED : ${metadata!!.description.title}")
+            _currentPlayingSong.postValue(metadata)
 
         }
 
         override fun onSessionEvent(event: String?, extras: Bundle?) {
             super.onSessionEvent(event, extras)
+            Log.d("playbackCurrentState", "PLAYBACK STATE CHANGED : ${event}")
 
         }
 

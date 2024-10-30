@@ -1,6 +1,8 @@
 package com.example.onlinemusicstreamapp.di.module
 
 import android.content.Context
+import android.media.session.PlaybackState
+import android.support.v4.media.session.PlaybackStateCompat
 import androidx.media3.common.util.Util
 import androidx.media3.datasource.DefaultDataSource
 import androidx.media3.exoplayer.ExoPlayer
@@ -14,9 +16,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ServiceComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ServiceScoped
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Named
-import javax.inject.Singleton
 
 @Module
 @InstallIn(ServiceComponent::class)
@@ -45,5 +44,7 @@ object ServiceModule {
     fun provideDataSourceFactory(
         @ApplicationContext context: Context
     ) = DefaultDataSource.Factory(context)
+
+
 
 }

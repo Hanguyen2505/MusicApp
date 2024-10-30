@@ -2,10 +2,12 @@ package com.example.onlinemusicstreamapp.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.media.session.PlaybackStateCompat
 import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -17,12 +19,15 @@ import com.bumptech.glide.Glide
 import com.example.onlinemusicstreamapp.R
 import com.example.onlinemusicstreamapp.database.repository.UserAuthorization
 import com.example.onlinemusicstreamapp.databinding.ActivityMainBinding
+import com.example.onlinemusicstreamapp.ui.viewmodel.PlayerControlViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
+
+    private val playerViewModel: PlayerControlViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +48,22 @@ class MainActivity : AppCompatActivity() {
         binding.playerView.setOnClickListener {
             val intent = Intent(this, PlayerActivity::class.java)
             startActivity(intent)
+        }
+
+        binding.playPauseBtn.setOnClickListener {
+            playerViewModel.playBackState.value.let { playbackState ->
+                when(playbackState?.playbackState) {
+                    PlaybackStateCompat.STATE_PLAYING -> {
+                        Log.d("playbackStateInActivity", "${playbackState}")
+                        binding.playPauseBtn.setImageResource(R.drawable.ic_pause_2)
+                    }
+                    PlaybackStateCompat.STATE_PAUSED -> {
+                        Log.d("playbackStateInActivity", "$playbackState")
+                        binding.playPauseBtn.setImageResource(R.drawable.ic_play_2)
+                    }
+                }
+            }
+            playerViewModel.togglePlayPause()
         }
 
     }

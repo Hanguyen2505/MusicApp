@@ -5,6 +5,7 @@ import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
+import android.util.Log
 import androidx.media.MediaBrowserServiceCompat
 import androidx.media3.common.MediaItem
 import androidx.media3.datasource.DefaultDataSource
@@ -34,7 +35,6 @@ class MusicService: MediaBrowserServiceCompat() {
 
     private val serviceJob = Job()
     private val serviceScope = CoroutineScope(Dispatchers.Main + serviceJob)
-
 
     @Inject
     lateinit var dataSourceFactory: DefaultDataSource.Factory
@@ -78,17 +78,29 @@ class MusicService: MediaBrowserServiceCompat() {
                 val song = firebaseMusicSource.songs.find {
                     it.description.mediaId == mediaId
                 }
+                curPlayingSong = song
+                Log.d("currentPlayingSong", "${curPlayingSong?.description?.title}")
                 startPlaying(song!!)
-
+                setPlaybackState(PlaybackStateCompat.STATE_PLAYING)
             }
+        }
+
+        override fun onPlay() {
+            super.onPlay()
+            exoPlayer.play()
+            setPlaybackState(PlaybackStateCompat.STATE_PLAYING)
         }
 
         override fun onPause() {
             exoPlayer.pause()
+            setPlaybackState(PlaybackStateCompat.STATE_PAUSED)
+
         }
 
         override fun onStop() {
             exoPlayer.stop()
+            setPlaybackState(PlaybackStateCompat.STATE_STOPPED)
+            Log.d("playbackCurrentState", "PLAYBACK STATE CHANGED : ${PlaybackStateCompat.STATE_STOPPED}")
         }
     }
 
@@ -156,7 +168,8 @@ class MusicService: MediaBrowserServiceCompat() {
     }
 
     fun startPlaying(mediaItem: MediaMetadataCompat) {
-        playSong(mediaItem)
+//        playSong(mediaItem)
+        mediaSession.setMetadata(mediaItem)
         exoPlayer.apply {
             setMediaItem(asMediaItemExo(mediaItem))
             playWhenReady = true
@@ -165,19 +178,20 @@ class MusicService: MediaBrowserServiceCompat() {
         }
     }
 
-    private fun playSong(song: MediaMetadataCompat) {
-        mediaSession.setMetadata(song)
-
-        val playbackState = PlaybackStateCompat.Builder()
-            .setState(PlaybackStateCompat.STATE_PLAYING, 0, 1f)
-            .build()
-        mediaSession.setPlaybackState(playbackState)
-
-    }
-
     private fun asMediaItemExo(song: MediaMetadataCompat): MediaItem {
         return MediaItem.fromUri(song.description.mediaUri.toString())
     }
 
+    private fun setPlaybackState(state: Int) {
+        val playbackState = PlaybackStateCompat.Builder()
+            .setActions(
+                PlaybackStateCompat.ACTION_PLAY or
+                PlaybackStateCompat.ACTION_PAUSE or
+                PlaybackStateCompat.ACTION_STOP
+            )
+            .setState(state, exoPlayer.currentPosition, 1f)
+            .build()
+        mediaSession.setPlaybackState(playbackState)
+    }
 
 }
