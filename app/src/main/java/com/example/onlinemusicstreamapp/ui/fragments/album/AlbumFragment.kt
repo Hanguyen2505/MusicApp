@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide
 import com.example.onlinemusicstreamapp.adapter.SongAdapter
 import com.example.onlinemusicstreamapp.databinding.FragmentAlbumBinding
 import com.example.onlinemusicstreamapp.ui.viewmodel.ArtistViewModel
+import com.example.onlinemusicstreamapp.ui.viewmodel.PlayerControlViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 //TODO display the song list in album in the first time create this fragment
@@ -22,8 +23,15 @@ import dagger.hilt.android.AndroidEntryPoint
 class AlbumFragment : Fragment() {
 
     private lateinit var binding: FragmentAlbumBinding
-    private val mArtistViewModel: ArtistViewModel by viewModels()
 
+    //ViewModel
+    private val mArtistViewModel: ArtistViewModel by viewModels()
+    private val mPlayerControlViewModel: PlayerControlViewModel by viewModels()
+
+    //Adapter
+    private val songAdapter = SongAdapter()
+
+    //Safe Argument
     private val args by navArgs<AlbumFragmentArgs>()
 
     override fun onCreateView(
@@ -44,6 +52,11 @@ class AlbumFragment : Fragment() {
 
         binding.playBtn.setOnClickListener {
             playAlbum()
+        }
+
+        songAdapter.setOnItemClickListener { song ->
+            Log.d("CurrenSongSelected", "$song")
+            mPlayerControlViewModel.play(song)
         }
 
         return binding.root
@@ -68,7 +81,6 @@ class AlbumFragment : Fragment() {
         )
         Log.d("songlistLiveData", "${args.artist.name}")
         mArtistViewModel.getSong(args.artist.name).observe(viewLifecycleOwner, Observer { songs ->
-            val songAdapter = SongAdapter()
             songAdapter.songs = songs
 //            songAdapter.song = songs
             albumRecyclerView.adapter = songAdapter

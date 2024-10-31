@@ -8,6 +8,7 @@ import android.support.v4.media.MediaMetadataCompat.METADATA_KEY_ALBUM_ART_URI
 import android.support.v4.media.MediaMetadataCompat.METADATA_KEY_ARTIST
 import android.support.v4.media.MediaMetadataCompat.METADATA_KEY_DISPLAY_DESCRIPTION
 import android.support.v4.media.MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON_URI
+import android.support.v4.media.MediaMetadataCompat.METADATA_KEY_DISPLAY_SUBTITLE
 import android.support.v4.media.MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE
 import android.support.v4.media.MediaMetadataCompat.METADATA_KEY_GENRE
 import android.support.v4.media.MediaMetadataCompat.METADATA_KEY_MEDIA_ID
@@ -31,6 +32,7 @@ class FirebaseMusicSource @Inject constructor(
         songs = allSongs.map { song ->
             MediaMetadataCompat.Builder()
                 .putString(METADATA_KEY_ARTIST, song.artist.toString())
+                .putString(METADATA_KEY_DISPLAY_SUBTITLE, song.artist.toString())
                 .putString(METADATA_KEY_MEDIA_ID, song.mediaId)
                 .putString(METADATA_KEY_TITLE, song.title)
                 .putString(METADATA_KEY_DISPLAY_TITLE, song.title)

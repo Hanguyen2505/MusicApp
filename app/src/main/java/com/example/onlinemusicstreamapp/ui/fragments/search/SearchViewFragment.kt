@@ -1,6 +1,7 @@
 package com.example.onlinemusicstreamapp.ui.fragments.search
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,7 @@ import com.example.onlinemusicstreamapp.adapter.SongAdapter
 import com.example.onlinemusicstreamapp.database.other.Constants.SEARCH_VIEW_FRAGMENT
 import com.example.onlinemusicstreamapp.databinding.FragmentSearchViewBinding
 import com.example.onlinemusicstreamapp.ui.viewmodel.ArtistViewModel
+import com.example.onlinemusicstreamapp.ui.viewmodel.PlayerControlViewModel
 import com.example.onlinemusicstreamapp.ui.viewmodel.SongViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,6 +30,7 @@ class SearchViewFragment : Fragment(), SearchView.OnQueryTextListener {
     //ViewModel
     private val mArtistViewModel: ArtistViewModel by viewModels()
     private val mSongViewModel: SongViewModel by viewModels()
+    private val mPlayerControlViewModel: PlayerControlViewModel by viewModels()
 
     //Adapter
     private var songAdapter = SongAdapter()
@@ -50,6 +53,11 @@ class SearchViewFragment : Fragment(), SearchView.OnQueryTextListener {
         subscribeSearchView()
         binding.cancel.setOnClickListener {
             findNavController().navigate(R.id.action_searchViewFragment_to_searchFragment)
+        }
+
+        songAdapter.setOnItemClickListener { song ->
+            Log.d("CurrenSongSelected", "$song")
+            mPlayerControlViewModel.play(song)
         }
 
         return _binding!!.root

@@ -7,9 +7,12 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import android.os.Handler
 import android.os.Looper
+import androidx.activity.viewModels
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.example.onlinemusicstreamapp.R
 import com.example.onlinemusicstreamapp.databinding.ActivityPlayerBinding
+import com.example.onlinemusicstreamapp.ui.viewmodel.PlayerControlViewModel
 import com.example.onlinemusicstreamapp.ui.viewmodel.SongViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
@@ -20,13 +23,9 @@ class PlayerActivity : AppCompatActivity() {
     private var _binding: ActivityPlayerBinding? = null
     private val binding get() = _binding!!
 
-    private val dateFormat = SimpleDateFormat("mm:ss", Locale.getDefault())
-
-    private lateinit var mSongViewModel: SongViewModel
-
-    private var shouldUpdateSeekbar = true
-
-    private val handler = Handler(Looper.getMainLooper())
+    //ViewModel
+    private val mSongViewModel: SongViewModel by viewModels()
+    private val mPlayerControlViewModel: PlayerControlViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,22 +37,27 @@ class PlayerActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        mSongViewModel = ViewModelProvider(this)[SongViewModel::class.java]
+
+        displaySongInfo()
 
         binding.backToHomeBtn.setOnClickListener {
             finish()
         }
 
         binding.playPauseBtn.setOnClickListener {
-            togglePlayPause()
+            mPlayerControlViewModel.togglePlayPause()
+
         }
 
-
-
     }
 
-    private fun togglePlayPause() {
-        TODO("Not yet implemented")
+    private fun displaySongInfo() {
+        mPlayerControlViewModel.currentPlayingSong.observe(this) {
+            if (it == null) return@observe
+            binding.songTitle1.text = it.description.title
+            binding.songTitle2.text = it.description.title
+            binding.artistName.text = it.description.subtitle
+            Glide.with(binding.songCover).load(it.description.iconUri).into(binding.songCover)
+        }
     }
-
 }

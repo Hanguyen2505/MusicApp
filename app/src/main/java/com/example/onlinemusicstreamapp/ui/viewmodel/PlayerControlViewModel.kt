@@ -2,6 +2,8 @@ package com.example.onlinemusicstreamapp.ui.viewmodel
 
 import android.support.v4.media.session.PlaybackStateCompat
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.example.onlinemusicstreamapp.database.data.entities.Song
@@ -15,6 +17,10 @@ class PlayerControlViewModel @Inject constructor(
     private val musicServiceConnection: MusicServiceConnection
 ): ViewModel() {
 
+    //Used to update UI with current song
+    private var _song = MutableLiveData<Song>()
+    val song: LiveData<Song> = _song
+
     val playBackState = musicServiceConnection.playbackState
 
     val currentPlayingSong = musicServiceConnection.currentPlayingSong
@@ -22,14 +28,13 @@ class PlayerControlViewModel @Inject constructor(
     fun play(song: Song) {
         Log.d("playbackStateInViewModel", "${playBackState.value}")
         musicServiceConnection.transportControls.playFromMediaId(song.mediaId, null)
-
+        song.let { _song.postValue(it) }
     }
 
     fun togglePlayPause() {
         val currentState = playBackState.value?.state
         if (currentState != null) {
-            Log.d("playbackStateInViewModel", "$currentState and ${currentPlayingSong?.value?.description?.title}")
-
+            Log.d("playingSong", "$currentState and ${song.value?.title}")
             when (currentState) {
                 PlaybackStateCompat.STATE_PLAYING -> {
                     musicServiceConnection.transportControls.pause()

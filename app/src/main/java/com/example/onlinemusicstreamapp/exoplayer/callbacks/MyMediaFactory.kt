@@ -7,7 +7,7 @@ import com.example.onlinemusicstreamapp.database.data.entities.Song
 import com.example.onlinemusicstreamapp.exoplayer.service.music.MusicServiceConnection
 import javax.inject.Inject
 
-class MyMediaBrowser @Inject constructor(
+class MyMediaFactory @Inject constructor(
     private val musicServiceConnection: MusicServiceConnection
 ) {
     fun fetchSongsFromMediaBrowser(

@@ -41,14 +41,21 @@ class MainActivity : AppCompatActivity() {
         }
 
         setToolbar()
+
         setNavigationDrawer()
+
         showUserInNavigationView()
+
         replaceFragment()
+
+        showCurrentSongPlaying()
 
         binding.playerView.setOnClickListener {
             val intent = Intent(this, PlayerActivity::class.java)
             startActivity(intent)
         }
+
+        binding.playerView
 
         binding.playPauseBtn.setOnClickListener {
             playerViewModel.playBackState.value.let { playbackState ->
@@ -72,6 +79,16 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
 
     }
+
+    private fun showCurrentSongPlaying() {
+        playerViewModel.currentPlayingSong.observe(this) {
+            if (it == null) return@observe
+            binding.songTitle.text = it.description.title
+            Glide.with(binding.songCover).load(it.description.iconUri).into(binding.songCover)
+            binding.playerView.visibility = android.view.View.VISIBLE
+        }
+    }
+
 
     private fun setNavigationDrawer() {
         val drawerLayout = binding.main

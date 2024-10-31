@@ -6,13 +6,13 @@ import com.example.onlinemusicstreamapp.database.data.entities.Genre
 import com.example.onlinemusicstreamapp.database.data.entities.Song
 import com.example.onlinemusicstreamapp.database.other.Constants.MEDIA_GENRE_ID
 import com.example.onlinemusicstreamapp.database.other.Constants.MEDIA_SONG_ID
-import com.example.onlinemusicstreamapp.exoplayer.callbacks.MyMediaBrowser
+import com.example.onlinemusicstreamapp.exoplayer.callbacks.MyMediaFactory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class GenreViewModel @Inject constructor(
-    private val myMediaBrowser: MyMediaBrowser
+    private val myMediaFactory: MyMediaFactory
 ): ViewModel() {
     private val genreDatabase = GenreDatabase()
     val songs = MutableLiveData<List<Song>>()
@@ -23,14 +23,14 @@ class GenreViewModel @Inject constructor(
     }
 
     private fun getAllGenres(): MutableLiveData<List<Genre>> {
-        myMediaBrowser.fetchGenreFromMediaBrowser(MEDIA_GENRE_ID) { items ->
+        myMediaFactory.fetchGenreFromMediaBrowser(MEDIA_GENRE_ID) { items ->
             genre.postValue(items)
         }
         return genre
     }
 
     fun filterSongsByGenre(genre: String): MutableLiveData<List<Song>> {
-        myMediaBrowser.fetchSongsFromMediaBrowser(MEDIA_SONG_ID) { items ->
+        myMediaFactory.fetchSongsFromMediaBrowser(MEDIA_SONG_ID) { items ->
             val filteredSongs = items.filter { song ->
                 song.genre.any {
                     it.contains(genre, ignoreCase = true)

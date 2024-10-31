@@ -6,13 +6,13 @@ import com.example.onlinemusicstreamapp.database.data.entities.Artist
 import com.example.onlinemusicstreamapp.database.data.entities.Song
 import com.example.onlinemusicstreamapp.database.other.Constants.MEDIA_ARTIST_ID
 import com.example.onlinemusicstreamapp.database.other.Constants.MEDIA_SONG_ID
-import com.example.onlinemusicstreamapp.exoplayer.callbacks.MyMediaBrowser
+import com.example.onlinemusicstreamapp.exoplayer.callbacks.MyMediaFactory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class ArtistViewModel @Inject constructor(
-    private val myMediaBrowser: MyMediaBrowser
+    private val myMediaFactory: MyMediaFactory
 ): ViewModel() {
     val music = MutableLiveData<List<Song>>()
     val artist = MutableLiveData<List<Artist>>()
@@ -24,14 +24,14 @@ class ArtistViewModel @Inject constructor(
 
 
     private fun getAllArtists(): MutableLiveData<List<Artist>> {
-        myMediaBrowser.fetchArtistFromMediaBrowser(MEDIA_ARTIST_ID) { items ->
+        myMediaFactory.fetchArtistFromMediaBrowser(MEDIA_ARTIST_ID) { items ->
             artist.postValue(items)
         }
         return artist
     }
 
     fun getSong(artist: String): MutableLiveData<List<Song>> {
-        myMediaBrowser.fetchSongsFromMediaBrowser(MEDIA_SONG_ID) { items ->
+        myMediaFactory.fetchSongsFromMediaBrowser(MEDIA_SONG_ID) { items ->
             val filteredSongs = items.filter { song ->
                 song.artist.any {
                     it.contains(artist, ignoreCase = true)
@@ -43,7 +43,7 @@ class ArtistViewModel @Inject constructor(
     }
 
     fun filterSongsByArtist(searchQuery: String): MutableLiveData<List<Artist>> {
-        myMediaBrowser.fetchArtistFromMediaBrowser(MEDIA_ARTIST_ID) { searchItems ->
+        myMediaFactory.fetchArtistFromMediaBrowser(MEDIA_ARTIST_ID) { searchItems ->
             val filteredArtists = searchItems.filter { it.name.contains(searchQuery, ignoreCase = true) }
             searchArtist.postValue(filteredArtists)
         }
