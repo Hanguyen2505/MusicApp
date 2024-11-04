@@ -1,14 +1,19 @@
 package com.example.onlinemusicstreamapp.ui.viewmodel
 
 import android.support.v4.media.session.PlaybackStateCompat
+import android.support.v4.media.session.PlaybackStateCompat.*
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.onlinemusicstreamapp.database.data.entities.Song
+import com.example.onlinemusicstreamapp.exoplayer.service.music.MusicService
 import com.example.onlinemusicstreamapp.exoplayer.service.music.MusicServiceConnection
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.math.log
 
@@ -25,21 +30,26 @@ class PlayerControlViewModel @Inject constructor(
 
     val currentPlayingSong = musicServiceConnection.currentPlayingSong
 
+    private var _songDuration: MutableLiveData<Long> = MutableLiveData()
+    val songDuration: LiveData<Long> = _songDuration
+
     fun play(song: Song) {
         Log.d("playbackStateInViewModel", "${playBackState.value}")
         musicServiceConnection.transportControls.playFromMediaId(song.mediaId, null)
         song.let { _song.postValue(it) }
+
     }
 
     fun togglePlayPause() {
         val currentState = playBackState.value?.state
+        val currentPosition = playBackState.value?.position
         if (currentState != null) {
-            Log.d("playingSong", "$currentState and ${song.value?.title}")
+            Log.d("PosplayingSong", "$currentPosition and ${song.value?.title}")
             when (currentState) {
-                PlaybackStateCompat.STATE_PLAYING -> {
+                STATE_PLAYING -> {
                     musicServiceConnection.transportControls.pause()
                 }
-                PlaybackStateCompat.STATE_PAUSED, PlaybackStateCompat.STATE_STOPPED -> {
+                STATE_PAUSED, STATE_STOPPED -> {
                     musicServiceConnection.transportControls.play()
                 }
                 else -> {
@@ -55,6 +65,10 @@ class PlayerControlViewModel @Inject constructor(
 
     fun rewind() {
         musicServiceConnection.transportControls.rewind()
+    }
+
+    fun seekTo(pos: Long) {
+        musicServiceConnection.transportControls.seekTo(pos)
     }
 
 

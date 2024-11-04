@@ -1,20 +1,36 @@
 package com.example.onlinemusicstreamapp.exoplayer.service.music
 
+
 import android.os.Bundle
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
+import android.support.v4.media.session.PlaybackStateCompat.ACTION_PAUSE
+import android.support.v4.media.session.PlaybackStateCompat.ACTION_PLAY
+import android.support.v4.media.session.PlaybackStateCompat.ACTION_REWIND
+import android.support.v4.media.session.PlaybackStateCompat.ACTION_SKIP_TO_NEXT
+import android.support.v4.media.session.PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS
+import android.support.v4.media.session.PlaybackStateCompat.ACTION_SKIP_TO_QUEUE_ITEM
+import android.support.v4.media.session.PlaybackStateCompat.ACTION_STOP
+import android.support.v4.media.session.PlaybackStateCompat.STATE_PAUSED
+import android.support.v4.media.session.PlaybackStateCompat.STATE_PLAYING
 import android.util.Log
+import androidx.annotation.OptIn
 import androidx.media.MediaBrowserServiceCompat
 import androidx.media3.common.MediaItem
+import androidx.media3.common.Player
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.DefaultDataSource
 import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.source.MediaSource
+import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import com.example.onlinemusicstreamapp.database.other.Constants.MEDIA_ARTIST_ID
 import com.example.onlinemusicstreamapp.database.other.Constants.MEDIA_GENRE_ID
 import com.example.onlinemusicstreamapp.database.other.Constants.MEDIA_ROOT_ID
 import com.example.onlinemusicstreamapp.database.other.Constants.MEDIA_SONG_ID
 import com.example.onlinemusicstreamapp.database.other.Constants.SERVICE_TAG
+import com.example.onlinemusicstreamapp.database.other.Constants.SONG_DURATION
 import com.example.onlinemusicstreamapp.exoplayer.source.FirebaseArtistSource
 import com.example.onlinemusicstreamapp.exoplayer.source.FirebaseGenreSource
 import com.example.onlinemusicstreamapp.exoplayer.source.FirebaseMusicSource
@@ -22,6 +38,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -32,6 +50,10 @@ class MusicService: MediaBrowserServiceCompat() {
     private var curPlayingSong: MediaMetadataCompat? = null
 
     private lateinit var mediaSession: MediaSessionCompat
+
+    private var updateCurrentTimeJob: Job? = null
+
+    private var songCurrentTime = 0L
 
     private val serviceJob = Job()
     private val serviceScope = CoroutineScope(Dispatchers.Main + serviceJob)
@@ -51,6 +73,11 @@ class MusicService: MediaBrowserServiceCompat() {
     @Inject
     lateinit var firebaseGenreSource: FirebaseGenreSource
 
+    companion object {
+        var songDuration = 0L
+            private set
+    }
+
     override fun onCreate() {
         super.onCreate()
 
@@ -67,6 +94,16 @@ class MusicService: MediaBrowserServiceCompat() {
             firebaseGenreSource.fetchMediaData()
         }
 
+        exoPlayer.addListener(object : Player.Listener {
+            override fun onPlaybackStateChanged(state: Int) {
+                if (state == STATE_PLAYING) {
+                    songDuration = exoPlayer.duration
+                    Log.d("songDuration", "Duration: $songDuration ms")
+                }
+            }
+        })
+
+
     }
 
     private val mediaSessionCallback = object : MediaSessionCompat.Callback() {
@@ -82,19 +119,25 @@ class MusicService: MediaBrowserServiceCompat() {
                 Log.d("currentPlayingSong", "${curPlayingSong?.description?.title}")
                 startPlaying(song!!)
                 setPlaybackState(PlaybackStateCompat.STATE_PLAYING)
+                startUpdatingCurrentTime()
             }
         }
 
         override fun onPlay() {
             super.onPlay()
             exoPlayer.play()
-            setPlaybackState(PlaybackStateCompat.STATE_PLAYING)
+            setPlaybackState(STATE_PLAYING)
         }
 
         override fun onPause() {
             exoPlayer.pause()
-            setPlaybackState(PlaybackStateCompat.STATE_PAUSED)
+            setPlaybackState(STATE_PAUSED)
 
+        }
+
+        override fun onSeekTo(pos: Long) {
+            super.onSeekTo(pos)
+            exoPlayer.seekTo(pos)
         }
 
         override fun onStop() {
@@ -167,14 +210,15 @@ class MusicService: MediaBrowserServiceCompat() {
         }
     }
 
+    @OptIn(UnstableApi::class)
     fun startPlaying(mediaItem: MediaMetadataCompat) {
 //        playSong(mediaItem)
         mediaSession.setMetadata(mediaItem)
         exoPlayer.apply {
-            setMediaItem(asMediaItemExo(mediaItem))
+            setMediaSource(getMediaSource(asMediaItemExo(mediaItem)))
             playWhenReady = true
-            prepare() // Prepares the media to be played
-            play() // Starts playback
+            prepare()
+            play()
         }
     }
 
@@ -185,13 +229,41 @@ class MusicService: MediaBrowserServiceCompat() {
     private fun setPlaybackState(state: Int) {
         val playbackState = PlaybackStateCompat.Builder()
             .setActions(
-                PlaybackStateCompat.ACTION_PLAY or
-                PlaybackStateCompat.ACTION_PAUSE or
-                PlaybackStateCompat.ACTION_STOP
+                ACTION_PLAY or
+                ACTION_PAUSE or
+                ACTION_REWIND or
+                ACTION_SKIP_TO_NEXT or
+                ACTION_SKIP_TO_PREVIOUS or
+                ACTION_SKIP_TO_QUEUE_ITEM or
+                ACTION_STOP
             )
             .setState(state, exoPlayer.currentPosition, 1f)
+            .setExtras(Bundle().apply {
+                putLong(SONG_DURATION, exoPlayer.duration) // Add song duration
+            })
             .build()
         mediaSession.setPlaybackState(playbackState)
+    }
+
+    fun startUpdatingCurrentTime() {
+        // Launch a coroutine to update the songCurrentTime every second
+        updateCurrentTimeJob = serviceScope.launch {
+            while (isActive) {
+                songCurrentTime = exoPlayer.currentPosition
+                songDuration = exoPlayer.duration
+                setPlaybackState(if (exoPlayer.isPlaying) STATE_PLAYING else STATE_PAUSED)
+                Log.d("CurrentPosition", "Current time: ${songCurrentTime} ms")
+                Log.d("songDurationService", "Current time: ${songDuration} ms")
+                delay(1000L) // Update every second
+            }
+        }
+    }
+
+    @OptIn(UnstableApi::class)
+    private fun getMediaSource(mediaItem: MediaItem): MediaSource {
+        val mediaSource = ProgressiveMediaSource.Factory(dataSourceFactory)
+            .createMediaSource(mediaItem)
+        return mediaSource
     }
 
 }

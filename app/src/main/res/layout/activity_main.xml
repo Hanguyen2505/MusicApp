@@ -79,8 +79,8 @@
 
             <ImageView
                 android:id="@+id/song_cover"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_margin="10dp"
                 android:src="@drawable/milet_cover" />
 
@@ -102,15 +102,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:background="?attr/selectableItemBackground"
-                android:src="@drawable/ic_pause_2" />
-
-            <SeekBar
-                android:id="@+id/seek_bar"
-                android:layout_width="match_parent"
-                android:layout_height="3dp"
-                android:layout_below="@+id/song_cover"
-                android:progressTint="@color/white"/>
+                android:background="?attr/selectableItemBackground" />
 
         </RelativeLayout>
 

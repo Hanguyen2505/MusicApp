@@ -21,4 +21,6 @@ object Constants {
 
     const val SEARCH_VIEW_FRAGMENT = "SearchViewFragment"
 
+    const val SONG_DURATION = "song_duration"
+
 }

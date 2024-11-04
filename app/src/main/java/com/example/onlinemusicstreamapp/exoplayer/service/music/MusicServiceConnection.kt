@@ -15,7 +15,7 @@ class MusicServiceConnection(
     context: Context
 )  {
 
-    private val _playbackState = MutableLiveData<PlaybackStateCompat?>() // Mutable, internal use
+    private val _playbackState = MutableLiveData<PlaybackStateCompat?>()
     val playbackState: LiveData<PlaybackStateCompat?> = _playbackState
 
     private val _currentPlayingSong = MutableLiveData<MediaMetadataCompat?>()
@@ -58,6 +58,7 @@ class MusicServiceConnection(
         override fun onPlaybackStateChanged(state: PlaybackStateCompat?) {
             Log.d("playbackCurrentState", "PLAYBACK STATE CHANGED : $state")
             _playbackState.postValue(state)
+            Log.d("playbackCurrentState", "PLAYBACK STATE CHANGED : ${state?.extras?.getLong("SONG_DURATION")}")
         }
 
         override fun onMetadataChanged(metadata: MediaMetadataCompat?) {
@@ -94,6 +95,10 @@ class MusicServiceConnection(
 
     fun unsubscribe(parentId: String, callback: MediaBrowserCompat.SubscriptionCallback) {
         mediaBrowser.unsubscribe(parentId, callback)
+    }
+
+    init {
+        Log.d("MusicServiceConnection", "${playbackState.value?.position}")
     }
 
 }

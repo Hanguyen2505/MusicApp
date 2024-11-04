@@ -3,6 +3,7 @@ package com.example.onlinemusicstreamapp.ui.activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.media.session.PlaybackStateCompat
+import android.support.v4.media.session.PlaybackStateCompat.*
 import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
@@ -27,7 +28,8 @@ class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
 
-    private val playerViewModel: PlayerControlViewModel by viewModels()
+    private val playerControlViewModel: PlayerControlViewModel by viewModels()
+//    private val playerViewModel: PlayerViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,19 +60,7 @@ class MainActivity : AppCompatActivity() {
         binding.playerView
 
         binding.playPauseBtn.setOnClickListener {
-            playerViewModel.playBackState.value.let { playbackState ->
-                when(playbackState?.playbackState) {
-                    PlaybackStateCompat.STATE_PLAYING -> {
-                        Log.d("playbackStateInActivity", "${playbackState}")
-                        binding.playPauseBtn.setImageResource(R.drawable.ic_pause_2)
-                    }
-                    PlaybackStateCompat.STATE_PAUSED -> {
-                        Log.d("playbackStateInActivity", "$playbackState")
-                        binding.playPauseBtn.setImageResource(R.drawable.ic_play_2)
-                    }
-                }
-            }
-            playerViewModel.togglePlayPause()
+            playerControlViewModel.togglePlayPause()
         }
 
     }
@@ -81,12 +71,26 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showCurrentSongPlaying() {
-        playerViewModel.currentPlayingSong.observe(this) {
+        playerControlViewModel.currentPlayingSong.observe(this) {
             if (it == null) return@observe
             binding.songTitle.text = it.description.title
             Glide.with(binding.songCover).load(it.description.iconUri).into(binding.songCover)
             binding.playerView.visibility = android.view.View.VISIBLE
         }
+
+        playerControlViewModel.playBackState.observe(this) {
+            if (it?.state == STATE_PLAYING) {
+                binding.playPauseBtn.setImageResource(R.drawable.ic_pause_2)
+            }
+            else {
+                binding.playPauseBtn.setImageResource(R.drawable.ic_play_2)
+            }
+        }
+
+//        playerViewModel.playbackState.observe(this) {
+//            if (it == null) return@observe
+//            Log.d("playbackStateInActivity", "${it.position}")
+//        }
     }
 
 
