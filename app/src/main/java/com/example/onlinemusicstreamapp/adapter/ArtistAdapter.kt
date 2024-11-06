@@ -7,6 +7,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.onlinemusicstreamapp.database.data.entities.Artist
+import com.example.onlinemusicstreamapp.database.data.entities.Song
 import com.example.onlinemusicstreamapp.database.other.Constants.HOME_FRAGMENT
 import com.example.onlinemusicstreamapp.database.other.Constants.SEARCH_VIEW_FRAGMENT
 import com.example.onlinemusicstreamapp.database.repository.ArtistRepository
@@ -19,43 +20,20 @@ class ArtistAdapter: RecyclerView.Adapter<ArtistAdapter.MyViewHolder>() {
 
     var artist = emptyList<Artist>()
 
-    var navFromFragment = String()
+    private var onItemClickListener: ((Artist) -> Unit)? = null
+
+    fun setOnItemClickListener(listener: (Artist) -> Unit) {
+        onItemClickListener = listener
+    }
 
     class MyViewHolder(
-        private val binding: CardviewArtistBinding, private val navFromFragment: String
+        private val binding: CardviewArtistBinding
     ): RecyclerView.ViewHolder(binding.root) {
 
         fun bindData(artist: Artist) {
             binding.artistName.text = artist.name
             Glide.with(binding.prfImage).load(artist.imageUrl).into(binding.prfImage)
 
-        }
-
-        fun artistListener(artist: Artist) {
-            binding.root.setOnClickListener {
-                when (navFromFragment) {
-                    HOME_FRAGMENT -> {
-                        // Navigate from HomeFragment
-                        val action =
-                            HomeFragmentDirections.actionHomeFragmentToAlbumFragment(artist)
-                        itemView.findNavController().navigate(action)
-                    }
-
-                    SEARCH_VIEW_FRAGMENT -> {
-                        // Navigate from SearchFragment
-                        val action =
-                            SearchViewFragmentDirections.actionSearchViewFragmentToAlbumFragment(
-                                artist
-                            )
-                        itemView.findNavController().navigate(action)
-                    }
-
-                    else -> {
-                        // Handle default or unexpected cases
-                        Log.e("MyViewHolder", "Unknown fragment for navigation")
-                    }
-                }
-            }
         }
 
     }
@@ -66,7 +44,7 @@ class ArtistAdapter: RecyclerView.Adapter<ArtistAdapter.MyViewHolder>() {
             parent,
             false
         )
-        return MyViewHolder(binding, navFromFragment)
+        return MyViewHolder(binding)
     }
 
     override fun getItemCount(): Int {
@@ -76,9 +54,14 @@ class ArtistAdapter: RecyclerView.Adapter<ArtistAdapter.MyViewHolder>() {
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val currentItem = artist[position]
         ArtistRepository.getData(currentItem)
-        holder.bindData(currentItem)
-        holder.artistListener(currentItem)
 
+        holder.bindData(currentItem)
+
+        holder.itemView.setOnClickListener {
+            onItemClickListener?.let { click ->
+                click(currentItem)
+            }
+        }
     }
 
     fun updateData(newArtist: List<Artist>) {

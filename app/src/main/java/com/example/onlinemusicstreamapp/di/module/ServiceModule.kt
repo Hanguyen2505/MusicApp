@@ -10,6 +10,7 @@ import com.example.onlinemusicstreamapp.database.data.entities.Song
 import com.example.onlinemusicstreamapp.database.data.remote.ArtistDatabase
 import com.example.onlinemusicstreamapp.database.data.remote.GenreDatabase
 import com.example.onlinemusicstreamapp.database.data.remote.MusicDatabase
+import com.example.onlinemusicstreamapp.exoplayer.callbacks.MusicQueueManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -44,7 +45,5 @@ object ServiceModule {
     fun provideDataSourceFactory(
         @ApplicationContext context: Context
     ) = DefaultDataSource.Factory(context)
-
-
 
 }

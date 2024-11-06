@@ -6,15 +6,7 @@ import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
-import android.support.v4.media.session.PlaybackStateCompat.ACTION_PAUSE
-import android.support.v4.media.session.PlaybackStateCompat.ACTION_PLAY
-import android.support.v4.media.session.PlaybackStateCompat.ACTION_REWIND
-import android.support.v4.media.session.PlaybackStateCompat.ACTION_SKIP_TO_NEXT
-import android.support.v4.media.session.PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS
-import android.support.v4.media.session.PlaybackStateCompat.ACTION_SKIP_TO_QUEUE_ITEM
-import android.support.v4.media.session.PlaybackStateCompat.ACTION_STOP
-import android.support.v4.media.session.PlaybackStateCompat.STATE_PAUSED
-import android.support.v4.media.session.PlaybackStateCompat.STATE_PLAYING
+import android.support.v4.media.session.PlaybackStateCompat.*
 import android.util.Log
 import androidx.annotation.OptIn
 import androidx.media.MediaBrowserServiceCompat
@@ -29,8 +21,10 @@ import com.example.onlinemusicstreamapp.database.other.Constants.MEDIA_ARTIST_ID
 import com.example.onlinemusicstreamapp.database.other.Constants.MEDIA_GENRE_ID
 import com.example.onlinemusicstreamapp.database.other.Constants.MEDIA_ROOT_ID
 import com.example.onlinemusicstreamapp.database.other.Constants.MEDIA_SONG_ID
+import com.example.onlinemusicstreamapp.database.other.Constants.PLAYLIST
 import com.example.onlinemusicstreamapp.database.other.Constants.SERVICE_TAG
 import com.example.onlinemusicstreamapp.database.other.Constants.SONG_DURATION
+import com.example.onlinemusicstreamapp.exoplayer.callbacks.MusicQueueManager
 import com.example.onlinemusicstreamapp.exoplayer.source.FirebaseArtistSource
 import com.example.onlinemusicstreamapp.exoplayer.source.FirebaseGenreSource
 import com.example.onlinemusicstreamapp.exoplayer.source.FirebaseMusicSource
@@ -57,6 +51,9 @@ class MusicService: MediaBrowserServiceCompat() {
 
     private val serviceJob = Job()
     private val serviceScope = CoroutineScope(Dispatchers.Main + serviceJob)
+
+    @Inject
+    lateinit var mMusicQueueManager: MusicQueueManager
 
     @Inject
     lateinit var dataSourceFactory: DefaultDataSource.Factory
@@ -92,6 +89,10 @@ class MusicService: MediaBrowserServiceCompat() {
             firebaseMusicSource.fetchMediaData()
             firebaseArtistSource.fetchArtistData()
             firebaseGenreSource.fetchMediaData()
+            mMusicQueueManager.prepareQueue()
+            mediaSession.setQueue(mMusicQueueManager.getQueue())
+            mediaSession.setQueueTitle(PLAYLIST)
+            Log.d("MUSIC_QUEUE_SONG", "${mMusicQueueManager.getQueue()}")
         }
 
         exoPlayer.addListener(object : Player.Listener {
@@ -103,8 +104,9 @@ class MusicService: MediaBrowserServiceCompat() {
             }
         })
 
-
+        startUpdatingCurrentTime()
     }
+
 
     private val mediaSessionCallback = object : MediaSessionCompat.Callback() {
 
@@ -115,11 +117,14 @@ class MusicService: MediaBrowserServiceCompat() {
                 val song = firebaseMusicSource.songs.find {
                     it.description.mediaId == mediaId
                 }
-                curPlayingSong = song
+                song?.let {
+                    curPlayingSong = it
+                    mMusicQueueManager.setQueueIndex(firebaseMusicSource.songs.indexOf(it))
+                    Log.d("MUSIC_QUEUE_SONG_INDEX", "${mMusicQueueManager.getCurrentQueueItem()}")
+                    startPlaying(it)
+                }
                 Log.d("currentPlayingSong", "${curPlayingSong?.description?.title}")
-                startPlaying(song!!)
-                setPlaybackState(PlaybackStateCompat.STATE_PLAYING)
-                startUpdatingCurrentTime()
+
             }
         }
 
@@ -129,10 +134,25 @@ class MusicService: MediaBrowserServiceCompat() {
             setPlaybackState(STATE_PLAYING)
         }
 
+        override fun onSkipToNext() {
+            super.onSkipToNext()
+            mMusicQueueManager.getNextQueueItem()?.let {
+                skipToOnQueueItem(it.description.mediaId.toString())
+            }
+        }
+
         override fun onPause() {
             exoPlayer.pause()
             setPlaybackState(STATE_PAUSED)
+            Log.d("playbackCurrentState", "PLAYBACK STATE PAUSE: $")
+            Log.d("MUSIC_QUEUE", "${mMusicQueueManager.getQueue()}")
+        }
 
+        override fun onSkipToPrevious() {
+            super.onSkipToPrevious()
+            mMusicQueueManager.getPreviousQueueItem()?.let {
+                skipToOnQueueItem(it.description.mediaId.toString())
+            }
         }
 
         override fun onSeekTo(pos: Long) {
@@ -142,8 +162,7 @@ class MusicService: MediaBrowserServiceCompat() {
 
         override fun onStop() {
             exoPlayer.stop()
-            setPlaybackState(PlaybackStateCompat.STATE_STOPPED)
-            Log.d("playbackCurrentState", "PLAYBACK STATE CHANGED : ${PlaybackStateCompat.STATE_STOPPED}")
+            setPlaybackState(STATE_STOPPED)
         }
     }
 
@@ -220,6 +239,7 @@ class MusicService: MediaBrowserServiceCompat() {
             prepare()
             play()
         }
+        setPlaybackState(STATE_PLAYING)
     }
 
     private fun asMediaItemExo(song: MediaMetadataCompat): MediaItem {
@@ -227,7 +247,7 @@ class MusicService: MediaBrowserServiceCompat() {
     }
 
     private fun setPlaybackState(state: Int) {
-        val playbackState = PlaybackStateCompat.Builder()
+        val playbackState = Builder()
             .setActions(
                 ACTION_PLAY or
                 ACTION_PAUSE or
@@ -251,11 +271,35 @@ class MusicService: MediaBrowserServiceCompat() {
             while (isActive) {
                 songCurrentTime = exoPlayer.currentPosition
                 songDuration = exoPlayer.duration
-                setPlaybackState(if (exoPlayer.isPlaying) STATE_PLAYING else STATE_PAUSED)
+                setPlaybackState(
+                    when {
+                        exoPlayer.isPlaying -> STATE_PLAYING
+
+                        exoPlayer.playbackState == Player.STATE_BUFFERING -> STATE_BUFFERING
+
+                        exoPlayer.playbackState == Player.STATE_IDLE -> STATE_NONE
+
+                        songCurrentTime < songDuration -> STATE_PAUSED
+
+                        else -> STATE_STOPPED
+
+                    }
+                )
                 Log.d("CurrentPosition", "Current time: ${songCurrentTime} ms")
                 Log.d("songDurationService", "Current time: ${songDuration} ms")
+                Log.d("play_when_ready", "${exoPlayer.playWhenReady}")
+                Log.d("exoPlayer IsPlaying", "isPlaying : ${exoPlayer.isPlaying}")
+                Log.d("ExoPlayer State", "isPlaying : ${exoPlayer.playbackState}")
                 delay(1000L) // Update every second
             }
+        }
+    }
+
+    private fun skipToOnQueueItem(mediaId: String) {
+        val mediaMetadata = mMusicQueueManager.getMediaMetadataForId(mediaId)
+        mediaSession.setMetadata(mediaMetadata)
+        mediaMetadata?.let {
+            startPlaying(it)
         }
     }
 

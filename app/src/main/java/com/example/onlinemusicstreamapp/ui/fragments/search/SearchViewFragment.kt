@@ -16,6 +16,7 @@ import com.example.onlinemusicstreamapp.adapter.ArtistAdapter
 import com.example.onlinemusicstreamapp.adapter.SongAdapter
 import com.example.onlinemusicstreamapp.database.other.Constants.SEARCH_VIEW_FRAGMENT
 import com.example.onlinemusicstreamapp.databinding.FragmentSearchViewBinding
+import com.example.onlinemusicstreamapp.ui.fragments.home.HomeFragmentDirections
 import com.example.onlinemusicstreamapp.ui.viewmodel.ArtistViewModel
 import com.example.onlinemusicstreamapp.ui.viewmodel.PlayerControlViewModel
 import com.example.onlinemusicstreamapp.ui.viewmodel.SongViewModel
@@ -40,8 +41,6 @@ class SearchViewFragment : Fragment(), SearchView.OnQueryTextListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        artistAdapter.navFromFragment = SEARCH_VIEW_FRAGMENT
-
     }
 
     override fun onCreateView(
@@ -58,6 +57,11 @@ class SearchViewFragment : Fragment(), SearchView.OnQueryTextListener {
         songAdapter.setOnItemClickListener { song ->
             Log.d("CurrenSongSelected", "$song")
             mPlayerControlViewModel.play(song)
+        }
+
+        artistAdapter.setOnItemClickListener { artist ->
+            val action = SearchViewFragmentDirections.actionSearchViewFragmentToAlbumFragment(artist)
+            findNavController().navigate(action)
         }
 
         return _binding!!.root

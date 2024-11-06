@@ -51,7 +51,10 @@ class HomeFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
             mPlayerControlViewModel.play(song)
         }
 
-        artistAdapter.navFromFragment = HOME_FRAGMENT
+        artistAdapter.setOnItemClickListener { artist ->
+            val action = HomeFragmentDirections.actionHomeFragmentToAlbumFragment(artist)
+            findNavController().navigate(action)
+        }
 
         return _binding!!.root
     }

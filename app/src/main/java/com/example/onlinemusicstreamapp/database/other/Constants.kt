@@ -1,5 +1,7 @@
 package com.example.onlinemusicstreamapp.database.other
 
+import com.example.onlinemusicstreamapp.database.data.entities.Playlist
+
 object Constants {
     const val SONG_COLLECTION = "songs"
 
@@ -22,5 +24,7 @@ object Constants {
     const val SEARCH_VIEW_FRAGMENT = "SearchViewFragment"
 
     const val SONG_DURATION = "song_duration"
+
+    const val PLAYLIST = "Playlist"
 
 }

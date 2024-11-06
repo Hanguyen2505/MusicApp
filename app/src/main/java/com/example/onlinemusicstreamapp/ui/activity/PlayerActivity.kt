@@ -83,6 +83,14 @@ class PlayerActivity : AppCompatActivity() {
 
         }
 
+        binding.skipToPrevBtn.setOnClickListener {
+            mPlayerControlViewModel.skipToPrevious()
+        }
+
+        binding.skipToNextBtn.setOnClickListener {
+            mPlayerControlViewModel.skipToNext()
+        }
+
     }
 
     override fun onPause() {
@@ -106,7 +114,7 @@ class PlayerActivity : AppCompatActivity() {
             Glide.with(binding.songCover).load(it.description.iconUri).into(binding.songCover)
         }
 
-        mPlayerControlViewModel.playBackState.observe(this) {
+        mPlayerControlViewModel.playbackState.observe(this) {
             if (it!!.state == STATE_PLAYING) {
 
                 binding.playPauseBtn.setBackgroundResource(R.drawable.ic_pause)
@@ -118,18 +126,19 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun updateSeekBar() {
-        mPlayerControlViewModel.playBackState.observe(this) {
+        mPlayerControlViewModel.playbackState.observe(this) {
+            //update Seekbar Progress
             if (updateSeekBar) {
                 setCurrentTime(it!!.position)
                 binding.seekBar.progress = it.position.toInt()
                 Log.d("currentPlaybackPosition", "${it.position}")
             }
-        }
-        mPlayerControlViewModel.playBackState.observe(this) {
+            //Update duration
             val duration = it?.extras?.getLong(SONG_DURATION)
             binding.tvSongDurationLeft.text = dateFormat.format(duration)
             binding.seekBar.max = duration!!.toInt()
         }
+
     }
 
     private fun setCurrentTime(ms: Long) {

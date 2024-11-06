@@ -29,7 +29,6 @@ class MainActivity : AppCompatActivity() {
     private val binding get() = _binding!!
 
     private val playerControlViewModel: PlayerControlViewModel by viewModels()
-//    private val playerViewModel: PlayerViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,7 +77,7 @@ class MainActivity : AppCompatActivity() {
             binding.playerView.visibility = android.view.View.VISIBLE
         }
 
-        playerControlViewModel.playBackState.observe(this) {
+        playerControlViewModel.playbackState.observe(this) {
             if (it?.state == STATE_PLAYING) {
                 binding.playPauseBtn.setImageResource(R.drawable.ic_pause_2)
             }

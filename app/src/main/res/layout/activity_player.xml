@@ -144,7 +144,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <androidx.appcompat.widget.AppCompatImageButton
-                        android:id="@+id/playback_btn"
+                        android:id="@+id/skip_to_prev_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="?attr/selectableItemBackground"
@@ -160,27 +160,27 @@
                         android:layout_height="wrap_content"
                         android:background="?attr/selectableItemBackground"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="@+id/play_forward_btn"
+                        app:layout_constraintEnd_toEndOf="@+id/loop_btn"
                         app:layout_constraintHorizontal_bias="0.498"
                         app:layout_constraintStart_toStartOf="@+id/shuffle_btn"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_bias="0.0" />
 
                     <androidx.appcompat.widget.AppCompatImageButton
-                        android:id="@+id/loop_btn"
+                        android:id="@+id/skip_to_next_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="4dp"
                         android:background="?attr/selectableItemBackground"
                         android:src="@drawable/ic_play_forward"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/play_forward_btn"
+                        app:layout_constraintEnd_toStartOf="@+id/loop_btn"
                         app:layout_constraintStart_toEndOf="@+id/play_pause_btn"
-                        app:layout_constraintTop_toTopOf="@+id/playback_btn"
+                        app:layout_constraintTop_toTopOf="@+id/skip_to_prev_btn"
                         app:layout_constraintVertical_bias="0.111" />
 
                     <androidx.appcompat.widget.AppCompatImageButton
-                        android:id="@+id/play_forward_btn"
+                        android:id="@+id/loop_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="?attr/selectableItemBackground"
