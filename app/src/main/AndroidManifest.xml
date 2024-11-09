@@ -41,6 +41,7 @@
 
         <activity
             android:name=".ui.activity.PlayerActivity"
+            android:launchMode="singleTop"
             android:exported="false" />
         <activity
             android:name=".ui.activity.SignInActivity"
