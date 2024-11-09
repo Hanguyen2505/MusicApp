@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
-import android.support.v4.media.session.PlaybackStateCompat
 import android.support.v4.media.session.PlaybackStateCompat.*
 import android.util.Log
 import androidx.annotation.OptIn
@@ -17,6 +16,7 @@ import androidx.media3.datasource.DefaultDataSource
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.MediaSource
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
+import androidx.media3.ui.PlayerNotificationManager
 import com.example.onlinemusicstreamapp.database.other.Constants.MEDIA_ARTIST_ID
 import com.example.onlinemusicstreamapp.database.other.Constants.MEDIA_GENRE_ID
 import com.example.onlinemusicstreamapp.database.other.Constants.MEDIA_ROOT_ID
@@ -24,6 +24,7 @@ import com.example.onlinemusicstreamapp.database.other.Constants.MEDIA_SONG_ID
 import com.example.onlinemusicstreamapp.database.other.Constants.PLAYLIST
 import com.example.onlinemusicstreamapp.database.other.Constants.SERVICE_TAG
 import com.example.onlinemusicstreamapp.database.other.Constants.SONG_DURATION
+import com.example.onlinemusicstreamapp.exoplayer.callbacks.MusicNotificationListener
 import com.example.onlinemusicstreamapp.exoplayer.callbacks.MusicQueueManager
 import com.example.onlinemusicstreamapp.exoplayer.source.FirebaseArtistSource
 import com.example.onlinemusicstreamapp.exoplayer.source.FirebaseGenreSource
@@ -38,12 +39,15 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
+@UnstableApi
 @AndroidEntryPoint
 class MusicService: MediaBrowserServiceCompat() {
 
     private var curPlayingSong: MediaMetadataCompat? = null
 
     private lateinit var mediaSession: MediaSessionCompat
+
+    private lateinit var notificationManager: MusicNotificationManager
 
     private var updateCurrentTimeJob: Job? = null
 
@@ -75,8 +79,11 @@ class MusicService: MediaBrowserServiceCompat() {
             private set
     }
 
+    @OptIn(UnstableApi::class)
     override fun onCreate() {
         super.onCreate()
+
+        startUpdatingCurrentTime()
 
         // Set up MediaSession
         mediaSession = MediaSessionCompat(this, SERVICE_TAG).apply {
@@ -84,6 +91,13 @@ class MusicService: MediaBrowserServiceCompat() {
             setSessionToken(sessionToken)
             isActive = true
         }
+
+        notificationManager = MusicNotificationManager(
+            exoPlayer,
+            this,
+            mediaSession.sessionToken,
+            MusicNotificationListener(this)
+        )
 
         serviceScope.launch {
             firebaseMusicSource.fetchMediaData()
@@ -103,8 +117,6 @@ class MusicService: MediaBrowserServiceCompat() {
                 }
             }
         })
-
-        startUpdatingCurrentTime()
     }
 
 
@@ -119,7 +131,6 @@ class MusicService: MediaBrowserServiceCompat() {
                 }
                 song?.let {
                     curPlayingSong = it
-                    mMusicQueueManager.setQueueIndex(firebaseMusicSource.songs.indexOf(it))
                     Log.d("MUSIC_QUEUE_SONG_INDEX", "${mMusicQueueManager.getCurrentQueueItem()}")
                     startPlaying(it)
                 }
@@ -158,6 +169,21 @@ class MusicService: MediaBrowserServiceCompat() {
         override fun onSeekTo(pos: Long) {
             super.onSeekTo(pos)
             exoPlayer.seekTo(pos)
+        }
+
+        override fun onRewind() {
+            super.onRewind()
+            when (exoPlayer.repeatMode) {
+                Player.REPEAT_MODE_OFF -> {
+                    exoPlayer.repeatMode = Player.REPEAT_MODE_ONE
+                }
+                Player.REPEAT_MODE_ONE -> {
+                    exoPlayer.repeatMode = Player.REPEAT_MODE_ALL
+                }
+                else -> {
+                    exoPlayer.repeatMode = Player.REPEAT_MODE_OFF
+                }
+            }
         }
 
         override fun onStop() {

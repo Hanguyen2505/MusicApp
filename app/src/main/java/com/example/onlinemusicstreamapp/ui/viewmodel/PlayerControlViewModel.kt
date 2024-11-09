@@ -1,5 +1,7 @@
 package com.example.onlinemusicstreamapp.ui.viewmodel
 
+import android.os.Bundle
+import android.provider.Settings.Global.putString
 import android.support.v4.media.session.PlaybackStateCompat.*
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -65,7 +67,7 @@ class PlayerControlViewModel @Inject constructor(
         musicServiceConnection.transportControls.stop()
     }
 
-    fun rewind() {
+    fun toggleLoop() {
         musicServiceConnection.transportControls.rewind()
     }
 
@@ -79,6 +81,12 @@ class PlayerControlViewModel @Inject constructor(
                 skipToNext()
             }
         }
+    }
+
+    fun sendArtistToMusicService(artistName: String) {
+        musicServiceConnection.sendSessionEvent("SELECT_ARTIST", Bundle().apply {
+            putString("ARTIST_NAME", artistName)
+        })
     }
 
 

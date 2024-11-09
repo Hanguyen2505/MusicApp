@@ -3,7 +3,6 @@ package com.example.onlinemusicstreamapp.database.data.remote
 import android.util.Log
 import com.example.onlinemusicstreamapp.database.data.entities.Song
 import com.example.onlinemusicstreamapp.database.other.Constants.SONG_COLLECTION
-import com.example.onlinemusicstreamapp.database.repository.ArtistRepository
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.toObject
 import com.google.firebase.firestore.toObjects

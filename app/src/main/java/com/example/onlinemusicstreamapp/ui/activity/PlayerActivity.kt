@@ -77,6 +77,10 @@ class PlayerActivity : AppCompatActivity() {
 
         }
 
+        binding.loopBtn.setOnClickListener {
+            mPlayerControlViewModel.toggleLoop()
+        }
+
         binding.playPauseBtn.setOnClickListener {
             mPlayerControlViewModel.togglePlayPause()
             updateSeekBar()

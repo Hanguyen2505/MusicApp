@@ -1,19 +1,11 @@
 package com.example.onlinemusicstreamapp.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.onlinemusicstreamapp.database.data.entities.Artist
-import com.example.onlinemusicstreamapp.database.data.entities.Song
-import com.example.onlinemusicstreamapp.database.other.Constants.HOME_FRAGMENT
-import com.example.onlinemusicstreamapp.database.other.Constants.SEARCH_VIEW_FRAGMENT
-import com.example.onlinemusicstreamapp.database.repository.ArtistRepository
 import com.example.onlinemusicstreamapp.databinding.CardviewArtistBinding
-import com.example.onlinemusicstreamapp.ui.fragments.home.HomeFragmentDirections
-import com.example.onlinemusicstreamapp.ui.fragments.search.SearchViewFragmentDirections
 
 
 class ArtistAdapter: RecyclerView.Adapter<ArtistAdapter.MyViewHolder>() {
@@ -53,7 +45,6 @@ class ArtistAdapter: RecyclerView.Adapter<ArtistAdapter.MyViewHolder>() {
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val currentItem = artist[position]
-        ArtistRepository.getData(currentItem)
 
         holder.bindData(currentItem)
 

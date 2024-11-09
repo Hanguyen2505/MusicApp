@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
     <uses-permission android:name="android.permission.INTERNET" />
+
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <!-- or -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
 
     <application
         android:allowBackup="true"
@@ -17,11 +24,14 @@
         android:name=".database.other.MyApplication"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.OnlineMusicStreamApp"
-        tools:targetApi="31">
+        android:theme="@style/Theme.OnlineMusicStreamApp" >
+
+        <receiver android:name=".exoplayer.service.music.MediaControlReceiver" />
 
         <service
             android:name=".exoplayer.service.music.MusicService"
+            android:enabled="true"
+            android:foregroundServiceType="mediaPlayback"
             android:permission="android.permission.BIND_MEDIA_BROWSER_SERVICE"
             android:exported="true">
             <intent-filter>

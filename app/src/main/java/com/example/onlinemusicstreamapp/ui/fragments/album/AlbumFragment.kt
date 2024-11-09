@@ -42,16 +42,10 @@ class AlbumFragment : Fragment() {
         showAlbumDetail()
         subscribeToObserve()
 
+        mPlayerControlViewModel.sendArtistToMusicService(args.artist.name)
+
         binding.backToHomeBtn.setOnClickListener {
             findNavController().popBackStack()
-        }
-
-        binding.followButton.setOnClickListener {
-
-        }
-
-        binding.playBtn.setOnClickListener {
-            playAlbum()
         }
 
         songAdapter.setOnItemClickListener { song ->
@@ -82,7 +76,6 @@ class AlbumFragment : Fragment() {
         Log.d("songlistLiveData", "${args.artist.name}")
         mArtistViewModel.getSong(args.artist.name).observe(viewLifecycleOwner, Observer { songs ->
             songAdapter.songs = songs
-//            songAdapter.song = songs
             albumRecyclerView.adapter = songAdapter
         })
     }

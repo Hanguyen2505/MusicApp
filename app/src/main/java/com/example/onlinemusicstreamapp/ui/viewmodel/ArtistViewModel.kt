@@ -22,7 +22,6 @@ class ArtistViewModel @Inject constructor(
         getAllArtists()
     }
 
-
     private fun getAllArtists(): MutableLiveData<List<Artist>> {
         myMediaFactory.fetchArtistFromMediaBrowser(MEDIA_ARTIST_ID) { items ->
             artist.postValue(items)

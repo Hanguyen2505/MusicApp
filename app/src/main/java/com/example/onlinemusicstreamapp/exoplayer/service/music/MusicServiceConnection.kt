@@ -10,7 +10,9 @@ import android.support.v4.media.session.PlaybackStateCompat
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.media3.common.util.UnstableApi
 
+@UnstableApi
 class MusicServiceConnection(
     context: Context
 )  {
@@ -69,8 +71,17 @@ class MusicServiceConnection(
 
         override fun onSessionEvent(event: String?, extras: Bundle?) {
             super.onSessionEvent(event, extras)
-            Log.d("playbackCurrentState", "PLAYBACK STATE CHANGED : ${event}")
+            Log.d("playbackCurrentEvent", "PLAYBACK EVENT CHANGED : ${event}")
 
+        }
+
+        override fun onQueueTitleChanged(title: CharSequence?) {
+            super.onQueueTitleChanged(title)
+            Log.d("playbackQueue", "PLAYBACK EVENT CHANGED : ${title}")
+        }
+
+        override fun onRepeatModeChanged(repeatMode: Int) {
+            super.onRepeatModeChanged(repeatMode)
         }
 
         override fun onSessionDestroyed() {
@@ -95,6 +106,10 @@ class MusicServiceConnection(
 
     fun unsubscribe(parentId: String, callback: MediaBrowserCompat.SubscriptionCallback) {
         mediaBrowser.unsubscribe(parentId, callback)
+    }
+
+    fun sendSessionEvent(event: String, bundle: Bundle?) {
+        mediaController.sendCommand(event, bundle, null)
     }
 
     init {
