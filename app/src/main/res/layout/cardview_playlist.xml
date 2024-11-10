@@ -1,91 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:backgroundTint="@color/black_gray">
+    android:layout_margin="10dp"
+    >
 
-    <LinearLayout
-        android:id="@+id/cardView_playlist"
+    <ImageView
+        android:id="@+id/coverImg"
+        android:layout_width="150dp"
+        android:layout_height="200dp"
+        android:src="@drawable/milet_cover"
+        android:scaleType="centerCrop"
+        />
+
+    <TextView
+        android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_marginBottom="30dp"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:text="@string/playlist_s_title"
+        android:textColor="@color/white"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="7dp"/>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_margin="10dp"
-            android:background="@drawable/rounded_playlist">
+    <TextView
+        android:id="@+id/desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="@string/description"
+        android:layout_margin="7dp"
+        android:textColor="@color/white"
+        android:layout_gravity="bottom"/>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/song1"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/robin_cover"/>
-
-                <ImageView
-                    android:id="@+id/song2"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/robin_cover" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/song3"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/robin_cover"/>
-
-                <ImageView
-                    android:id="@+id/song4"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/robin_cover"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:orientation="vertical"
-            android:layout_marginTop="10dp">
-
-            <TextView
-                android:id="@+id/playlist_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/playlist_s_title"
-                android:textColor="@color/white"
-                android:layout_marginTop="10dp"
-                android:textSize="30sp"
-                android:layout_gravity="center"/>
-
-            <TextView
-                android:id="@+id/desc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/playlist"
-                android:textColor="@color/white"
-                android:paddingTop="10dp"
-                android:textSize="15sp" />
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

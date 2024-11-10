@@ -25,9 +25,7 @@ class ArtistAdapter: RecyclerView.Adapter<ArtistAdapter.MyViewHolder>() {
         fun bindData(artist: Artist) {
             binding.artistName.text = artist.name
             Glide.with(binding.prfImage).load(artist.imageUrl).into(binding.prfImage)
-
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {

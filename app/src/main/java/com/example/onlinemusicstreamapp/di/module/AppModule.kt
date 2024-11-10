@@ -1,6 +1,8 @@
 package com.example.onlinemusicstreamapp.di.module
 
 import android.content.Context
+import androidx.annotation.OptIn
+import androidx.media3.common.util.UnstableApi
 import com.example.onlinemusicstreamapp.exoplayer.service.music.MusicServiceConnection
 import dagger.Module
 import dagger.Provides
@@ -13,6 +15,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
+    @OptIn(UnstableApi::class)
     @Singleton
     @Provides
     fun provideMusicServiceConnection(

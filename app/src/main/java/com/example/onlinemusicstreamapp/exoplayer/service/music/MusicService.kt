@@ -19,6 +19,7 @@ import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.ui.PlayerNotificationManager
 import com.example.onlinemusicstreamapp.database.other.Constants.MEDIA_ARTIST_ID
 import com.example.onlinemusicstreamapp.database.other.Constants.MEDIA_GENRE_ID
+import com.example.onlinemusicstreamapp.database.other.Constants.MEDIA_PLAYLIST_ID
 import com.example.onlinemusicstreamapp.database.other.Constants.MEDIA_ROOT_ID
 import com.example.onlinemusicstreamapp.database.other.Constants.MEDIA_SONG_ID
 import com.example.onlinemusicstreamapp.database.other.Constants.PLAYLIST
@@ -29,6 +30,7 @@ import com.example.onlinemusicstreamapp.exoplayer.callbacks.MusicQueueManager
 import com.example.onlinemusicstreamapp.exoplayer.source.FirebaseArtistSource
 import com.example.onlinemusicstreamapp.exoplayer.source.FirebaseGenreSource
 import com.example.onlinemusicstreamapp.exoplayer.source.FirebaseMusicSource
+import com.example.onlinemusicstreamapp.exoplayer.source.FirebasePlaylistSource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -73,6 +75,9 @@ class MusicService: MediaBrowserServiceCompat() {
 
     @Inject
     lateinit var firebaseGenreSource: FirebaseGenreSource
+
+    @Inject
+    lateinit var firebasePlaylistSource: FirebasePlaylistSource
 
     companion object {
         var songDuration = 0L
@@ -251,6 +256,17 @@ class MusicService: MediaBrowserServiceCompat() {
                     // Send the result after data is ready
                     result.sendResult(mediaItems.toMutableList())
                 }
+            }
+
+            MEDIA_PLAYLIST_ID -> {
+                serviceScope.launch {
+                    if (firebasePlaylistSource.playlists.isEmpty()) {
+                        firebasePlaylistSource.fetchMediaData()
+                    }
+                    val mediaItems = firebasePlaylistSource.asMediaItems()
+                    result.sendResult(mediaItems.toMutableList())
+                }
+
             }
         }
     }

@@ -95,7 +95,6 @@ android {
         implementation("androidx.activity:activity-ktx:1.9.0")
 
         //Dagger Hilt
-        val hilt_version = "2.49"
         implementation(libs.hilt.android)
         kapt(libs.hilt.android.compiler)
         kapt(libs.androidx.hilt.compiler)

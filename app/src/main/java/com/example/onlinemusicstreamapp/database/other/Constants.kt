@@ -9,6 +9,8 @@ object Constants {
 
     const val GENRE_COLLECTION = "genre"
 
+    const val PLAYLIST_COLLECTION = "playlist"
+
     const val MEDIA_ROOT_ID = "root_id"
 
     const val MEDIA_ARTIST_ID = "artists_id"
@@ -16,6 +18,8 @@ object Constants {
     const val MEDIA_SONG_ID = "songs_id"
 
     const val MEDIA_GENRE_ID = "genre_id"
+
+    const val MEDIA_PLAYLIST_ID = "playlist_id"
 
     const val SERVICE_TAG = "MusicService"
 

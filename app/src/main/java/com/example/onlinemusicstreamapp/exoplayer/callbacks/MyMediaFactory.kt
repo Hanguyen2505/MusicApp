@@ -1,15 +1,20 @@
 package com.example.onlinemusicstreamapp.exoplayer.callbacks
 
 import android.support.v4.media.MediaBrowserCompat
+import androidx.annotation.OptIn
+import androidx.media3.common.util.UnstableApi
 import com.example.onlinemusicstreamapp.database.data.entities.Artist
 import com.example.onlinemusicstreamapp.database.data.entities.Genre
+import com.example.onlinemusicstreamapp.database.data.entities.Playlist
 import com.example.onlinemusicstreamapp.database.data.entities.Song
 import com.example.onlinemusicstreamapp.exoplayer.service.music.MusicServiceConnection
 import javax.inject.Inject
 
-class MyMediaFactory @Inject constructor(
+class MyMediaFactory @OptIn(UnstableApi::class)
+@Inject constructor(
     private val musicServiceConnection: MusicServiceConnection
 ) {
+    @OptIn(UnstableApi::class)
     fun fetchSongsFromMediaBrowser(
         parentId: String,
         callback: (List<Song>) -> Unit
@@ -36,6 +41,7 @@ class MyMediaFactory @Inject constructor(
             })
     }
 
+    @OptIn(UnstableApi::class)
     fun fetchArtistFromMediaBrowser(
         parentId: String,
         callback: (List<Artist>) -> Unit
@@ -57,6 +63,7 @@ class MyMediaFactory @Inject constructor(
         })
     }
 
+    @OptIn(UnstableApi::class)
     fun fetchGenreFromMediaBrowser(
         parentId: String,
         callback: (List<Genre>) -> Unit
@@ -75,6 +82,31 @@ class MyMediaFactory @Inject constructor(
                     )
                 }
                 callback(genre)
+            }
+        })
+    }
+
+    @OptIn(UnstableApi::class)
+    fun fetchPlaylistFromMediaBrowser(
+        parentId: String,
+        callback: (List<Playlist>) -> Unit
+    ) {
+        musicServiceConnection.subscribe(parentId, object : MediaBrowserCompat.SubscriptionCallback() {
+            override fun onChildrenLoaded(
+                parentId: String,
+                children: MutableList<MediaBrowserCompat.MediaItem>
+            ) {
+                val playlist = children.map {
+                    Playlist(
+                        it.mediaId!!,
+                        it.description.title.toString(),
+                        it.description.description.toString(),
+                        listOf(it.description.subtitle.toString()),
+                        it.description.iconUri.toString(),
+
+                    )
+                }
+                callback(playlist)
             }
         })
     }

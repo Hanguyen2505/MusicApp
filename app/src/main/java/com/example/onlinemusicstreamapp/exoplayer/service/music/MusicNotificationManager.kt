@@ -7,7 +7,6 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
-import android.os.Build
 import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.MediaSessionCompat
 import androidx.annotation.OptIn
@@ -18,7 +17,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.onlinemusicstreamapp.R
-import com.example.onlinemusicstreamapp.ui.activity.MainActivity
 import com.example.onlinemusicstreamapp.ui.activity.PlayerActivity
 
 @UnstableApi
@@ -28,7 +26,7 @@ class MusicNotificationManager
     private val player: Player,
     private val context: Context,
     private val sessionToken: MediaSessionCompat.Token,
-    private val notificationListener: PlayerNotificationManager.NotificationListener
+    notificationListener: PlayerNotificationManager.NotificationListener
 ) {
     companion object {
         const val NOTIFICATION_CHANNEL_ID = "music_notification_channel"
@@ -40,17 +38,15 @@ class MusicNotificationManager
     init {
         val mediaController = MediaControllerCompat(context, sessionToken)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                NOTIFICATION_CHANNEL_ID,
-                "Music Playback",
-                NotificationManager.IMPORTANCE_LOW
-            ).apply {
-                description = "Media playback controls"
-            }
-            val notificationManager = context.getSystemService(NotificationManager::class.java)
-            notificationManager.createNotificationChannel(channel)
+        val channel = NotificationChannel(
+            NOTIFICATION_CHANNEL_ID,
+            "Music Playback",
+            NotificationManager.IMPORTANCE_LOW
+        ).apply {
+            description = "Media playback controls"
         }
+        val notificationManager = context.getSystemService(NotificationManager::class.java)
+        notificationManager.createNotificationChannel(channel)
 
         playerNotificationManager = PlayerNotificationManager.Builder(
             context,
