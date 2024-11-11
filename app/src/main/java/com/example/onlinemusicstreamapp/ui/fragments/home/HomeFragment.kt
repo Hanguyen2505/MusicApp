@@ -14,6 +14,7 @@ import com.example.onlinemusicstreamapp.R
 import com.example.onlinemusicstreamapp.adapter.ArtistAdapter
 import com.example.onlinemusicstreamapp.adapter.PlaylistAdapter
 import com.example.onlinemusicstreamapp.adapter.SongAdapter
+import com.example.onlinemusicstreamapp.database.data.entities.ItemData
 import com.example.onlinemusicstreamapp.databinding.FragmentHomeBinding
 import com.example.onlinemusicstreamapp.ui.viewmodel.ArtistViewModel
 import com.example.onlinemusicstreamapp.ui.viewmodel.PlayerControlViewModel
@@ -55,7 +56,12 @@ class HomeFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
         }
 
         artistAdapter.setOnItemClickListener { artist ->
-            val action = HomeFragmentDirections.actionHomeFragmentToAlbumFragment(artist)
+            val action = HomeFragmentDirections.actionHomeFragmentToAlbumFragment(ItemData.ArtistItem(artist))
+            findNavController().navigate(action)
+        }
+
+        playlistAdapter.setOnItemClickListener { playlist ->
+            val action = HomeFragmentDirections.actionHomeFragmentToAlbumFragment(ItemData.PlaylistItem(playlist))
             findNavController().navigate(action)
         }
 

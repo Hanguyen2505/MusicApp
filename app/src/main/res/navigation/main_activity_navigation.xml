@@ -35,9 +35,6 @@
             app:exitAnim="@anim/slide_to_right"
             app:popEnterAnim="@anim/slide_in_right"
             app:popExitAnim="@anim/slide_to_left" />
-        <argument
-            android:name="artist"
-            app:argType="com.example.onlinemusicstreamapp.database.data.entities.Artist" />
         <action
             android:id="@+id/action_albumFragment_to_searchViewFragment"
             app:destination="@id/searchViewFragment"
@@ -45,6 +42,9 @@
             app:exitAnim="@anim/slide_to_right"
             app:popEnterAnim="@anim/slide_in_right"
             app:popExitAnim="@anim/slide_to_left" />
+        <argument
+            android:name="itemData"
+            app:argType="com.example.onlinemusicstreamapp.database.data.entities.ItemData" />
     </fragment>
     <fragment
         android:id="@+id/libraryFragment"

@@ -1,18 +1,15 @@
 package com.example.onlinemusicstreamapp.ui.fragments.login
 
-import android.R.attr
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.onlinemusicstreamapp.R
 import com.example.onlinemusicstreamapp.databinding.FragmentLoginBinding
-import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -22,8 +19,10 @@ import com.google.firebase.auth.GoogleAuthProvider
 
 
 class LoginFragment : Fragment() {
+
     private var _binding: FragmentLoginBinding ?= null
     private val binding get() = _binding!!
+
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
 

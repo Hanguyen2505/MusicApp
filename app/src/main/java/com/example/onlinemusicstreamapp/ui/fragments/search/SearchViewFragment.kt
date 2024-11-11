@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.onlinemusicstreamapp.R
 import com.example.onlinemusicstreamapp.adapter.ArtistAdapter
 import com.example.onlinemusicstreamapp.adapter.SongAdapter
+import com.example.onlinemusicstreamapp.database.data.entities.ItemData
 import com.example.onlinemusicstreamapp.database.other.Constants.SEARCH_VIEW_FRAGMENT
 import com.example.onlinemusicstreamapp.databinding.FragmentSearchViewBinding
 import com.example.onlinemusicstreamapp.ui.fragments.home.HomeFragmentDirections
@@ -60,7 +61,7 @@ class SearchViewFragment : Fragment(), SearchView.OnQueryTextListener {
         }
 
         artistAdapter.setOnItemClickListener { artist ->
-            val action = SearchViewFragmentDirections.actionSearchViewFragmentToAlbumFragment(artist)
+            val action = SearchViewFragmentDirections.actionSearchViewFragmentToAlbumFragment(ItemData.ArtistItem(artist))
             findNavController().navigate(action)
         }
 
