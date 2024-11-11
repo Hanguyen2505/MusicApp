@@ -25,7 +25,7 @@ class SongAdapter : RecyclerView.Adapter<SongAdapter.MyViewHolder>() {
 
         fun bindData(song: Song) {
             binding.songTitle.text = song.title
-            binding.desc.text = song.artist.toString()
+            binding.desc.text = song.artist.joinToString(", ")
             Glide.with(binding.songImage).load(song.imageUrl).into(binding.songImage)
         }
 

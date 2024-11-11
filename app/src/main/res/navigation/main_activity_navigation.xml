@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_homeFragment_to_settingFragment"
             app:destination="@id/settingFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_playlistFragment2"
+            app:destination="@id/playlistFragment2" />
     </fragment>
     <fragment
         android:id="@+id/albumFragment"
@@ -121,6 +124,18 @@
         <argument
             android:name="genre"
             app:argType="com.example.onlinemusicstreamapp.database.data.entities.Genre" />
+    </fragment>
+    <fragment
+        android:id="@+id/playlistFragment2"
+        android:name="com.example.onlinemusicstreamapp.ui.fragments.album.PlaylistFragment"
+        android:label="fragment_playlist"
+        tools:layout="@layout/fragment_playlist" >
+        <action
+            android:id="@+id/action_playlistFragment2_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <argument
+            android:name="playlist"
+            app:argType="com.example.onlinemusicstreamapp.database.data.entities.Playlist" />
     </fragment>
 
 </navigation>

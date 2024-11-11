@@ -55,4 +55,5 @@
     <string name="explore">Explore</string>
     <string name="description">description</string>
     <string name="what_s_new">What\'s new</string>
+    <string name="show_song_cover_image">show song cover image</string>
 </resources>

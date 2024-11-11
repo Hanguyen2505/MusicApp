@@ -17,15 +17,15 @@ class FirebasePlaylistSource @Inject constructor(
     var playlists = emptyList<MediaMetadataCompat>()
 
     suspend fun fetchMediaData() = withContext(Dispatchers.IO) {
-        val allGenres = playlistDatabase.getAllPlaylists()
-        playlists = allGenres.map { playlist ->
+        val allPlaylists = playlistDatabase.getAllPlaylists()
+        playlists = allPlaylists.map { playlist ->
             Builder()
                 .putString(METADATA_KEY_MEDIA_ID, playlist.playlistId)
                 .putString(METADATA_KEY_TITLE, playlist.title)
                 .putString(METADATA_KEY_DISPLAY_TITLE, playlist.title)
                 .putString(METADATA_KEY_DISPLAY_ICON_URI, playlist.coverImageUrl)
                 .putString(METADATA_KEY_DISPLAY_DESCRIPTION, playlist.description)
-                .putString(METADATA_KEY_DISPLAY_SUBTITLE, playlist.songIds.toString())
+                .putString(METADATA_KEY_DISPLAY_SUBTITLE, playlist.songIds.joinToString(","))
                 .build()
         }
 

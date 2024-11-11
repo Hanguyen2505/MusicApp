@@ -30,6 +30,7 @@ class SongViewModel @Inject constructor(
 
     private fun getAllSongs(): MutableLiveData<List<Song>> {
         myMediaFactory.fetchSongsFromMediaBrowser(MEDIA_SONG_ID) { items ->
+            Log.d("SongViewModel", "getAllSongs: $items")
             songs.postValue(items)
         }
         return songs

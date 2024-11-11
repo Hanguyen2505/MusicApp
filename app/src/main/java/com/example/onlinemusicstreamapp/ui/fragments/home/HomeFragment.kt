@@ -59,6 +59,11 @@ class HomeFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
             findNavController().navigate(action)
         }
 
+        playlistAdapter.setOnItemClickListener { playlist ->
+            val action = HomeFragmentDirections.actionHomeFragmentToPlaylistFragment2(playlist)
+            findNavController().navigate(action)
+        }
+
         return _binding!!.root
     }
 

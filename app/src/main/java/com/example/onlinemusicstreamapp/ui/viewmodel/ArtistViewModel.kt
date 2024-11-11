@@ -1,5 +1,6 @@
 package com.example.onlinemusicstreamapp.ui.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.onlinemusicstreamapp.database.data.entities.Artist
@@ -32,6 +33,7 @@ class ArtistViewModel @Inject constructor(
     fun getSong(artist: String): MutableLiveData<List<Song>> {
         myMediaFactory.fetchSongsFromMediaBrowser(MEDIA_SONG_ID) { items ->
             val filteredSongs = items.filter { song ->
+                Log.d("ArtistViewModel", "getSong: ${song.genre} and${song.artist}")
                 song.artist.any {
                     it.contains(artist, ignoreCase = true)
                 }

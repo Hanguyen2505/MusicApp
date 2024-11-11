@@ -96,14 +96,13 @@ class MyMediaFactory @OptIn(UnstableApi::class)
                 parentId: String,
                 children: MutableList<MediaBrowserCompat.MediaItem>
             ) {
-                val playlist = children.map {
+                val playlist = children.map { mediaItem ->
                     Playlist(
-                        it.mediaId!!,
-                        it.description.title.toString(),
-                        it.description.description.toString(),
-                        listOf(it.description.subtitle.toString()),
-                        it.description.iconUri.toString(),
-
+                        mediaItem.mediaId!!,
+                        mediaItem.description.title.toString(),
+                        mediaItem.description.description.toString(),
+                        mediaItem.description.subtitle!!.split(","),
+                        mediaItem.description.iconUri.toString(),
                     )
                 }
                 callback(playlist)
