@@ -66,7 +66,7 @@ android {
         //google play service
         implementation(libs.play.services.maps)
 
-        //Architectural Components
+        //Architecture Components
         implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
         //Lifecycle
@@ -133,7 +133,7 @@ android {
         implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
         implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
 
-        //Circle ImgaeView
+        //Circle ImageView
         implementation(libs.circleimageview)
 
         implementation ("androidx.palette:palette:1.0.0")
