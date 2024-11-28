@@ -1,15 +1,17 @@
 package com.example.onlinemusicstreamapp.adapter
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.onlinemusicstreamapp.database.data.entities.Song
 import com.example.onlinemusicstreamapp.databinding.CardviewSongBinding
-import com.example.onlinemusicstreamapp.ui.activity.PlayerActivity
 
 class SongAdapter : RecyclerView.Adapter<SongAdapter.MyViewHolder>() {
+
+    interface OnItemButtonClickListener {
+        fun onButtonClick(item: String)
+    }
 
     var songs = emptyList<Song>()
 
@@ -17,6 +19,12 @@ class SongAdapter : RecyclerView.Adapter<SongAdapter.MyViewHolder>() {
 
     fun setOnItemClickListener(listener: (Song) -> Unit) {
         onItemClickListener = listener
+    }
+
+    private var onMoreButtonClickListener: (() -> Unit)? = null
+
+    fun setOnMoreButtonClickListener(listener: () -> Unit) {
+        onMoreButtonClickListener = listener
     }
 
     class MyViewHolder(
@@ -27,6 +35,12 @@ class SongAdapter : RecyclerView.Adapter<SongAdapter.MyViewHolder>() {
             binding.songTitle.text = song.title
             binding.desc.text = song.artist.joinToString(", ")
             Glide.with(binding.songImage).load(song.imageUrl).into(binding.songImage)
+        }
+
+        fun moreBtn(onMoreButtonClick: () -> Unit) {
+            binding.moreBtn.setOnClickListener {
+                onMoreButtonClick()
+            }
         }
 
     }
@@ -53,6 +67,12 @@ class SongAdapter : RecyclerView.Adapter<SongAdapter.MyViewHolder>() {
                 click(currentSong)
             }
         }
+
+        holder.moreBtn {
+            onMoreButtonClickListener?.invoke()
+        }
+
+
     }
 
     fun updateData(newSong: List<Song>) {

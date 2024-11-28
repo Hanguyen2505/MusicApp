@@ -13,9 +13,9 @@ import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import com.example.onlinemusicstreamapp.R
+import com.example.onlinemusicstreamapp.database.other.Constants.BOTTOM_SHEET_DIALOG
 import com.example.onlinemusicstreamapp.databinding.FragmentLibraryBinding
-import com.google.firebase.Firebase
-import com.google.firebase.firestore.firestore
+import com.example.onlinemusicstreamapp.ui.fragments.bottomsheet.library.LibraryBottomSheetFragment
 
 class LibraryFragment : Fragment(), MenuProvider {
     private val TAG = "dataSong"
@@ -38,22 +38,6 @@ class LibraryFragment : Fragment(), MenuProvider {
         super.onCreate(savedInstanceState)
     }
 
-    private fun getAllSongsAttributes() {
-        val db = Firebase.firestore
-
-        db.collection("playlist1")
-            .get()
-            .addOnSuccessListener { result ->
-                for (document in result) {
-                    Log.d(TAG, "${document.id} => ${document.data}")
-                }
-            }
-            .addOnFailureListener { exception ->
-                Log.w(TAG, "Error getting documents.", exception)
-            }
-
-    }
-
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
         menuInflater.inflate(R.menu.library_menu, menu)
     }
@@ -62,8 +46,8 @@ class LibraryFragment : Fragment(), MenuProvider {
         return when (menuItem.itemId) {
             R.id.add -> {
                 Log.d("toolbar option menu", "add")
-                val bottomSheetFragment = BottomSheetFragment()
-                bottomSheetFragment.show(childFragmentManager, "BottomSheetDialog")
+                val libraryBottomSheetFragment = LibraryBottomSheetFragment()
+                libraryBottomSheetFragment.show(childFragmentManager, BOTTOM_SHEET_DIALOG)
                 true
             }
 

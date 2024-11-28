@@ -9,7 +9,7 @@
     <string name="your_library">Your Library</string>
     <string name="add_artists">Add artists</string>
     <string name="to_create_a_new_playlist">to create a new playlist</string>
-    <string name="to_add_new_playlist">to_add_new_playlist</string>
+    <string name="add_to_playlist">Add to playlist</string>
     <string name="playlist">Playlist</string>
     <string name="build_your_own_playlist">Build your own playlist</string>
     <string name="playlist_s_title">playlist\'s title</string>
@@ -56,4 +56,5 @@
     <string name="description">description</string>
     <string name="what_s_new">What\'s new</string>
     <string name="show_song_cover_image">show song cover image</string>
+    <string name="remove_from_playlist">Remove from playlist</string>
 </resources>

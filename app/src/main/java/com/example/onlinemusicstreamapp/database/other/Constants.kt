@@ -11,6 +11,8 @@ object Constants {
 
     const val PLAYLIST_COLLECTION = "playlist"
 
+    const val PERSONALIZED_PLAYLIST_COLLECTION = "personalized_playlist"
+
     const val MEDIA_ROOT_ID = "root_id"
 
     const val MEDIA_ARTIST_ID = "artists_id"
@@ -23,12 +25,10 @@ object Constants {
 
     const val SERVICE_TAG = "MusicService"
 
-    const val HOME_FRAGMENT = "HomeFragment"
-
-    const val SEARCH_VIEW_FRAGMENT = "SearchViewFragment"
-
     const val SONG_DURATION = "song_duration"
 
     const val PLAYLIST = "Playlist"
+
+    const val BOTTOM_SHEET_DIALOG = "BottomSheetDialog"
 
 }

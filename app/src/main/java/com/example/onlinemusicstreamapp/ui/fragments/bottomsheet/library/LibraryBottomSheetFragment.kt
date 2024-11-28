@@ -1,15 +1,15 @@
-package com.example.onlinemusicstreamapp.ui.fragments.library
+package com.example.onlinemusicstreamapp.ui.fragments.bottomsheet.library
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.onlinemusicstreamapp.databinding.FragmentBottomSheetBinding
+import com.example.onlinemusicstreamapp.databinding.FragmentLibraryBottomSheetBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class BottomSheetFragment : BottomSheetDialogFragment() {
+class LibraryBottomSheetFragment : BottomSheetDialogFragment() {
 
-    private lateinit var binding: FragmentBottomSheetBinding
+    private lateinit var binding: FragmentLibraryBottomSheetBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,7 +19,7 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentBottomSheetBinding.inflate(inflater, container, false)
+        binding = FragmentLibraryBottomSheetBinding.inflate(inflater, container, false)
         binding.createPlaylist.setOnClickListener {
             val bottomSheetFragment = BottomSheetNamePlaylist()
             bottomSheetFragment.show(childFragmentManager, "BottomSheetDialog")

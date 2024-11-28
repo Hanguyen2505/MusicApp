@@ -15,6 +15,7 @@ import com.example.onlinemusicstreamapp.adapter.ArtistAdapter
 import com.example.onlinemusicstreamapp.adapter.PlaylistAdapter
 import com.example.onlinemusicstreamapp.adapter.SongAdapter
 import com.example.onlinemusicstreamapp.databinding.FragmentHomeBinding
+import com.example.onlinemusicstreamapp.ui.fragments.bottomsheet.song.MediaItemDialogFragment
 import com.example.onlinemusicstreamapp.ui.viewmodel.ArtistViewModel
 import com.example.onlinemusicstreamapp.ui.viewmodel.PlayerControlViewModel
 import com.example.onlinemusicstreamapp.ui.viewmodel.PlaylistViewModel
@@ -54,6 +55,11 @@ class HomeFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
             mPlayerControlViewModel.play(song)
         }
 
+        songAdapter.setOnMoreButtonClickListener {
+            val bottomSheetFragment = MediaItemDialogFragment()
+            bottomSheetFragment.show(childFragmentManager, "BottomSheetDialog")
+        }
+
         artistAdapter.setOnItemClickListener { artist ->
             val action = HomeFragmentDirections.actionHomeFragmentToAlbumFragment(artist)
             findNavController().navigate(action)
@@ -74,7 +80,6 @@ class HomeFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
             R.id.historyFragment -> {
                 findNavController().navigate(R.id.action_homeFragment_to_historyFragment)
             }
-
         }
         return true
     }

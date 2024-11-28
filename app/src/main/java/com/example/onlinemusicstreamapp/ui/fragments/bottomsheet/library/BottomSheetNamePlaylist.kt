@@ -1,4 +1,4 @@
-package com.example.onlinemusicstreamapp.ui.fragments.library
+package com.example.onlinemusicstreamapp.ui.fragments.bottomsheet.library
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -22,7 +22,7 @@ class BottomSheetNamePlaylist : BottomSheetDialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val myLibraryViewmodel = ViewModelProvider(this).get(LibraryViewModel::class.java)
+        val myLibraryViewmodel = ViewModelProvider(this)[LibraryViewModel::class.java]
         binding = FragmentBottomSheetNamePlaylistBinding.inflate(inflater)
         val playlist = hashMapOf(
             "title" to binding.namePlaylist.text.toString()

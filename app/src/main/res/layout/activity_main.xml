@@ -131,6 +131,7 @@
         app:menu="@menu/navigation_view"
         android:background="@color/black_gray"
         app:itemTextColor="@color/white"
-        app:itemIconTint="@color/white"/>
+        app:itemIconTint="@color/white"
+        />
 
 </androidx.drawerlayout.widget.DrawerLayout>

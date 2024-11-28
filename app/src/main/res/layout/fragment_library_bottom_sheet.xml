@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/background_bottom_sheet"
-    tools:context=".ui.fragments.library.BottomSheetFragment">
+    tools:context=".ui.fragments.bottomsheet.library.LibraryBottomSheetFragment">
 
     <LinearLayout
         android:id="@+id/create_playlist"
@@ -21,8 +21,7 @@
             android:layout_height="40dp"
             android:layout_gravity="center_horizontal"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_music_library"
-            android:contentDescription="@string/to_add_new_playlist" />
+            android:src="@drawable/ic_music_library" />
 
         <LinearLayout
             android:layout_marginStart="10dp"

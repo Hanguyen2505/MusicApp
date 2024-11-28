@@ -85,11 +85,6 @@ class MainActivity : AppCompatActivity() {
                 binding.playPauseBtn.setImageResource(R.drawable.ic_play_2)
             }
         }
-
-//        playerViewModel.playbackState.observe(this) {
-//            if (it == null) return@observe
-//            Log.d("playbackStateInActivity", "${it.position}")
-//        }
     }
 
 
