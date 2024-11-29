@@ -16,7 +16,6 @@ import androidx.media3.datasource.DefaultDataSource
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.MediaSource
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
-import androidx.media3.ui.PlayerNotificationManager
 import com.example.onlinemusicstreamapp.database.other.Constants.MEDIA_ARTIST_ID
 import com.example.onlinemusicstreamapp.database.other.Constants.MEDIA_GENRE_ID
 import com.example.onlinemusicstreamapp.database.other.Constants.MEDIA_PLAYLIST_ID
@@ -27,6 +26,7 @@ import com.example.onlinemusicstreamapp.database.other.Constants.SERVICE_TAG
 import com.example.onlinemusicstreamapp.database.other.Constants.SONG_DURATION
 import com.example.onlinemusicstreamapp.exoplayer.callbacks.MusicNotificationListener
 import com.example.onlinemusicstreamapp.exoplayer.callbacks.MusicQueueManager
+import com.example.onlinemusicstreamapp.exoplayer.service.notification.MusicNotificationManager
 import com.example.onlinemusicstreamapp.exoplayer.source.FirebaseArtistSource
 import com.example.onlinemusicstreamapp.exoplayer.source.FirebaseGenreSource
 import com.example.onlinemusicstreamapp.exoplayer.source.FirebaseMusicSource

@@ -26,7 +26,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.OnlineMusicStreamApp" >
 
-        <receiver android:name=".exoplayer.service.music.MediaControlReceiver" />
+        <receiver android:name=".exoplayer.service.notification.MediaControlReceiver" />
 
         <service
             android:name=".exoplayer.service.music.MusicService"

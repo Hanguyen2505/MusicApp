@@ -18,7 +18,6 @@ import com.example.onlinemusicstreamapp.ui.viewmodel.ArtistViewModel
 import com.example.onlinemusicstreamapp.ui.viewmodel.PlayerControlViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
-//TODO display the song list in album in the first time create this fragment
 @AndroidEntryPoint
 class AlbumFragment : Fragment() {
 

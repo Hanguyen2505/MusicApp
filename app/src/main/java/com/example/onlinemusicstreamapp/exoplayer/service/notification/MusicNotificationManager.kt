@@ -1,4 +1,4 @@
-package com.example.onlinemusicstreamapp.exoplayer.service.music
+package com.example.onlinemusicstreamapp.exoplayer.service.notification
 
 import android.app.NotificationChannel
 import android.app.NotificationManager

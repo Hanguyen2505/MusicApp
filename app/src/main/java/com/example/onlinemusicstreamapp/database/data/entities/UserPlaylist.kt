@@ -1,6 +1,6 @@
 package com.example.onlinemusicstreamapp.database.data.entities
 
-data class PersonalizedPlaylist(
+data class UserPlaylist(
     val id: String,
     val title: String,
     val description: String,

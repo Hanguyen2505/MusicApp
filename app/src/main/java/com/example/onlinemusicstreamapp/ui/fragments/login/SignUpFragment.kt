@@ -1,7 +1,6 @@
 package com.example.onlinemusicstreamapp.ui.fragments.login
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,15 +10,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.onlinemusicstreamapp.R
 import com.example.onlinemusicstreamapp.databinding.FragmentSignUpBinding
-import com.example.onlinemusicstreamapp.ui.viewmodel.LoginViewModel
-import com.google.firebase.auth.FirebaseAuth
+import com.example.onlinemusicstreamapp.ui.viewmodel.UserViewModel
 import com.example.onlinemusicstreamapp.database.data.entities.User
 
 class SignUpFragment : Fragment() {
     private var _binding: FragmentSignUpBinding? = null
     private val binding get() = _binding!!
-    private lateinit var firebaseAuth: FirebaseAuth
-    private lateinit var mLoginViewModel: LoginViewModel
+    private lateinit var mUserViewModel: UserViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,9 +27,8 @@ class SignUpFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentSignUpBinding.inflate(inflater, container, false)
-        mLoginViewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
+        mUserViewModel = ViewModelProvider(this)[UserViewModel::class.java]
 
-        firebaseAuth = FirebaseAuth.getInstance()
 
         binding.done.setOnClickListener {
             register()
@@ -54,7 +50,7 @@ class SignUpFragment : Fragment() {
         val confirmPassword = _binding?.confirmPassword?.text.toString()
         val user = User(email, password, confirmPassword)
         if (checkInput(user))
-            mLoginViewModel.addUser(user)
+            mUserViewModel.addUser(user)
         else
             Toast.makeText(requireContext(), "Fill out all the fields", Toast.LENGTH_SHORT).show()
     }

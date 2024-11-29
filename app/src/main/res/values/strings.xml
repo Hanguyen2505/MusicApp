@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Online Music Stream App</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="home">Home</string>
     <string name="search">Search</string>
@@ -47,7 +46,9 @@
     <string name="done">Done</string>
     <string name="your_password">Your Password</string>
     <string name="create_one">Create one</string>
+
     <string name="default_web_client_id">422281817402-s3mbn1jfvco16t5sf06qgfn3hfqkdj8d.apps.googleusercontent.com</string>
+
     <string name="now_playing">Now Playing</string>
     <string name="artists">Artists</string>
     <string name="trending">Trending</string>

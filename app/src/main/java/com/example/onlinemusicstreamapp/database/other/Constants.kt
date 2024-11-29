@@ -11,7 +11,7 @@ object Constants {
 
     const val PLAYLIST_COLLECTION = "playlist"
 
-    const val PERSONALIZED_PLAYLIST_COLLECTION = "personalized_playlist"
+    const val USER_PLAYLIST_COLLECTION = "user playlist"
 
     const val MEDIA_ROOT_ID = "root_id"
 

@@ -21,7 +21,9 @@ import com.example.onlinemusicstreamapp.R
 import com.example.onlinemusicstreamapp.database.repository.UserAuthorization
 import com.example.onlinemusicstreamapp.databinding.ActivityMainBinding
 import com.example.onlinemusicstreamapp.ui.viewmodel.PlayerControlViewModel
+import com.example.onlinemusicstreamapp.ui.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -29,6 +31,11 @@ class MainActivity : AppCompatActivity() {
     private val binding get() = _binding!!
 
     private val playerControlViewModel: PlayerControlViewModel by viewModels()
+
+    private val mUserViewModel: UserViewModel by viewModels()
+
+    @Inject
+    lateinit var userAuthorization: UserAuthorization
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +57,8 @@ class MainActivity : AppCompatActivity() {
         replaceFragment()
 
         showCurrentSongPlaying()
+
+        Log.d("current user", "${mUserViewModel.getCurrentUserId()}")
 
         binding.playerView.setOnClickListener {
             val intent = Intent(this, PlayerActivity::class.java)
@@ -105,7 +114,7 @@ class MainActivity : AppCompatActivity() {
                     Log.d("item", "${item.itemId}")
                 }
                 R.id.logout -> {
-                    UserAuthorization.signout()
+                    userAuthorization.signout()
                     val intent = Intent(this, SignInActivity::class.java)
                     startActivity(intent)
                 }
@@ -143,11 +152,14 @@ class MainActivity : AppCompatActivity() {
         val profilePicture = header.findViewById<ImageView>(R.id.pf_picture)
         val name = header.findViewById<TextView>(R.id.user_name)
 
-        val user = UserAuthorization.getCurrentUser()
-        Glide.with(binding.imageButton).load(user?.photoUrl).into(binding.imageButton)
+        mUserViewModel.userData.observe(this) { user ->
+            Glide.with(binding.imageButton).load(user?.photoUrl).into(binding.imageButton)
 
-        Glide.with(profilePicture).load(user?.photoUrl).into(profilePicture)
-        name.text = user?.displayName
+            Glide.with(profilePicture).load(user?.photoUrl).into(profilePicture)
+            name.text = user?.displayName
+
+        }
+
 
     }
 

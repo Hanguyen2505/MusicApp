@@ -1,22 +1,24 @@
 package com.example.onlinemusicstreamapp.ui.fragments.login
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.example.onlinemusicstreamapp.R
-import com.example.onlinemusicstreamapp.database.data.entities.User
 import com.example.onlinemusicstreamapp.database.repository.UserAuthorization
 import com.example.onlinemusicstreamapp.databinding.FragmentSignInBinding
-import com.google.firebase.auth.FirebaseAuth
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class SignInFragment : Fragment() {
     private var _binding: FragmentSignInBinding? = null
     private val binding get() = _binding!!
+
+    @Inject
+    lateinit var userAuthorization: UserAuthorization
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,6 +34,10 @@ class SignInFragment : Fragment() {
 
         }
 
+        binding.back.setOnClickListener {
+            findNavController().navigate(R.id.action_signInFragment_to_loginFragment)
+        }
+
         return _binding!!.root
     }
 
@@ -40,7 +46,7 @@ class SignInFragment : Fragment() {
         val password = _binding?.password?.text.toString()
         if (checkInput(email, password)) {
 
-            UserAuthorization.getFirebaseAuthInstance()
+            userAuthorization.getFirebaseAuthInstance()
                 .signInWithEmailAndPassword(email, password)
                 .addOnFailureListener {
                     binding.errorText.text = "*" + it.message
