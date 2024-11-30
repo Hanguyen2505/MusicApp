@@ -7,6 +7,7 @@ import com.example.onlinemusicstreamapp.database.data.entities.Artist
 import com.example.onlinemusicstreamapp.database.data.entities.Genre
 import com.example.onlinemusicstreamapp.database.data.entities.Playlist
 import com.example.onlinemusicstreamapp.database.data.entities.Song
+import com.example.onlinemusicstreamapp.database.data.entities.UserPlaylist
 import com.example.onlinemusicstreamapp.exoplayer.service.music.MusicServiceConnection
 import javax.inject.Inject
 
@@ -109,4 +110,31 @@ class MyMediaFactory @OptIn(UnstableApi::class)
             }
         })
     }
+
+//    @OptIn(UnstableApi::class)
+//    fun fetchUserPlaylistFromMediaBrowser(
+//        parentId: String,
+//        callback: (List<UserPlaylist>) -> Unit
+//    ) {
+//        musicServiceConnection.subscribe(
+//            parentId,
+//            object : MediaBrowserCompat.SubscriptionCallback() {
+//                override fun onChildrenLoaded(
+//                    parentId: String,
+//                    children: MutableList<MediaBrowserCompat.MediaItem>
+//                ) {
+//                    val userPlaylist = children.map {
+//                        UserPlaylist(
+//                            it.mediaId!!,
+//                            it.description.title.toString(),
+//                            it.description.description.toString(),
+//                            it.description.iconUri.toString(),
+//                            it.description.subtitle.toString().split(","),
+//                            it.description.mediaUri.toString()
+//                        )
+//                    }
+//                    callback(userPlaylist)
+//                }
+//            })
+//    }
 }

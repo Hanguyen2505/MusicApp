@@ -28,13 +28,13 @@ class BottomSheetNamePlaylist : BottomSheetDialogFragment() {
 
     }
 
-    //TODO create playlist and display it on screen
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentBottomSheetNamePlaylistBinding.inflate(inflater)
 
+        //TODO using realtime database to display realtime data
         binding.createPlaylistBtn.setOnClickListener {
             val title = binding.namePlaylist.text.toString().trim()
             val desc = binding.description.text.toString().trim()

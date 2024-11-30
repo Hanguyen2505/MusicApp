@@ -21,6 +21,7 @@ import com.example.onlinemusicstreamapp.database.other.Constants.MEDIA_GENRE_ID
 import com.example.onlinemusicstreamapp.database.other.Constants.MEDIA_PLAYLIST_ID
 import com.example.onlinemusicstreamapp.database.other.Constants.MEDIA_ROOT_ID
 import com.example.onlinemusicstreamapp.database.other.Constants.MEDIA_SONG_ID
+import com.example.onlinemusicstreamapp.database.other.Constants.MEDIA_USER_PLAYLIST_ID
 import com.example.onlinemusicstreamapp.database.other.Constants.PLAYLIST
 import com.example.onlinemusicstreamapp.database.other.Constants.SERVICE_TAG
 import com.example.onlinemusicstreamapp.database.other.Constants.SONG_DURATION
@@ -31,6 +32,7 @@ import com.example.onlinemusicstreamapp.exoplayer.source.FirebaseArtistSource
 import com.example.onlinemusicstreamapp.exoplayer.source.FirebaseGenreSource
 import com.example.onlinemusicstreamapp.exoplayer.source.FirebaseMusicSource
 import com.example.onlinemusicstreamapp.exoplayer.source.FirebasePlaylistSource
+import com.example.onlinemusicstreamapp.exoplayer.source.FirebaseUserPlaylistSource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -78,6 +80,9 @@ class MusicService: MediaBrowserServiceCompat() {
 
     @Inject
     lateinit var firebasePlaylistSource: FirebasePlaylistSource
+
+//    @Inject
+//    lateinit var fireUserPlaylistSource: FirebaseUserPlaylistSource
 
     companion object {
         var songDuration = 0L
@@ -268,12 +273,21 @@ class MusicService: MediaBrowserServiceCompat() {
                 }
 
             }
+
+//            MEDIA_USER_PLAYLIST_ID -> {
+//                serviceScope.launch {
+//                    if (fireUserPlaylistSource.playlists.isEmpty()) {
+//                        fireUserPlaylistSource.fetchMediaData()
+//                    }
+//                    val mediaItems = fireUserPlaylistSource.asMediaItems()
+//                    result.sendResult(mediaItems.toMutableList())
+//                }
+//            }
         }
     }
 
     @OptIn(UnstableApi::class)
     fun startPlaying(mediaItem: MediaMetadataCompat) {
-//        playSong(mediaItem)
         mediaSession.setMetadata(mediaItem)
         exoPlayer.apply {
             setMediaSource(getMediaSource(asMediaItemExo(mediaItem)))
@@ -307,7 +321,7 @@ class MusicService: MediaBrowserServiceCompat() {
         mediaSession.setPlaybackState(playbackState)
     }
 
-    fun startUpdatingCurrentTime() {
+    private fun startUpdatingCurrentTime() {
         // Launch a coroutine to update the songCurrentTime every second
         updateCurrentTimeJob = serviceScope.launch {
             while (isActive) {

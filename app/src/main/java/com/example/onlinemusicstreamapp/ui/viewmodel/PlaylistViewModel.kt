@@ -26,13 +26,14 @@ class PlaylistViewModel @Inject constructor(
     private val _playlist = MutableLiveData<List<Playlist>>()
     val playlist: LiveData<List<Playlist>> = _playlist
 
-    private val _perPlaylists = MutableLiveData<List<UserPlaylist>>()
-    val perPlaylists: LiveData<List<UserPlaylist>> = _perPlaylists
+    private val _userPlaylists = MutableLiveData<List<UserPlaylist>>()
+    val userPlaylists: LiveData<List<UserPlaylist>> = _userPlaylists
 
     private val _songsInPlaylist = MutableLiveData<List<Song>>()
 
     init {
         getAllPlaylists()
+        getUserPlaylist()
     }
 
     private fun getAllPlaylists() = viewModelScope.launch {
@@ -40,6 +41,11 @@ class PlaylistViewModel @Inject constructor(
             Log.d("PlaylistViewModel", "getAllPlaylists: $playlists")
             _playlist.postValue(playlists)
         }
+    }
+
+    private fun getUserPlaylist() = viewModelScope.launch {
+        val playlists = userPlaylistDatabase.getUserPlaylist()
+        _userPlaylists.postValue(playlists)
     }
 
     fun createPlaylist(userPlaylist: UserPlaylist) = viewModelScope.launch {
@@ -56,6 +62,7 @@ class PlaylistViewModel @Inject constructor(
         }
     }
 
+    //TODO should retrieve only necessary data not all data
     fun getSongsInPlaylist(playlistId: String): MutableLiveData<List<Song>> {
 
         mediaFactory.fetchPlaylistFromMediaBrowser(MEDIA_PLAYLIST_ID) { playlists ->

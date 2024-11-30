@@ -11,6 +11,7 @@ import com.example.onlinemusicstreamapp.database.data.remote.ArtistDatabase
 import com.example.onlinemusicstreamapp.database.data.remote.GenreDatabase
 import com.example.onlinemusicstreamapp.database.data.remote.MusicDatabase
 import com.example.onlinemusicstreamapp.database.data.remote.PlaylistDatabase
+import com.example.onlinemusicstreamapp.database.data.remote.UserPlaylistDatabase
 import com.example.onlinemusicstreamapp.exoplayer.callbacks.MusicQueueManager
 import dagger.Module
 import dagger.Provides
@@ -39,6 +40,10 @@ object ServiceModule {
     @ServiceScoped
     @Provides
     fun providePlaylistDatabase() = PlaylistDatabase()
+
+//    @ServiceScoped
+//    @Provides
+//    fun provideUserPlaylistDatabase() = UserPlaylistDatabase()
 
     @ServiceScoped
     @Provides
