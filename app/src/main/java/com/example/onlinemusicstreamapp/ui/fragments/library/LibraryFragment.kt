@@ -13,6 +13,7 @@ import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.onlinemusicstreamapp.R
 import com.example.onlinemusicstreamapp.adapter.UserPlaylistAdapter
@@ -41,6 +42,10 @@ class LibraryFragment : Fragment(), MenuProvider {
         menuHost.addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
         subscribeToObserver()
+
+        userPlaylistAdapter.setOnItemClickListener {
+            findNavController().navigate(R.id.action_libraryFragment_to_userPlaylistFragment)
+        }
 
         return binding.root
     }

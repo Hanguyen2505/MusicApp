@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import com.example.onlinemusicstreamapp.R
 import com.example.onlinemusicstreamapp.database.data.entities.UserPlaylist
 import com.example.onlinemusicstreamapp.ui.viewmodel.LibraryViewModel
 import com.example.onlinemusicstreamapp.databinding.FragmentBottomSheetNamePlaylistBinding
@@ -34,7 +36,6 @@ class BottomSheetNamePlaylist : BottomSheetDialogFragment() {
     ): View {
         binding = FragmentBottomSheetNamePlaylistBinding.inflate(inflater)
 
-        //TODO using realtime database to display realtime data
         binding.createPlaylistBtn.setOnClickListener {
             val title = binding.namePlaylist.text.toString().trim()
             val desc = binding.description.text.toString().trim()
@@ -48,6 +49,7 @@ class BottomSheetNamePlaylist : BottomSheetDialogFragment() {
             )
 
             mPlaylistViewModel.createPlaylist(userPlaylist)
+            findNavController().navigate(R.id.action_bottomSheetNamePlaylist_to_userPlaylistFragment)
         }
         return binding.root
     }
