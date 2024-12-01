@@ -44,7 +44,8 @@ class LibraryFragment : Fragment(), MenuProvider {
         subscribeToObserver()
 
         userPlaylistAdapter.setOnItemClickListener {
-            findNavController().navigate(R.id.action_libraryFragment_to_userPlaylistFragment)
+            val action = LibraryFragmentDirections.actionLibraryFragmentToUserPlaylistFragment(it)
+            findNavController().navigate(action)
         }
 
         return binding.root

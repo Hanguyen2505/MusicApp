@@ -148,6 +148,9 @@
         <action
             android:id="@+id/action_userPlaylistFragment_to_libraryFragment"
             app:destination="@id/libraryFragment" />
+        <argument
+            android:name="user_playlist"
+            app:argType="com.example.onlinemusicstreamapp.database.data.entities.UserPlaylist" />
     </fragment>
     <dialog
         android:id="@+id/bottomSheetNamePlaylist"

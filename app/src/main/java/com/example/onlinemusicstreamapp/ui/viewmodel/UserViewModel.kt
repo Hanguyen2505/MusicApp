@@ -41,8 +41,13 @@ class UserViewModel @Inject constructor(
         }
     }
 
-    fun getCurrentUserId(): String? {
-        return userAuthorization.getCurrentUserId()
+    fun getCurrentUserId(): String {
+        return userAuthorization.getCurrentUserId().toString()
+    }
+
+    fun getCurrentUserDisplayName(): String {
+        return userAuthorization.getCurrentUser()?.displayName.toString()
+
     }
 
 }

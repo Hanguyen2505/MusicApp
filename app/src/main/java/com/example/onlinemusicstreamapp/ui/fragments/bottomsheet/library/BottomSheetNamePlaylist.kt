@@ -12,6 +12,7 @@ import com.example.onlinemusicstreamapp.R
 import com.example.onlinemusicstreamapp.database.data.entities.UserPlaylist
 import com.example.onlinemusicstreamapp.ui.viewmodel.LibraryViewModel
 import com.example.onlinemusicstreamapp.databinding.FragmentBottomSheetNamePlaylistBinding
+import com.example.onlinemusicstreamapp.ui.fragments.library.LibraryFragmentDirections
 import com.example.onlinemusicstreamapp.ui.viewmodel.PlaylistViewModel
 import com.example.onlinemusicstreamapp.ui.viewmodel.UserViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -45,11 +46,13 @@ class BottomSheetNamePlaylist : BottomSheetDialogFragment() {
                 desc,
                 "",
                 listOf(),
-                mUserViewModel.getCurrentUserId().toString()
+                mUserViewModel.getCurrentUserId(),
+                mUserViewModel.getCurrentUserDisplayName()
             )
-
             mPlaylistViewModel.createPlaylist(userPlaylist)
-            findNavController().navigate(R.id.action_bottomSheetNamePlaylist_to_userPlaylistFragment)
+
+            val action = LibraryFragmentDirections.actionLibraryFragmentToUserPlaylistFragment(userPlaylist)
+            findNavController().navigate(action)
         }
         return binding.root
     }

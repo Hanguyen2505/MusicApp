@@ -51,7 +51,5 @@ class UserPlaylistAdapter: RecyclerView.Adapter<UserPlaylistAdapter.MyViewHolder
                 click(currentItem)
             }
         }
-
     }
-
 }
