@@ -1,6 +1,7 @@
 package com.example.onlinemusicstreamapp.ui.viewmodel
 
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,6 +13,7 @@ import com.example.onlinemusicstreamapp.database.data.remote.UserPlaylistDatabas
 import com.example.onlinemusicstreamapp.database.other.Constants.MEDIA_PLAYLIST_ID
 import com.example.onlinemusicstreamapp.database.other.Constants.MEDIA_SONG_ID
 import com.example.onlinemusicstreamapp.exoplayer.callbacks.MyMediaFactory
+import dagger.hilt.android.internal.Contexts.getApplication
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -33,36 +35,30 @@ class PlaylistViewModel @Inject constructor(
 
     init {
         getAllPlaylists()
-        getUserPlaylist()
+        getRealTimeUserPlaylist()
     }
 
     private fun getAllPlaylists() = viewModelScope.launch {
         mediaFactory.fetchPlaylistFromMediaBrowser(MEDIA_PLAYLIST_ID) { playlists ->
-            Log.d("PlaylistViewModel", "getAllPlaylists: $playlists")
             _playlist.postValue(playlists)
         }
     }
 
-    private fun getUserPlaylist() = viewModelScope.launch {
-        val playlists = userPlaylistDatabase.getUserPlaylist()
-        _userPlaylists.postValue(playlists)
+    fun getRealTimeUserPlaylist() = viewModelScope.launch {
+        userPlaylistDatabase.subscribeToRealtimeUpdates { playlists ->
+            _userPlaylists.postValue(playlists)
+        }
     }
 
     fun createPlaylist(userPlaylist: UserPlaylist) = viewModelScope.launch {
         try {
             userPlaylistDatabase.createPlaylist(userPlaylist)
-            withContext(Dispatchers.Main) {
-                Log.d("uploadData", "uploadData: $userPlaylist")
-            }
         }
         catch(e: Exception) {
-            withContext(Dispatchers.Main) {
-                Log.d("uploadData", "error: $e")
-            }
+            Log.d("uploadData", "error: $e")
         }
     }
 
-    //TODO should retrieve only necessary data not all data
     fun getSongsInPlaylist(playlistId: String): MutableLiveData<List<Song>> {
 
         mediaFactory.fetchPlaylistFromMediaBrowser(MEDIA_PLAYLIST_ID) { playlists ->

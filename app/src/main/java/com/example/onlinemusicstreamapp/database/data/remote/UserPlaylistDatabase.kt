@@ -29,6 +29,20 @@ class UserPlaylistDatabase @Inject constructor(
             e.printStackTrace()
         }
     }
+    fun subscribeToRealtimeUpdates(onResult: (List<UserPlaylist>) -> Unit) {
+        userPlaylistCollection.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+            firebaseFirestoreException?.let {
+                Log.d("userData", "error: $it")
+                return@addSnapshotListener
+            }
+            querySnapshot?.let {
+                val filterPlaylist = it.toObjects<UserPlaylist>().filter { playlist ->
+                    playlist.userId == userAuthorization.getCurrentUserId()
+                }
+                onResult(filterPlaylist)
+            }
+        }
+    }
 
     suspend fun getUserPlaylist(): List<UserPlaylist> {
         return try {
@@ -37,7 +51,7 @@ class UserPlaylistDatabase @Inject constructor(
             }
         }
         catch (e: Exception) {
-            Log.d("personalized playlist", "error: $e")
+            Log.d("userPlaylist", "error: $e")
             emptyList()
         }
 

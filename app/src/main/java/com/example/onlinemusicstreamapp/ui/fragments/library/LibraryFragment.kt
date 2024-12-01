@@ -14,7 +14,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.onlinemusicstreamapp.R
 import com.example.onlinemusicstreamapp.adapter.UserPlaylistAdapter
 import com.example.onlinemusicstreamapp.database.other.Constants.BOTTOM_SHEET_DIALOG
