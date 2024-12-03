@@ -36,11 +36,11 @@ class HomeFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
 
     private val mPlaylistViewModel: PlaylistViewModel by viewModels()
 
-    private val songAdapter = SongAdapter()
-
-    private val playlistAdapter = PlaylistAdapter()
+    private val songAdapter = SongAdapter(false)
 
     private val artistAdapter = ArtistAdapter()
+
+    private val playlistAdapter = PlaylistAdapter()
 
 
     override fun onCreateView(
@@ -112,21 +112,20 @@ class HomeFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
 
         //*display all artist in database/
         mArtistViewModel.artist.observe(viewLifecycleOwner) { artists ->
-            artistAdapter.artist = artists
+            artistAdapter.updateData(artists)
             artistRecyclerView.adapter = artistAdapter
         }
 
         //*display all playlist in database/
         mPlaylistViewModel.playlist.observe(viewLifecycleOwner) { playlists ->
-            playlistAdapter.playlist = playlists
+            playlistAdapter.updateData(playlists)
             playlistRecyclerView.adapter = playlistAdapter
 
         }
 
         //*display all song in database/
         mSongViewModel.songs.observe(viewLifecycleOwner){ songs ->
-//            songAdapter = SongAdapter(songs)
-            songAdapter.songs = songs
+            songAdapter.updateData(songs)
             songRecyclerView.adapter = songAdapter
         }
 

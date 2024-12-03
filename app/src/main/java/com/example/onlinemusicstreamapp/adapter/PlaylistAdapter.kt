@@ -13,7 +13,7 @@ import com.example.onlinemusicstreamapp.databinding.FragmentLibraryBinding
 
 class PlaylistAdapter: RecyclerView.Adapter<PlaylistAdapter.MyViewHolder>() {
 
-    var playlist = emptyList<Playlist>()
+    private lateinit var playlist: List<Playlist>
 
     private var onItemClickListener: ((Playlist) -> Unit)? = null
 
@@ -56,6 +56,11 @@ class PlaylistAdapter: RecyclerView.Adapter<PlaylistAdapter.MyViewHolder>() {
             }
         }
 
+    }
+
+    fun updateData(newPlaylist: List<Playlist>) {
+        playlist = newPlaylist
+        notifyDataSetChanged()
     }
 
 }

@@ -45,9 +45,11 @@
             android:exported="false" />
         <activity
             android:name=".ui.activity.SignInActivity"
+            android:launchMode="singleTop"
             android:exported="false" />
         <activity
             android:name=".ui.activity.MainActivity"
+            android:launchMode="singleTop"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

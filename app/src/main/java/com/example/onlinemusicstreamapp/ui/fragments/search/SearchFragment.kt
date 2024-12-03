@@ -65,7 +65,7 @@ class SearchFragment : Fragment(), MenuProvider {
         //*display all genres
         mGenreViewModel.genre.observe(viewLifecycleOwner, Observer { genre ->
 
-            genreAdapter.genre = genre
+            genreAdapter.updateData(genre)
             genreRecyclerView.adapter = genreAdapter
         })
     }

@@ -5,23 +5,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
-import com.example.onlinemusicstreamapp.R
 import com.example.onlinemusicstreamapp.databinding.FragmentUserPlaylistBinding
-import com.example.onlinemusicstreamapp.ui.viewmodel.UserViewModel
-import dagger.hilt.android.AndroidEntryPoint
+import com.example.onlinemusicstreamapp.ui.fragments.bottomsheet.UserPlaylistBottomSheetDialogFragment
 
-@AndroidEntryPoint
+
 class UserPlaylistFragment : Fragment() {
 
     private lateinit var binding: FragmentUserPlaylistBinding
 
-    private val mUserViewModel: UserViewModel by viewModels()
-
     private val args by navArgs<UserPlaylistFragmentArgs>()
+
+    val BOTTOM_SHEET_TAG = "UserPlaylistBottomSheetDialogFragment"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +32,11 @@ class UserPlaylistFragment : Fragment() {
         binding = FragmentUserPlaylistBinding.inflate(inflater, container, false)
         showPlaylistDetail()
 
+        binding.addToPlaylist.setOnClickListener {
+            val bottomSheet = UserPlaylistBottomSheetDialogFragment()
+            bottomSheet.show(parentFragmentManager, BOTTOM_SHEET_TAG)
+        }
+
         binding.backToHomeBtn.setOnClickListener {
             findNavController().popBackStack()
         }
@@ -44,11 +46,9 @@ class UserPlaylistFragment : Fragment() {
 
     private fun showPlaylistDetail() {
         binding.title.text = args.userPlaylist.title
-
         binding.userName.text = args.userPlaylist.userName
-
+        Glide.with(binding.userPhoto).load(args.userPlaylist.userPhotoUrl).into(binding.userPhoto)
         Glide.with(binding.coverImg).load(args.userPlaylist.coverUrl).into(binding.coverImg)
-
     }
 
 }

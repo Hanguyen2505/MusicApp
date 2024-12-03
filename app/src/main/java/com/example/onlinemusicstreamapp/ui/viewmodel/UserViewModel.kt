@@ -50,4 +50,9 @@ class UserViewModel @Inject constructor(
 
     }
 
+    fun getCurrentUserPhotoUrl(): String {
+        return userAuthorization.getCurrentUser()?.photoUrl.toString()
+
+    }
+
 }

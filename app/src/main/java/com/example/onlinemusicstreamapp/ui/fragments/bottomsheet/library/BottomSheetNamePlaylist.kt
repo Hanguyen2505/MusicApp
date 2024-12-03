@@ -20,7 +20,6 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class BottomSheetNamePlaylist : BottomSheetDialogFragment() {
-    private val TAG = "create collection Path"
     private lateinit var binding: FragmentBottomSheetNamePlaylistBinding
 
     private val mPlaylistViewModel: PlaylistViewModel by viewModels()
@@ -47,7 +46,8 @@ class BottomSheetNamePlaylist : BottomSheetDialogFragment() {
                 "",
                 listOf(),
                 mUserViewModel.getCurrentUserId(),
-                mUserViewModel.getCurrentUserDisplayName()
+                mUserViewModel.getCurrentUserDisplayName(),
+                mUserViewModel.getCurrentUserPhotoUrl()
             )
             mPlaylistViewModel.createPlaylist(userPlaylist)
 

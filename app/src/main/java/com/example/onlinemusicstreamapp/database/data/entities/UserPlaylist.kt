@@ -11,5 +11,6 @@ data class UserPlaylist(
     val coverUrl: String = "",
     val songIds: List<String> = emptyList(),
     val userId: String = "",
-    val userName: String = ""
+    val userName: String = "",
+    val userPhotoUrl: String = ""
 ) : Parcelable

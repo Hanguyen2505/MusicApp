@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import com.example.onlinemusicstreamapp.databinding.FragmentLibraryBottomSheetBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class LibraryBottomSheetFragment : BottomSheetDialogFragment() {
+class LibraryBottomSheetDialog : BottomSheetDialogFragment() {
 
     private lateinit var binding: FragmentLibraryBottomSheetBinding
 

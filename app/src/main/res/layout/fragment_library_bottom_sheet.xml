@@ -5,7 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/background_bottom_sheet"
-    tools:context=".ui.fragments.bottomsheet.library.LibraryBottomSheetFragment">
+    tools:context=".ui.fragments.bottomsheet.library.LibraryBottomSheetDialog">
+
+    <com.google.android.material.bottomsheet.BottomSheetDragHandleView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <LinearLayout
         android:id="@+id/create_playlist"

@@ -15,7 +15,7 @@ import com.example.onlinemusicstreamapp.ui.fragments.search.SearchFragmentDirect
 
 class GenreAdapter: RecyclerView.Adapter<GenreAdapter.MyViewHolder>() {
 
-    var genre = emptyList<Genre>()
+    private lateinit var genre: List<Genre>
 
     class MyViewHolder(
         private val binding: CardviewGenreBinding
@@ -59,5 +59,9 @@ class GenreAdapter: RecyclerView.Adapter<GenreAdapter.MyViewHolder>() {
         return genre.size
     }
 
+    fun updateData(newGenre: List<Genre>) {
+        genre = newGenre
+        notifyDataSetChanged()
+    }
 
 }

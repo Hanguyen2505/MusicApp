@@ -27,7 +27,7 @@ class PlaylistFragment : Fragment() {
     private val mPlayerControlViewModel: PlayerControlViewModel by viewModels()
 
     //Adapter
-    private val songAdapter = SongAdapter()
+    private val songAdapter = SongAdapter(false)
 
     //Safe Argument
     private val args by navArgs<PlaylistFragmentArgs>()
@@ -61,10 +61,9 @@ class PlaylistFragment : Fragment() {
             LinearLayoutManager.VERTICAL,
             false
         )
-        Log.d("songlistLiveData", "${args.playlist.title}")
+
         mPlaylistViewModel.getSongsInPlaylist(args.playlist.playlistId).observe(viewLifecycleOwner) { songs ->
-            Log.d("SongInPlaylist, ","${songs}")
-            songAdapter.songs = songs
+            songAdapter.updateData(songs)
             playlistRecyclerView.adapter = songAdapter
         }
 

@@ -1,6 +1,7 @@
 package com.example.onlinemusicstreamapp.ui.viewmodel
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.onlinemusicstreamapp.database.data.entities.Artist
@@ -15,7 +16,8 @@ class SongViewModel @Inject constructor(
     private val myMediaFactory: MyMediaFactory
 ) : ViewModel() {
 
-    val songs = MutableLiveData<List<Song>>()
+    private var _songs = MutableLiveData<List<Song>>()
+    val songs: LiveData<List<Song>> = _songs
 
     val artist = MutableLiveData<List<Artist>>()
 
@@ -31,9 +33,9 @@ class SongViewModel @Inject constructor(
     private fun getAllSongs(): MutableLiveData<List<Song>> {
         myMediaFactory.fetchSongsFromMediaBrowser(MEDIA_SONG_ID) { items ->
             Log.d("SongViewModel", "getAllSongs: $items")
-            songs.postValue(items)
+            _songs.postValue(items)
         }
-        return songs
+        return _songs
     }
 
     fun searchMusic(searchQuery: String): MutableLiveData<List<Song>> {

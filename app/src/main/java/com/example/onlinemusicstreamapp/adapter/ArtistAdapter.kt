@@ -8,9 +8,9 @@ import com.example.onlinemusicstreamapp.database.data.entities.Artist
 import com.example.onlinemusicstreamapp.databinding.CardviewArtistBinding
 
 
-class ArtistAdapter: RecyclerView.Adapter<ArtistAdapter.MyViewHolder>() {
+class ArtistAdapter(): RecyclerView.Adapter<ArtistAdapter.MyViewHolder>() {
 
-    var artist = emptyList<Artist>()
+    private lateinit var artist: List<Artist>
 
     private var onItemClickListener: ((Artist) -> Unit)? = null
 

@@ -28,7 +28,7 @@ class AlbumFragment : Fragment() {
     private val mPlayerControlViewModel: PlayerControlViewModel by viewModels()
 
     //Adapter
-    private val songAdapter = SongAdapter()
+    private val songAdapter = SongAdapter(false)
 
     //Safe Argument
     private val args by navArgs<AlbumFragmentArgs>()
@@ -55,10 +55,6 @@ class AlbumFragment : Fragment() {
         return binding.root
     }
 
-    private fun playAlbum() {
-
-    }
-
     private fun showAlbumDetail() {
         binding.artistName.text = args.artist.name
         Glide.with(binding.prfImage).load(args.artist.imageUrl).into(binding.prfImage)
@@ -74,7 +70,7 @@ class AlbumFragment : Fragment() {
         )
         Log.d("songlistLiveData", "${args.artist.name}")
         mArtistViewModel.getSong(args.artist.name).observe(viewLifecycleOwner, Observer { songs ->
-            songAdapter.songs = songs
+            songAdapter.updateData(songs)
             albumRecyclerView.adapter = songAdapter
         })
     }

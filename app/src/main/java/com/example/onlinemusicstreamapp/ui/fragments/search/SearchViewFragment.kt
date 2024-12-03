@@ -32,7 +32,7 @@ class SearchViewFragment : Fragment(), SearchView.OnQueryTextListener {
     private val mPlayerControlViewModel: PlayerControlViewModel by viewModels()
 
     //Adapter
-    private var songAdapter = SongAdapter()
+    private var songAdapter = SongAdapter(false)
     private var artistAdapter = ArtistAdapter()
 
 
@@ -53,7 +53,6 @@ class SearchViewFragment : Fragment(), SearchView.OnQueryTextListener {
         }
 
         songAdapter.setOnItemClickListener { song ->
-            Log.d("CurrenSongSelected", "$song")
             mPlayerControlViewModel.play(song)
         }
 

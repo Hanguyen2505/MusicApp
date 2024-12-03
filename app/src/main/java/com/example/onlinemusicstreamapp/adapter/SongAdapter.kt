@@ -4,25 +4,23 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.onlinemusicstreamapp.R
 import com.example.onlinemusicstreamapp.database.data.entities.Song
 import com.example.onlinemusicstreamapp.databinding.CardviewSongBinding
 
-class SongAdapter : RecyclerView.Adapter<SongAdapter.MyViewHolder>() {
+class SongAdapter(
+    private val isBottomSheetDialog: Boolean
+) : RecyclerView.Adapter<SongAdapter.MyViewHolder>() {
 
-    interface OnItemButtonClickListener {
-        fun onButtonClick(item: String)
-    }
+    private lateinit var songs: List<Song>
 
-    var songs = emptyList<Song>()
-
+    //*Item Click Listener
     private var onItemClickListener: ((Song) -> Unit)? = null
-
     fun setOnItemClickListener(listener: (Song) -> Unit) {
         onItemClickListener = listener
     }
-
+    //*More Button Click Listener
     private var onMoreButtonClickListener: (() -> Unit)? = null
-
     fun setOnMoreButtonClickListener(listener: () -> Unit) {
         onMoreButtonClickListener = listener
     }
@@ -35,6 +33,10 @@ class SongAdapter : RecyclerView.Adapter<SongAdapter.MyViewHolder>() {
             binding.songTitle.text = song.title
             binding.desc.text = song.artist.joinToString(", ")
             Glide.with(binding.songImage).load(song.imageUrl).into(binding.songImage)
+        }
+
+        fun modifyIfIsBottomSheetDialog() {
+            binding.moreBtn.setImageResource(R.drawable.ic_add)
         }
 
         fun moreBtn(onMoreButtonClick: () -> Unit) {
@@ -62,6 +64,10 @@ class SongAdapter : RecyclerView.Adapter<SongAdapter.MyViewHolder>() {
         val currentSong = songs[position]
         holder.bindData(currentSong)
 
+        if (isBottomSheetDialog) {
+            holder.modifyIfIsBottomSheetDialog()
+        }
+
         holder.itemView.setOnClickListener {
             onItemClickListener?.let { click ->
                 click(currentSong)
@@ -71,8 +77,6 @@ class SongAdapter : RecyclerView.Adapter<SongAdapter.MyViewHolder>() {
         holder.moreBtn {
             onMoreButtonClickListener?.invoke()
         }
-
-
     }
 
     fun updateData(newSong: List<Song>) {

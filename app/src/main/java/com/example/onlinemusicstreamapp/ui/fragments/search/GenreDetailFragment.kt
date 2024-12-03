@@ -24,6 +24,8 @@ class GenreDetailFragment : Fragment() {
 
     private val mGenreViewModel: GenreViewModel by viewModels()
 
+    private val songAdapter = SongAdapter(false)
+
     private val args by navArgs<GenreDetailFragmentArgs>()
 
     override fun onCreateView(
@@ -51,14 +53,13 @@ class GenreDetailFragment : Fragment() {
         )
 
         //*display all songs
-        mGenreViewModel.filterSongsByGenre(args.genre.name).observe(viewLifecycleOwner, Observer { song ->
+        mGenreViewModel.filterSongsByGenre(args.genre.name).observe(viewLifecycleOwner) { song ->
             song.let {
-                val songAdapter = SongAdapter()
-                songAdapter.songs = it
+                songAdapter.updateData(it)
                 songRecyclerView.adapter = songAdapter
             }
 
-        })
+        }
     }
 
 }

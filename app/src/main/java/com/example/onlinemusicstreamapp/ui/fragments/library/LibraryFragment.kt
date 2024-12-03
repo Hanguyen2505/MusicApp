@@ -19,7 +19,7 @@ import com.example.onlinemusicstreamapp.R
 import com.example.onlinemusicstreamapp.adapter.UserPlaylistAdapter
 import com.example.onlinemusicstreamapp.database.other.Constants.BOTTOM_SHEET_DIALOG
 import com.example.onlinemusicstreamapp.databinding.FragmentLibraryBinding
-import com.example.onlinemusicstreamapp.ui.fragments.bottomsheet.library.LibraryBottomSheetFragment
+import com.example.onlinemusicstreamapp.ui.fragments.bottomsheet.library.LibraryBottomSheetDialog
 import com.example.onlinemusicstreamapp.ui.viewmodel.PlaylistViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -63,8 +63,8 @@ class LibraryFragment : Fragment(), MenuProvider {
         return when (menuItem.itemId) {
             R.id.add -> {
                 Log.d("toolbar option menu", "add")
-                val libraryBottomSheetFragment = LibraryBottomSheetFragment()
-                libraryBottomSheetFragment.show(childFragmentManager, BOTTOM_SHEET_DIALOG)
+                val libraryBottomSheetDialog = LibraryBottomSheetDialog()
+                libraryBottomSheetDialog.show(childFragmentManager, BOTTOM_SHEET_DIALOG)
                 true
             }
 
