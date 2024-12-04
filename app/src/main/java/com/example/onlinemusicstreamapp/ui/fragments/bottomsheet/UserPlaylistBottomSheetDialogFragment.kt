@@ -5,9 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.onlinemusicstreamapp.adapter.SongAdapter
 import com.example.onlinemusicstreamapp.databinding.FragmentUserPlaylistBottomSheetDialogBinding
+import com.example.onlinemusicstreamapp.ui.fragments.album.UserPlaylistFragmentArgs
+import com.example.onlinemusicstreamapp.ui.viewmodel.PlaylistViewModel
 import com.example.onlinemusicstreamapp.ui.viewmodel.SongViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -18,6 +21,11 @@ class UserPlaylistBottomSheetDialogFragment : BottomSheetDialogFragment() {
     private lateinit var binding: FragmentUserPlaylistBottomSheetDialogBinding
 
     private val mSongViewModel: SongViewModel by viewModels()
+    private val mPlaylistViewModel: PlaylistViewModel by viewModels()
+
+    private val songAdapter = SongAdapter(true)
+
+    private val args by navArgs<UserPlaylistBottomSheetDialogFragmentArgs>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,6 +33,10 @@ class UserPlaylistBottomSheetDialogFragment : BottomSheetDialogFragment() {
     ): View {
         binding = FragmentUserPlaylistBottomSheetDialogBinding.inflate(inflater)
         subscribeToObserver()
+
+        songAdapter.setOnMoreButtonClickListener { song ->
+            mPlaylistViewModel.addSongToPlaylist(args.playlistId, song.mediaId)
+        }
 
         return binding.root
     }
@@ -39,7 +51,6 @@ class UserPlaylistBottomSheetDialogFragment : BottomSheetDialogFragment() {
         )
 
         mSongViewModel.songs.observe(viewLifecycleOwner) {
-            val songAdapter = SongAdapter(true)
             songAdapter.updateData(it)
             recyclerView.adapter = songAdapter
         }

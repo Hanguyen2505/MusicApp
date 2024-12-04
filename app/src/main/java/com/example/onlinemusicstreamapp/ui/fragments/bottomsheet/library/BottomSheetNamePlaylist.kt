@@ -39,8 +39,11 @@ class BottomSheetNamePlaylist : BottomSheetDialogFragment() {
         binding.createPlaylistBtn.setOnClickListener {
             val title = binding.namePlaylist.text.toString().trim()
             val desc = binding.description.text.toString().trim()
+
+            val newDocumentId = mUserViewModel.getCurrentUserId() + (0..999999).random().toString()
+
             val userPlaylist = UserPlaylist(
-                "123",
+                newDocumentId,
                 title,
                 desc,
                 "",

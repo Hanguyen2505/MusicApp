@@ -64,7 +64,6 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:background="?attr/selectableItemBackground"
-            android:text="This is placed at the bottom"
             android:tint="@color/light_gray"
             android:textSize="18sp" />
 

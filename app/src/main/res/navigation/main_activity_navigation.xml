@@ -58,6 +58,7 @@
         <action
             android:id="@+id/action_libraryFragment_to_userPlaylistFragment"
             app:destination="@id/userPlaylistFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -151,6 +152,9 @@
         <argument
             android:name="user_playlist"
             app:argType="com.example.onlinemusicstreamapp.database.data.entities.UserPlaylist" />
+        <action
+            android:id="@+id/action_userPlaylistFragment_to_userPlaylistBottomSheetDialogFragment2"
+            app:destination="@id/userPlaylistBottomSheetDialogFragment2" />
     </fragment>
     <dialog
         android:id="@+id/bottomSheetNamePlaylist"
@@ -160,6 +164,15 @@
         <action
             android:id="@+id/action_bottomSheetNamePlaylist_to_userPlaylistFragment"
             app:destination="@id/userPlaylistFragment" />
+    </dialog>
+    <dialog
+        android:id="@+id/userPlaylistBottomSheetDialogFragment2"
+        android:name="com.example.onlinemusicstreamapp.ui.fragments.bottomsheet.UserPlaylistBottomSheetDialogFragment"
+        android:label="fragment_user_playlist_bottom_sheet_dialog"
+        tools:layout="@layout/fragment_user_playlist_bottom_sheet_dialog" >
+        <argument
+            android:name="playlistId"
+            app:argType="string" />
     </dialog>
 
 </navigation>

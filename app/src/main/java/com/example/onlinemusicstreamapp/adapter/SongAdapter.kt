@@ -20,8 +20,8 @@ class SongAdapter(
         onItemClickListener = listener
     }
     //*More Button Click Listener
-    private var onMoreButtonClickListener: (() -> Unit)? = null
-    fun setOnMoreButtonClickListener(listener: () -> Unit) {
+    private var onMoreButtonClickListener: ((Song) -> Unit)? = null
+    fun setOnMoreButtonClickListener(listener: (Song) -> Unit) {
         onMoreButtonClickListener = listener
     }
 
@@ -75,7 +75,7 @@ class SongAdapter(
         }
 
         holder.moreBtn {
-            onMoreButtonClickListener?.invoke()
+            onMoreButtonClickListener?.invoke(currentSong)
         }
     }
 

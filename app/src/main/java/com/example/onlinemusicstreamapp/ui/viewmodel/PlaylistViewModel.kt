@@ -1,7 +1,6 @@
 package com.example.onlinemusicstreamapp.ui.viewmodel
 
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,11 +12,9 @@ import com.example.onlinemusicstreamapp.database.data.remote.UserPlaylistDatabas
 import com.example.onlinemusicstreamapp.database.other.Constants.MEDIA_PLAYLIST_ID
 import com.example.onlinemusicstreamapp.database.other.Constants.MEDIA_SONG_ID
 import com.example.onlinemusicstreamapp.exoplayer.callbacks.MyMediaFactory
-import dagger.hilt.android.internal.Contexts.getApplication
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -44,10 +41,49 @@ class PlaylistViewModel @Inject constructor(
         }
     }
 
-    fun getRealTimeUserPlaylist() = viewModelScope.launch {
+    fun getSongsInPlaylist(playlistId: String): MutableLiveData<List<Song>> {
+
+        mediaFactory.fetchPlaylistFromMediaBrowser(MEDIA_PLAYLIST_ID) { playlists ->
+            playlists.find { playlist ->
+                playlist.playlistId == playlistId
+            }?.let {
+                mediaFactory.fetchSongsFromMediaBrowser(MEDIA_SONG_ID) { songs ->
+                    songs.filter { song ->
+                        song.mediaId in it.songIds
+                    }.let {
+                        _songsInPlaylist.postValue(it)
+                    }
+                }
+            }
+
+        }
+        return _songsInPlaylist
+    }
+
+    //* personalize user's playlist
+
+    private fun getRealTimeUserPlaylist() = viewModelScope.launch {
         userPlaylistDatabase.subscribeToRealtimeUpdates { playlists ->
             _userPlaylists.postValue(playlists)
         }
+    }
+
+    fun getSongsInUserPlaylist(userPlaylistId: String): MutableLiveData<List<Song>> {
+        viewModelScope.launch(Dispatchers.IO) {
+            val currentUserPlaylist = userPlaylistDatabase.getPlaylist(userPlaylistId)
+            currentUserPlaylist?.let { playlist ->
+                userPlaylistDatabase.subscribeToRealTimePlaylistUpdates { songs ->
+                    songs.filter { song ->
+                        song.mediaId in playlist.songIds
+                    }.let {
+                        Log.d("songsInPlaylist", "songs: $it")
+                        _songsInPlaylist.postValue(it)
+                    }
+                }
+            }
+        }
+        return _songsInPlaylist
+
     }
 
     fun createPlaylist(userPlaylist: UserPlaylist) = viewModelScope.launch {
@@ -59,22 +95,8 @@ class PlaylistViewModel @Inject constructor(
         }
     }
 
-    fun getSongsInPlaylist(playlistId: String): MutableLiveData<List<Song>> {
-
-        mediaFactory.fetchPlaylistFromMediaBrowser(MEDIA_PLAYLIST_ID) { playlists ->
-            playlists.find { playlist ->
-                playlist.playlistId == playlistId
-            }?.let {
-                mediaFactory.fetchSongsFromMediaBrowser(MEDIA_SONG_ID) { songs ->
-                    songs.filter { song ->
-                            song.mediaId in it.songIds
-                    }.let {
-                        _songsInPlaylist.postValue(it)
-                    }
-                }
-            }
-
-        }
-        return _songsInPlaylist
+    fun addSongToPlaylist(playlistId: String, songId: String) = viewModelScope.launch {
+        userPlaylistDatabase.addSongToPlaylist(playlistId, songId)
     }
+
 }

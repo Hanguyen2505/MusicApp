@@ -23,8 +23,6 @@ class SongViewModel @Inject constructor(
 
     private val searchMediaItems = MutableLiveData<List<Song>>()
 
-
-
     init {
         getAllSongs()
     }
