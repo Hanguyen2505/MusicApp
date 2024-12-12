@@ -25,15 +25,48 @@ class UserPlaylistDatabase @Inject constructor(
         try {
             userPlaylistCollection.document(userPlaylist.id).set(userPlaylist)
                 .addOnSuccessListener {
-                println("Playlist created successfully")
-            }.addOnFailureListener {
-                println("Failed to create playlist")
-            }.await()
+                    println("Playlist created successfully")
+                }.addOnFailureListener {
+                    println("Failed to create playlist")
+                }.await()
         }
         catch (e: Exception) {
             e.printStackTrace()
         }
     }
+
+    suspend fun updatePlaylist(userPlaylist: UserPlaylist) {
+        try {
+            val map = mapOf(
+                "title" to userPlaylist.title,
+                "description" to userPlaylist.description
+            )
+            userPlaylistCollection.document(userPlaylist.id).update(map)
+                .addOnSuccessListener {
+                    println("Playlist updated successfully")
+                }.addOnFailureListener {
+                    println("Failed to update playlist")
+                }.await()
+        }
+        catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    suspend fun deletePlaylist(playlistId: String) {
+        try {
+            userPlaylistCollection.document(playlistId).delete()
+                .addOnSuccessListener {
+                    println("Playlist deleted successfully")
+                }.addOnFailureListener {
+                    println("Failed to delete playlist")
+                }.await()
+        }
+        catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
     fun subscribeToRealtimeUpdates(onResult: (List<UserPlaylist>) -> Unit) {
         userPlaylistCollection.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
             firebaseFirestoreException?.let {
@@ -72,7 +105,7 @@ class UserPlaylistDatabase @Inject constructor(
 
     }
 
-    suspend fun getPlaylist(playlistId: String): UserPlaylist? {
+    private suspend fun getPlaylist(playlistId: String): UserPlaylist? {
         return try {
             getUserPlaylist().find { playlist ->
                 playlist.id == playlistId
@@ -84,17 +117,22 @@ class UserPlaylistDatabase @Inject constructor(
         }
     }
 
-    fun subscribeToRealTimePlaylistUpdates(onResult: (List<Song>) -> Unit) {
-        songCollection.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-            firebaseFirestoreException?.let {
-                Log.d("userData", "error: $it")
-                return@addSnapshotListener
-            }
-            querySnapshot?.let {
-                val songInPlaylist = it.toObjects<Song>()
-                onResult(songInPlaylist)
+    suspend fun subscribeToRealTimePlaylistUpdates(playlistId: String, onResult: (List<Song>) -> Unit) {
+        getPlaylist(playlistId).let { playlist ->
+            songCollection.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                firebaseFirestoreException?.let {
+                    Log.d("userData", "error: $it")
+                    return@addSnapshotListener
+                }
+                querySnapshot?.let {
+                    val songInPlaylist = it.toObjects<Song>().filter {  song ->
+                        song.mediaId in playlist!!.songIds
+                    }
+                    onResult(songInPlaylist)
+                }
             }
         }
+
     }
 
 }

@@ -20,19 +20,14 @@ import javax.inject.Inject
 @HiltViewModel
 class PlaylistViewModel @Inject constructor(
     private val mediaFactory: MyMediaFactory,
-    private val userPlaylistDatabase: UserPlaylistDatabase
 ) : ViewModel() {
     private val _playlist = MutableLiveData<List<Playlist>>()
     val playlist: LiveData<List<Playlist>> = _playlist
-
-    private val _userPlaylists = MutableLiveData<List<UserPlaylist>>()
-    val userPlaylists: LiveData<List<UserPlaylist>> = _userPlaylists
 
     private val _songsInPlaylist = MutableLiveData<List<Song>>()
 
     init {
         getAllPlaylists()
-        getRealTimeUserPlaylist()
     }
 
     private fun getAllPlaylists() = viewModelScope.launch {
@@ -58,45 +53,6 @@ class PlaylistViewModel @Inject constructor(
 
         }
         return _songsInPlaylist
-    }
-
-    //* personalize user's playlist
-
-    private fun getRealTimeUserPlaylist() = viewModelScope.launch {
-        userPlaylistDatabase.subscribeToRealtimeUpdates { playlists ->
-            _userPlaylists.postValue(playlists)
-        }
-    }
-
-    fun getSongsInUserPlaylist(userPlaylistId: String): MutableLiveData<List<Song>> {
-        viewModelScope.launch(Dispatchers.IO) {
-            val currentUserPlaylist = userPlaylistDatabase.getPlaylist(userPlaylistId)
-            currentUserPlaylist?.let { playlist ->
-                userPlaylistDatabase.subscribeToRealTimePlaylistUpdates { songs ->
-                    songs.filter { song ->
-                        song.mediaId in playlist.songIds
-                    }.let {
-                        Log.d("songsInPlaylist", "songs: $it")
-                        _songsInPlaylist.postValue(it)
-                    }
-                }
-            }
-        }
-        return _songsInPlaylist
-
-    }
-
-    fun createPlaylist(userPlaylist: UserPlaylist) = viewModelScope.launch {
-        try {
-            userPlaylistDatabase.createPlaylist(userPlaylist)
-        }
-        catch(e: Exception) {
-            Log.d("uploadData", "error: $e")
-        }
-    }
-
-    fun addSongToPlaylist(playlistId: String, songId: String) = viewModelScope.launch {
-        userPlaylistDatabase.addSongToPlaylist(playlistId, songId)
     }
 
 }

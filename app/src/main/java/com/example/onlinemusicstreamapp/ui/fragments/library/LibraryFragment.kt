@@ -20,7 +20,7 @@ import com.example.onlinemusicstreamapp.adapter.UserPlaylistAdapter
 import com.example.onlinemusicstreamapp.database.other.Constants.BOTTOM_SHEET_DIALOG
 import com.example.onlinemusicstreamapp.databinding.FragmentLibraryBinding
 import com.example.onlinemusicstreamapp.ui.fragments.bottomsheet.library.LibraryBottomSheetDialog
-import com.example.onlinemusicstreamapp.ui.viewmodel.PlaylistViewModel
+import com.example.onlinemusicstreamapp.ui.viewmodel.UserPlaylistViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -28,7 +28,7 @@ class LibraryFragment : Fragment(), MenuProvider {
     private val TAG = "dataSong"
     private lateinit var binding: FragmentLibraryBinding
 
-    private val mPlaylistViewModel: PlaylistViewModel by viewModels()
+    private val mUserPlaylistViewModel: UserPlaylistViewModel by viewModels()
 
     private val userPlaylistAdapter = UserPlaylistAdapter()
 
@@ -81,7 +81,7 @@ class LibraryFragment : Fragment(), MenuProvider {
         val recyclerView = binding.recyclerView
         recyclerView.layoutManager = GridLayoutManager(requireActivity(), 2)
 
-        mPlaylistViewModel.userPlaylists.observe(viewLifecycleOwner) {
+        mUserPlaylistViewModel.userPlaylists.observe(viewLifecycleOwner) {
             userPlaylistAdapter.playlist = it
             recyclerView.adapter = userPlaylistAdapter
         }

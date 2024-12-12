@@ -1,5 +1,6 @@
 package com.example.onlinemusicstreamapp.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -13,6 +14,10 @@ class SongAdapter(
 ) : RecyclerView.Adapter<SongAdapter.MyViewHolder>() {
 
     private lateinit var songs: List<Song>
+
+    private val addedSongs = mutableListOf<Song>()
+
+    val onSongAdded: ((Song) -> Unit)? = null
 
     //*Item Click Listener
     private var onItemClickListener: ((Song) -> Unit)? = null
@@ -35,8 +40,14 @@ class SongAdapter(
             Glide.with(binding.songImage).load(song.imageUrl).into(binding.songImage)
         }
 
-        fun modifyIfIsBottomSheetDialog() {
-            binding.moreBtn.setImageResource(R.drawable.ic_add)
+        fun modifyIfIsBottomSheetDialog(song: Song, addedSongs: List<Song>) {
+            Log.d("SongAdapter", "modifyIfIsBottomSheetDialog: $addedSongs")
+            binding.moreBtn.setImageResource(
+                if (addedSongs.contains(song))
+                    R.drawable.ic_done_ring
+                else
+                    R.drawable.ic_add
+            )
         }
 
         fun moreBtn(onMoreButtonClick: () -> Unit) {
@@ -65,7 +76,7 @@ class SongAdapter(
         holder.bindData(currentSong)
 
         if (isBottomSheetDialog) {
-            holder.modifyIfIsBottomSheetDialog()
+            holder.modifyIfIsBottomSheetDialog(currentSong, addedSongs)
         }
 
         holder.itemView.setOnClickListener {
@@ -81,6 +92,12 @@ class SongAdapter(
 
     fun updateData(newSong: List<Song>) {
         songs = newSong
+        notifyDataSetChanged()
+    }
+
+    fun updateAddedSongs(addedSongs: List<Song>) {
+        this.addedSongs.clear()
+        this.addedSongs.addAll(addedSongs)
         notifyDataSetChanged()
     }
 

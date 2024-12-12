@@ -153,8 +153,13 @@
             android:name="user_playlist"
             app:argType="com.example.onlinemusicstreamapp.database.data.entities.UserPlaylist" />
         <action
-            android:id="@+id/action_userPlaylistFragment_to_userPlaylistBottomSheetDialogFragment2"
-            app:destination="@id/userPlaylistBottomSheetDialogFragment2" />
+            android:id="@+id/action_userPlaylistFragment_to_userPlaylistBottomSheetDialogFragment"
+            app:destination="@id/userPlaylistBottomSheetDialogFragment" />
+        <action
+            android:id="@+id/action_userPlaylistFragment_to_moreOptionBottomSheetDialogFragment"
+            app:destination="@id/moreOptionBottomSheetDialogFragment" />
+
+
     </fragment>
     <dialog
         android:id="@+id/bottomSheetNamePlaylist"
@@ -166,7 +171,7 @@
             app:destination="@id/userPlaylistFragment" />
     </dialog>
     <dialog
-        android:id="@+id/userPlaylistBottomSheetDialogFragment2"
+        android:id="@+id/userPlaylistBottomSheetDialogFragment"
         android:name="com.example.onlinemusicstreamapp.ui.fragments.bottomsheet.UserPlaylistBottomSheetDialogFragment"
         android:label="fragment_user_playlist_bottom_sheet_dialog"
         tools:layout="@layout/fragment_user_playlist_bottom_sheet_dialog" >
@@ -174,5 +179,36 @@
             android:name="playlistId"
             app:argType="string" />
     </dialog>
+    <dialog
+        android:id="@+id/moreOptionBottomSheetDialogFragment"
+        android:name="com.example.onlinemusicstreamapp.ui.fragments.bottomsheet.MoreOptionBottomSheetDialogFragment"
+        android:label="fragment_more_option_bottom_sheet"
+        tools:layout="@layout/fragment_more_option_bottom_sheet" >
+        <action
+            android:id="@+id/action_moreOptionBottomSheetDialogFragment_to_userPlaylistBottomSheetDialogFragment"
+            app:destination="@id/userPlaylistBottomSheetDialogFragment" />
+        <argument
+            android:name="user_playlist"
+            app:argType="com.example.onlinemusicstreamapp.database.data.entities.UserPlaylist" />
+        <action
+            android:id="@+id/action_moreOptionBottomSheetDialogFragment_to_libraryFragment"
+            app:destination="@id/libraryFragment" />
+        <action
+            android:id="@+id/action_moreOptionBottomSheetDialogFragment_to_editPlaylistBottomSheetDialog"
+            app:destination="@id/editPlaylistBottomSheetDialog" />
+
+    </dialog>
+    <fragment
+        android:id="@+id/editPlaylistBottomSheetDialog"
+        android:name="com.example.onlinemusicstreamapp.ui.fragments.bottomsheet.EditPlaylistBottomSheetDialog"
+        android:label="fragment_edit_playlist_bottom_sheet_dialog"
+        tools:layout="@layout/fragment_edit_playlist_bottom_sheet_dialog" >
+        <action
+            android:id="@+id/action_editPlaylistBottomSheetDialog_to_userPlaylistFragment"
+            app:destination="@id/userPlaylistFragment" />
+        <argument
+            android:name="user_playlist"
+            app:argType="com.example.onlinemusicstreamapp.database.data.entities.UserPlaylist" />
+    </fragment>
 
 </navigation>

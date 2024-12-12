@@ -1,6 +1,7 @@
 package com.example.onlinemusicstreamapp.ui.fragments.bottomsheet
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import com.example.onlinemusicstreamapp.databinding.FragmentUserPlaylistBottomSh
 import com.example.onlinemusicstreamapp.ui.fragments.album.UserPlaylistFragmentArgs
 import com.example.onlinemusicstreamapp.ui.viewmodel.PlaylistViewModel
 import com.example.onlinemusicstreamapp.ui.viewmodel.SongViewModel
+import com.example.onlinemusicstreamapp.ui.viewmodel.UserPlaylistViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -21,7 +23,7 @@ class UserPlaylistBottomSheetDialogFragment : BottomSheetDialogFragment() {
     private lateinit var binding: FragmentUserPlaylistBottomSheetDialogBinding
 
     private val mSongViewModel: SongViewModel by viewModels()
-    private val mPlaylistViewModel: PlaylistViewModel by viewModels()
+    private val mUserPlaylistViewModel: UserPlaylistViewModel by viewModels()
 
     private val songAdapter = SongAdapter(true)
 
@@ -34,8 +36,13 @@ class UserPlaylistBottomSheetDialogFragment : BottomSheetDialogFragment() {
         binding = FragmentUserPlaylistBottomSheetDialogBinding.inflate(inflater)
         subscribeToObserver()
 
+        mUserPlaylistViewModel.getSongsInUserPlaylist(args.playlistId).observe(viewLifecycleOwner) {
+            songAdapter.updateAddedSongs(it)
+        }
+
+
         songAdapter.setOnMoreButtonClickListener { song ->
-            mPlaylistViewModel.addSongToPlaylist(args.playlistId, song.mediaId)
+            mUserPlaylistViewModel.addSongToPlaylist(args.playlistId, song.mediaId)
         }
 
         return binding.root
