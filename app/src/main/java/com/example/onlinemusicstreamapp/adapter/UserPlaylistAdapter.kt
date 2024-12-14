@@ -24,7 +24,7 @@ class UserPlaylistAdapter: RecyclerView.Adapter<UserPlaylistAdapter.MyViewHolder
 
         fun bindData(userPlaylist: UserPlaylist) {
             binding.playlistTitle.text = userPlaylist.title
-//            Glide.with(binding.coverImg).load(userPlaylist.coverUrl).into(binding.coverImg)
+            Glide.with(binding.coverImg).load(userPlaylist.coverUrl).into(binding.coverImg)
         }
     }
 

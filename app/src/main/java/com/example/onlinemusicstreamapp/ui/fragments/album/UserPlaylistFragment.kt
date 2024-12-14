@@ -5,15 +5,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.example.onlinemusicstreamapp.R
 import com.example.onlinemusicstreamapp.adapter.SongAdapter
 import com.example.onlinemusicstreamapp.databinding.FragmentUserPlaylistBinding
-import com.example.onlinemusicstreamapp.ui.fragments.bottomsheet.MoreOptionBottomSheetDialogFragment
-import com.example.onlinemusicstreamapp.ui.viewmodel.PlaylistViewModel
 import com.example.onlinemusicstreamapp.ui.viewmodel.UserPlaylistViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -23,8 +23,6 @@ class UserPlaylistFragment : Fragment() {
     private lateinit var binding: FragmentUserPlaylistBinding
 
     private val args by navArgs<UserPlaylistFragmentArgs>()
-
-    val BOTTOM_SHEET_TAG = "UserPlaylistBottomSheetDialogFragment"
 
     private val songAdapter = SongAdapter(false)
 
@@ -39,7 +37,15 @@ class UserPlaylistFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentUserPlaylistBinding.inflate(inflater, container, false)
-        showPlaylistDetail()
+
+        showData(
+            args.userPlaylist.title,
+            args.userPlaylist.userName,
+            args.userPlaylist.userPhotoUrl,
+            args.userPlaylist.coverUrl
+        )
+
+        updateDataBySubscribeToObserver()
         subscribeToObserver()
 
         checkIfThisPlaylistIsDeletedOrNot()
@@ -61,6 +67,20 @@ class UserPlaylistFragment : Fragment() {
         return binding.root
     }
 
+    private fun showData(title: String, userName: String, userPhotoUrl: String, coverUrl: String) {
+        binding.title.text = title
+        binding.userName.text = userName
+        Glide.with(binding.userPhoto).load(userPhotoUrl).into(binding.userPhoto)
+        if (coverUrl.isNotEmpty()) {
+            Glide.with(binding.coverImg)
+                .load(coverUrl)
+                .centerCrop()
+                .into(binding.coverImg)
+        }
+        else
+            binding.coverImg.setImageResource(R.drawable.ic_simple_music_note)
+    }
+
     private fun checkIfThisPlaylistIsDeletedOrNot() {
         mUserPlaylistViewModel.userPlaylists.observe(viewLifecycleOwner) { playlists ->
             val playlist = playlists.find { playlist ->
@@ -72,15 +92,12 @@ class UserPlaylistFragment : Fragment() {
         }
     }
 
-    private fun showPlaylistDetail() {
+    private fun updateDataBySubscribeToObserver() {
         mUserPlaylistViewModel.userPlaylists.observe(viewLifecycleOwner) { playlists ->
             val userPlaylist = playlists.find {
                 it.id == args.userPlaylist.id
             }
-            binding.title.text = userPlaylist?.title
-            binding.userName.text = userPlaylist?.userName
-            Glide.with(binding.userPhoto).load(args.userPlaylist.userPhotoUrl).into(binding.userPhoto)
-            Glide.with(binding.coverImg).load(args.userPlaylist.coverUrl).into(binding.coverImg)
+            userPlaylist?.let { showData(it.title, userPlaylist.userName, userPlaylist.userPhotoUrl, userPlaylist.coverUrl) }
         }
 
     }

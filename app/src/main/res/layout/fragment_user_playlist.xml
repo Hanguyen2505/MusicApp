@@ -35,9 +35,7 @@
                 android:layout_gravity="center_horizontal"
                 android:background="@color/gray"
                 android:contentDescription="@string/show_artist_profile_image"
-                android:src="@drawable/ic_simple_music_note"
-                app:tint="@color/light_gray"
-                android:padding="20dp"/>
+                 />
 
             <TextView
                 android:id="@+id/title"

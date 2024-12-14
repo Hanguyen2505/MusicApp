@@ -39,7 +39,8 @@ class UserPlaylistDatabase @Inject constructor(
         try {
             val map = mapOf(
                 "title" to userPlaylist.title,
-                "description" to userPlaylist.description
+                "description" to userPlaylist.description,
+                "coverUrl" to userPlaylist.coverUrl
             )
             userPlaylistCollection.document(userPlaylist.id).update(map)
                 .addOnSuccessListener {

@@ -18,12 +18,12 @@
 
         <ImageView
             android:id="@+id/cover_img"
-            android:layout_width="60dp"
+            android:layout_width="wrap_content"
             android:layout_height="60dp"
             android:background="@drawable/rounded_photo_user_playlist"
             android:importantForAccessibility="no"
-            android:padding="14dp"
-            android:src="@drawable/ic_simple_music_note" />
+            android:adjustViewBounds="true"
+             />
 
         <TextView
             android:id="@+id/playlist_title"

@@ -48,27 +48,32 @@ class UserPlaylistViewModel @Inject constructor(
         return _songsInPlaylist
     }
 
-    fun createPlaylist(userPlaylist: UserPlaylist) = viewModelScope.launch {
-        try {
-            userPlaylistDatabase.createPlaylist(userPlaylist)
+    fun createPlaylist(userPlaylist: UserPlaylist) {
+        viewModelScope.launch {
+            try {
+                userPlaylistDatabase.createPlaylist(userPlaylist)
+            } catch (e: Exception) {
+                Log.d("uploadData", "error: $e")
+            }
         }
-        catch(e: Exception) {
-            Log.d("uploadData", "error: $e")
+    }
+
+    fun addSongToPlaylist(playlistId: String, songId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            userPlaylistDatabase.addSongToPlaylist(playlistId, songId)
         }
     }
 
-    fun addSongToPlaylist(playlistId: String, songId: String) = viewModelScope.launch(Dispatchers.IO) {
-        userPlaylistDatabase.addSongToPlaylist(playlistId, songId)
-        
+    fun updatePlaylist(userPlaylist: UserPlaylist) {
+        viewModelScope.launch(Dispatchers.IO) {
+            userPlaylistDatabase.updatePlaylist(userPlaylist)
+        }
     }
 
-    fun updatePlaylist(userPlaylist: UserPlaylist) = viewModelScope.launch(Dispatchers.IO) {
-        userPlaylistDatabase.updatePlaylist(userPlaylist)
-    }
-
-    fun deleteUserPlaylist(playlistId: String) = viewModelScope.launch(Dispatchers.IO) {
-        userPlaylistDatabase.deletePlaylist(playlistId)
-
+    fun deleteUserPlaylist(playlistId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            userPlaylistDatabase.deletePlaylist(playlistId)
+        }
     }
 
 }
