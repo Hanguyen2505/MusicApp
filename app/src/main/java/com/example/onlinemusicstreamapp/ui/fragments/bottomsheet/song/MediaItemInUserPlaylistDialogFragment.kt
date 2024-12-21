@@ -9,29 +9,33 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.onlinemusicstreamapp.R
-import com.example.onlinemusicstreamapp.databinding.FragmentSongBottomSheetDialogBinding
+import com.example.onlinemusicstreamapp.databinding.FragmentMediaItemInUserPlaylistDialogBinding
 import com.example.onlinemusicstreamapp.ui.fragments.bottomsheet.AddToPlaylistBottomSheetDialogFragment
-import com.example.onlinemusicstreamapp.ui.fragments.home.HomeFragment
-import com.example.onlinemusicstreamapp.ui.fragments.home.HomeFragmentDirections
 import com.example.onlinemusicstreamapp.ui.viewmodel.ArtistViewModel
+import com.example.onlinemusicstreamapp.ui.viewmodel.UserPlaylistViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MediaItemDialogFragment : BottomSheetDialogFragment() {
+class MediaItemInUserPlaylistDialogFragment : BottomSheetDialogFragment() {
 
-private var _binding: FragmentSongBottomSheetDialogBinding? = null
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentMediaItemInUserPlaylistDialogBinding
 
-    private val args by navArgs<MediaItemDialogFragmentArgs>()
+    private val args by navArgs<MediaItemInUserPlaylistDialogFragmentArgs>()
 
     private val mArtistViewModel: ArtistViewModel by viewModels()
+    private val mUserPlaylistViewModel: UserPlaylistViewModel by viewModels()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-        _binding = FragmentSongBottomSheetDialogBinding.inflate(inflater, container, false)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+   ): View {
+        binding = FragmentMediaItemInUserPlaylistDialogBinding.inflate(inflater, container, false)
 
         binding.songTitle.text = args.song.title
         binding.desc.text = args.song.artist.joinToString(", ")
@@ -49,10 +53,16 @@ private var _binding: FragmentSongBottomSheetDialogBinding? = null
                     bottomSheet.show(parentFragmentManager, "AddToPlaylistBottomSheetDialogFragment")
                     true
                 }
-                //TODO try to use MediaItemDialogFragmentDirections instead
+                R.id.delete_from_playlist -> {
+                    mUserPlaylistViewModel.removeSongFromPlaylist(args.userPlaylist.id, args.song.mediaId)
+                    dismiss()
+                    true
+                }
+
                 R.id.view_artist -> {
                     mArtistViewModel.getArtistById(args.song.artist.joinToString(", ")).observe(viewLifecycleOwner) {
-                        val action = MediaItemDialogFragmentDirections.actionMediaItemDialogFragmentToAlbumFragment(it)
+                        val action = MediaItemInUserPlaylistDialogFragmentDirections
+                            .actionMediaItemInUserPlaylistDialogFragmentToAlbumFragment(it)
                         findNavController().navigate(action)
                     }
                     true
@@ -64,15 +74,7 @@ private var _binding: FragmentSongBottomSheetDialogBinding? = null
 
         }
 
-
-      return binding.root
-
+        return binding.root
     }
 
-
-
-override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 }

@@ -90,7 +90,7 @@ class SearchViewFragment : Fragment(), SearchView.OnQueryTextListener {
             false
         )
 
-        mArtistViewModel.filterSongsByArtist(query).observe(this) {list ->
+        mArtistViewModel.filterSongsByArtist(query).observe(this) { list ->
             list.let {
                 artistAdapter.updateData(it)
             }
@@ -103,7 +103,6 @@ class SearchViewFragment : Fragment(), SearchView.OnQueryTextListener {
         }
 
         searchRecyclerView.adapter = ConcatAdapter(artistAdapter, songAdapter)
-
     }
 
 }

@@ -24,7 +24,14 @@
             app:destination="@id/settingFragment" />
         <action
             android:id="@+id/action_homeFragment_to_playlistFragment2"
-            app:destination="@id/playlistFragment2" />
+            app:destination="@id/playlistFragment2"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_to_right" />
+        <action
+            android:id="@+id/action_homeFragment_to_mediaItemDialogFragment"
+            app:destination="@id/mediaItemDialogFragment" />
     </fragment>
     <fragment
         android:id="@+id/albumFragment"
@@ -33,11 +40,7 @@
         tools:layout="@layout/fragment_album" >
         <action
             android:id="@+id/action_albumFragment_to_homeFragment"
-            app:destination="@id/homeFragment"
-            app:enterAnim="@anim/slide_in_left"
-            app:exitAnim="@anim/slide_to_right"
-            app:popEnterAnim="@anim/slide_in_right"
-            app:popExitAnim="@anim/slide_to_left" />
+            app:destination="@id/homeFragment" />
         <argument
             android:name="artist"
             app:argType="com.example.onlinemusicstreamapp.database.data.entities.Artist" />
@@ -48,6 +51,9 @@
             app:exitAnim="@anim/slide_to_right"
             app:popEnterAnim="@anim/slide_in_right"
             app:popExitAnim="@anim/slide_to_left" />
+        <action
+            android:id="@+id/action_albumFragment_to_mediaItemDialogFragment"
+            app:destination="@id/mediaItemDialogFragment" />
     </fragment>
     <fragment
         android:id="@+id/libraryFragment"
@@ -57,7 +63,11 @@
 
         <action
             android:id="@+id/action_libraryFragment_to_userPlaylistFragment"
-            app:destination="@id/userPlaylistFragment" />
+            app:destination="@id/userPlaylistFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_to_right" />
 
     </fragment>
     <fragment
@@ -70,7 +80,11 @@
             app:destination="@id/searchViewFragment" />
         <action
             android:id="@+id/action_searchFragment_to_genreDetailFragment"
-            app:destination="@id/genreDetailFragment" />
+            app:destination="@id/genreDetailFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_to_right" />
     </fragment>
     <fragment
         android:id="@+id/historyFragment"
@@ -128,6 +142,9 @@
         <argument
             android:name="genre"
             app:argType="com.example.onlinemusicstreamapp.database.data.entities.Genre" />
+        <action
+            android:id="@+id/action_genreDetailFragment_to_mediaItemDialogFragment"
+            app:destination="@id/mediaItemDialogFragment" />
     </fragment>
     <fragment
         android:id="@+id/playlistFragment2"
@@ -140,6 +157,9 @@
         <argument
             android:name="playlist"
             app:argType="com.example.onlinemusicstreamapp.database.data.entities.Playlist" />
+        <action
+            android:id="@+id/action_playlistFragment2_to_mediaItemDialogFragment"
+            app:destination="@id/mediaItemDialogFragment" />
     </fragment>
     <fragment
         android:id="@+id/userPlaylistFragment"
@@ -158,6 +178,9 @@
         <action
             android:id="@+id/action_userPlaylistFragment_to_moreOptionBottomSheetDialogFragment"
             app:destination="@id/moreOptionBottomSheetDialogFragment" />
+        <action
+            android:id="@+id/action_userPlaylistFragment_to_mediaItemInUserPlaylistDialogFragment"
+            app:destination="@id/mediaItemInUserPlaylistDialogFragment" />
 
 
     </fragment>
@@ -210,5 +233,40 @@
             android:name="user_playlist"
             app:argType="com.example.onlinemusicstreamapp.database.data.entities.UserPlaylist" />
     </fragment>
+    <dialog
+        android:id="@+id/mediaItemDialogFragment"
+        android:name="com.example.onlinemusicstreamapp.ui.fragments.bottomsheet.song.MediaItemDialogFragment"
+        android:label="fragment_song_bottom_sheet_dialog"
+        tools:layout="@layout/fragment_song_bottom_sheet_dialog" >
+        <argument
+            android:name="song"
+            app:argType="com.example.onlinemusicstreamapp.database.data.entities.Song" />
+        <action
+            android:id="@+id/action_mediaItemDialogFragment_to_albumFragment"
+            app:destination="@id/albumFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_to_right" />
+    </dialog>
+    <dialog
+        android:id="@+id/mediaItemInUserPlaylistDialogFragment"
+        android:name="com.example.onlinemusicstreamapp.ui.fragments.bottomsheet.song.MediaItemInUserPlaylistDialogFragment"
+        android:label="fragment_media_item_in_user_playlist_dialog"
+        tools:layout="@layout/fragment_media_item_in_user_playlist_dialog" >
+        <action
+            android:id="@+id/action_mediaItemInUserPlaylistDialogFragment_to_albumFragment"
+            app:destination="@id/albumFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_to_right" />
+        <argument
+            android:name="song"
+            app:argType="com.example.onlinemusicstreamapp.database.data.entities.Song" />
+        <argument
+            android:name="user_playlist"
+            app:argType="com.example.onlinemusicstreamapp.database.data.entities.UserPlaylist" />
+    </dialog>
 
 </navigation>

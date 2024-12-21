@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide
 import com.example.onlinemusicstreamapp.R
 import com.example.onlinemusicstreamapp.adapter.SongAdapter
 import com.example.onlinemusicstreamapp.databinding.FragmentUserPlaylistBinding
+import com.example.onlinemusicstreamapp.ui.viewmodel.PlayerControlViewModel
 import com.example.onlinemusicstreamapp.ui.viewmodel.UserPlaylistViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -27,6 +28,8 @@ class UserPlaylistFragment : Fragment() {
     private val songAdapter = SongAdapter(false)
 
     private val mUserPlaylistViewModel: UserPlaylistViewModel by viewModels()
+
+    private val mPlayerControlViewModel: PlayerControlViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,13 +53,26 @@ class UserPlaylistFragment : Fragment() {
 
         checkIfThisPlaylistIsDeletedOrNot()
 
-        binding.addToPlaylist.setOnClickListener {
-            val action = UserPlaylistFragmentDirections.actionUserPlaylistFragmentToUserPlaylistBottomSheetDialogFragment(args.userPlaylist.id)
+        songAdapter.setOnItemClickListener {
+            mPlayerControlViewModel.play(it)
+        }
+
+        songAdapter.setOnMoreButtonClickListener {
+            val action = UserPlaylistFragmentDirections
+                .actionUserPlaylistFragmentToMediaItemInUserPlaylistDialogFragment(it, args.userPlaylist)
             findNavController().navigate(action)
         }
 
+        binding.addToPlaylist.setOnClickListener {
+            val action = UserPlaylistFragmentDirections
+                .actionUserPlaylistFragmentToUserPlaylistBottomSheetDialogFragment(args.userPlaylist.id)
+            findNavController().navigate(action)
+        }
+
+        //TODO set delete visible
         binding.moreBtn.setOnClickListener {
-            val action = UserPlaylistFragmentDirections.actionUserPlaylistFragmentToMoreOptionBottomSheetDialogFragment(args.userPlaylist)
+            val action = UserPlaylistFragmentDirections
+                .actionUserPlaylistFragmentToMoreOptionBottomSheetDialogFragment(args.userPlaylist)
             findNavController().navigate(action)
         }
 
@@ -110,7 +126,11 @@ class UserPlaylistFragment : Fragment() {
             LinearLayoutManager.VERTICAL,
             false
         )
-        mUserPlaylistViewModel.getSongsInUserPlaylist(args.userPlaylist.id).observe(viewLifecycleOwner) { songs ->
+        mUserPlaylistViewModel.getSongsInUserPlaylist(
+            args.userPlaylist.id
+        ).observe(
+            viewLifecycleOwner
+        ) { songs ->
             songAdapter.updateData(songs)
             recyclerView.adapter = songAdapter
         }

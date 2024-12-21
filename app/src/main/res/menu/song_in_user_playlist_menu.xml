@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/add_to_playlist"
         android:title="@string/add_to_playlist"
         android:icon="@drawable/ic_add" />
@@ -9,11 +7,9 @@
     <item android:id="@+id/delete_from_playlist"
         android:title="@string/remove_from_this_playlist"
         android:icon="@drawable/ic_remove"
-        android:visible="false"/>
+        />
 
     <item android:id="@+id/view_artist"
         android:title="@string/view_artist"
         android:icon="@drawable/ic_artist" />
-
-
 </menu>

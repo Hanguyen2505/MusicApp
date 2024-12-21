@@ -14,6 +14,7 @@ import com.example.onlinemusicstreamapp.R
 import com.example.onlinemusicstreamapp.adapter.SongAdapter
 import com.example.onlinemusicstreamapp.databinding.FragmentGenreDetailBinding
 import com.example.onlinemusicstreamapp.ui.viewmodel.GenreViewModel
+import com.example.onlinemusicstreamapp.ui.viewmodel.PlayerControlViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -23,6 +24,7 @@ class GenreDetailFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val mGenreViewModel: GenreViewModel by viewModels()
+    private val mPlayerControlViewModel: PlayerControlViewModel by viewModels()
 
     private val songAdapter = SongAdapter(false)
 
@@ -35,6 +37,15 @@ class GenreDetailFragment : Fragment() {
         _binding = FragmentGenreDetailBinding.inflate(inflater, container, false)
         binding.backToSearchBtn.setOnClickListener {
             findNavController().navigate(R.id.action_genreDetailFragment_to_searchFragment)
+        }
+
+        songAdapter.setOnItemClickListener {
+            mPlayerControlViewModel.play(it)
+        }
+
+        songAdapter.setOnMoreButtonClickListener {
+            val action = GenreDetailFragmentDirections.actionGenreDetailFragmentToMediaItemDialogFragment(it)
+            findNavController().navigate(action)
         }
 
         subscribeToObserver()

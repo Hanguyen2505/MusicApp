@@ -13,7 +13,7 @@ class SongAdapter(
     private val isBottomSheetDialog: Boolean
 ) : RecyclerView.Adapter<SongAdapter.MyViewHolder>() {
 
-    private lateinit var songs: List<Song>
+    private var songs = listOf<Song>()
 
     private val addedSongs = mutableListOf<Song>()
 
@@ -90,8 +90,8 @@ class SongAdapter(
         }
     }
 
-    fun updateData(newSong: List<Song>) {
-        songs = newSong
+    fun updateData(newSongs: List<Song>) {
+        songs = newSongs
         notifyDataSetChanged()
     }
 

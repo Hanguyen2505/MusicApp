@@ -54,6 +54,16 @@ class UserPlaylistDatabase @Inject constructor(
         }
     }
 
+    suspend fun getPlaylistBySongId(songId: String): List<UserPlaylist> {
+        return try {
+            val filterPlaylist =
+                userPlaylistCollection.whereArrayContains("songIds", songId).get().await()
+            filterPlaylist.toObjects<UserPlaylist>()
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
     suspend fun deletePlaylist(playlistId: String) {
         try {
             userPlaylistCollection.document(playlistId).delete()
@@ -84,13 +94,10 @@ class UserPlaylistDatabase @Inject constructor(
     }
 
     suspend fun addSongToPlaylist(playlistId: String, songId: String) {
-        val currentPlaylist = getUserPlaylist().find { playlist ->
-            playlist.id == playlistId
-        }
-        userPlaylistCollection.document(currentPlaylist!!.id).update(
+        userPlaylistCollection.document(playlistId).update(
             "songIds",
             FieldValue.arrayUnion(songId)
-        )
+        ).await()
     }
 
     suspend fun getUserPlaylist(): List<UserPlaylist> {
@@ -134,6 +141,17 @@ class UserPlaylistDatabase @Inject constructor(
             }
         }
 
+    }
+
+    suspend fun removeSongFromPlaylist(playlistId: String, songId: String) {
+        userPlaylistCollection.document(playlistId).update(
+            "songIds",
+            FieldValue.arrayRemove(songId)
+        ).addOnSuccessListener {
+            Log.d("removeSongFromPlaylist", "Successfully removed $songId from $playlistId")
+        }.addOnFailureListener {
+            Log.d("removeSongFromPlaylist", "Failed to remove $songId from $playlistId")
+        }.await()
     }
 
 }

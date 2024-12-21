@@ -2,19 +2,17 @@ package com.example.onlinemusicstreamapp.ui.fragments.bottomsheet
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
-import android.graphics.Color
 import android.graphics.Typeface
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.onlinemusicstreamapp.R
 import com.example.onlinemusicstreamapp.database.data.entities.UserPlaylist
@@ -30,11 +28,21 @@ class EditPlaylistBottomSheetDialog : BottomSheetDialogFragment() {
 
     private val mUserPlaylistViewModel: UserPlaylistViewModel by viewModels()
 
-    private val args by navArgs<EditPlaylistBottomSheetDialogArgs>()
-
-    private lateinit var coverUrl: String
+    private lateinit var coverUrl: Uri
 
     private val IMAGE_REQUEST_CODE = 100
+
+    private var userPlaylist: UserPlaylist? = null
+
+    companion object {
+        private const val ARG_PLAYLIST = "playlist"
+
+        fun newInstance(playlist: UserPlaylist) = EditPlaylistBottomSheetDialog().apply {
+            arguments = Bundle().apply {
+                putParcelable(ARG_PLAYLIST, playlist)
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,14 +53,19 @@ class EditPlaylistBottomSheetDialog : BottomSheetDialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentEditPlaylistBottomSheetDialogBinding.inflate(layoutInflater)
+        binding = FragmentEditPlaylistBottomSheetDialogBinding.inflate(inflater)
 
-        binding.namePlaylist.setText(args.userPlaylist.title)
-        binding.description.setText(args.userPlaylist.description)
-        Glide.with(binding.playlistImg).load(args.userPlaylist.coverUrl).centerCrop().into(binding.playlistImg)
+        userPlaylist = requireArguments().getParcelable(ARG_PLAYLIST)
+        println(userPlaylist)
 
-        coverUrl = args.userPlaylist.coverUrl
+        binding.namePlaylist.setText(userPlaylist?.title)
+        binding.description.setText(userPlaylist?.description)
+        Glide.with(binding.playlistImg)
+            .load(userPlaylist?.coverUrl)
+            .centerCrop()
+            .into(binding.playlistImg)
 
+        coverUrl = userPlaylist?.coverUrl!!.toUri()
 
         binding.namePlaylist.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -84,13 +97,14 @@ class EditPlaylistBottomSheetDialog : BottomSheetDialogFragment() {
         binding.save.setOnClickListener {
             val title = binding.namePlaylist.text.toString()
             val desc = binding.description.text.toString()
-            Log.d("Image user playlist", "$coverUrl")
+            mUserPlaylistViewModel.addToUserPlaylistImg(coverUrl) { downloadUri ->
+                updatePlaylist(title, desc, downloadUri.toString())
+            }
 
-            updatePlaylist(title, desc, coverUrl)
         }
 
         binding.cancel.setOnClickListener {
-            findNavController().popBackStack()
+            dismiss()
         }
 
         binding.playlistImg.setOnClickListener {
@@ -103,9 +117,9 @@ class EditPlaylistBottomSheetDialog : BottomSheetDialogFragment() {
 
     private fun updatePlaylist(title: String, desc: String, coverUrl: String) {
 
-        val updatedUserPlaylist = UserPlaylist(args.userPlaylist.id, title, desc, coverUrl)
+        val updatedUserPlaylist = UserPlaylist(userPlaylist!!.id, title, desc, coverUrl)
         mUserPlaylistViewModel.updatePlaylist(updatedUserPlaylist)
-        findNavController().popBackStack()
+        dismiss()
 
     }
 
@@ -123,7 +137,8 @@ class EditPlaylistBottomSheetDialog : BottomSheetDialogFragment() {
             Glide.with(binding.playlistImg).load(imageUri).centerCrop().into(binding.playlistImg)
             binding.save.setTextColor(ContextCompat.getColor(requireContext(), R.color.cyan))
             binding.save.setTypeface(null, Typeface.BOLD)
-            coverUrl = imageUri.toString()
+
+            coverUrl = imageUri!!
 
         }
 

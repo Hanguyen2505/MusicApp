@@ -7,6 +7,7 @@ import com.bumptech.glide.Glide
 import com.example.onlinemusicstreamapp.database.data.entities.Playlist
 import com.example.onlinemusicstreamapp.database.data.entities.UserPlaylist
 import com.example.onlinemusicstreamapp.databinding.CardviewUserPlaylistBinding
+import com.example.onlinemusicstreamapp.ui.fragments.library.LibraryFragmentDirections
 
 class UserPlaylistAdapter: RecyclerView.Adapter<UserPlaylistAdapter.MyViewHolder>() {
 
@@ -26,6 +27,7 @@ class UserPlaylistAdapter: RecyclerView.Adapter<UserPlaylistAdapter.MyViewHolder
             binding.playlistTitle.text = userPlaylist.title
             Glide.with(binding.coverImg).load(userPlaylist.coverUrl).into(binding.coverImg)
         }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {

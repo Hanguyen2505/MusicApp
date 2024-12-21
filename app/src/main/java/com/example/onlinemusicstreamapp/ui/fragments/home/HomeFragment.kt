@@ -56,8 +56,8 @@ class HomeFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
         }
 
         songAdapter.setOnMoreButtonClickListener {
-            val bottomSheetFragment = MediaItemDialogFragment()
-            bottomSheetFragment.show(childFragmentManager, "BottomSheetDialog")
+            val action = HomeFragmentDirections.actionHomeFragmentToMediaItemDialogFragment(it)
+            findNavController().navigate(action)
         }
 
         artistAdapter.setOnItemClickListener { artist ->

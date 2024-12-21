@@ -63,6 +63,7 @@ class MainActivity : AppCompatActivity() {
         binding.playerView.setOnClickListener {
             val intent = Intent(this, PlayerActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(R.anim.slide_up, R.anim.stay)
         }
 
         binding.playerView

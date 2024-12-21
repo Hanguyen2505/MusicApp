@@ -30,10 +30,19 @@ class ArtistViewModel @Inject constructor(
         return artist
     }
 
+    //TODO use id to get artist instead of using name
+    fun getArtistById(artistId: String): MutableLiveData<Artist> {
+        val artist = MutableLiveData<Artist>()
+        myMediaFactory.fetchArtistFromMediaBrowser(MEDIA_ARTIST_ID) { items ->
+            artist.postValue(items.find { it.name == artistId }!!)
+        }
+        return artist
+
+    }
+
     fun getSong(artist: String): MutableLiveData<List<Song>> {
         myMediaFactory.fetchSongsFromMediaBrowser(MEDIA_SONG_ID) { items ->
             val filteredSongs = items.filter { song ->
-                Log.d("ArtistViewModel", "getSong: ${song.genre} and${song.artist}")
                 song.artist.any {
                     it.contains(artist, ignoreCase = true)
                 }

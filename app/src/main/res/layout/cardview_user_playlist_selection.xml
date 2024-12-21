@@ -12,7 +12,7 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/song_image"
+            android:id="@+id/playlist_image"
             android:layout_margin="10dp"
             android:layout_width="60dp"
             android:layout_height="60dp"
@@ -27,19 +27,19 @@
             android:layout_marginTop="10dp">
 
             <TextView
-                android:id="@+id/song_title"
+                android:id="@+id/playlist_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/song_title"
-                android:textColor="@color/white"
+                android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:textSize="20sp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:layout_gravity="center"/>
+                android:text="@string/song_title"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/desc"
+                android:id="@+id/user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/artist_name"
@@ -53,14 +53,14 @@
             android:layout_height="match_parent">
 
             <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/more_btn"
+                android:id="@+id/add_btn"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="10dp"
                 android:background="?attr/selectableItemBackground"
-                android:src="@drawable/ic_more"
+                android:src="@drawable/ic_add"
                 android:textSize="18sp" />
 
         </RelativeLayout>

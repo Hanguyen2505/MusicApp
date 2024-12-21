@@ -5,12 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.onlinemusicstreamapp.database.data.entities.Artist
+import com.example.onlinemusicstreamapp.database.data.entities.Song
 import com.example.onlinemusicstreamapp.databinding.CardviewArtistBinding
 
 
-class ArtistAdapter(): RecyclerView.Adapter<ArtistAdapter.MyViewHolder>() {
+class ArtistAdapter: RecyclerView.Adapter<ArtistAdapter.MyViewHolder>() {
 
-    private lateinit var artist: List<Artist>
+    private var artists = listOf<Artist>()
 
     private var onItemClickListener: ((Artist) -> Unit)? = null
 
@@ -38,11 +39,11 @@ class ArtistAdapter(): RecyclerView.Adapter<ArtistAdapter.MyViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return artist.size
+        return artists.size
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val currentItem = artist[position]
+        val currentItem = artists[position]
 
         holder.bindData(currentItem)
 
@@ -54,7 +55,7 @@ class ArtistAdapter(): RecyclerView.Adapter<ArtistAdapter.MyViewHolder>() {
     }
 
     fun updateData(newArtist: List<Artist>) {
-        artist = newArtist
+        artists = newArtist
         notifyDataSetChanged()
     }
 

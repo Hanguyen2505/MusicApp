@@ -70,12 +70,13 @@ class PlayerActivity : AppCompatActivity() {
         })
 
         binding.backToHomeBtn.setOnClickListener {
-            finish()
-//            val intent = Intent(this, MainActivity::class.java)
-//            intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-//            startActivity(intent)
-
+//            finish()
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+//            onBackPressedDispatcher.onBackPressed()
+            overridePendingTransition(R.anim.stay, R.anim.slide_down)
         }
+
 
         binding.loopBtn.setOnClickListener {
             mPlayerControlViewModel.toggleLoop()

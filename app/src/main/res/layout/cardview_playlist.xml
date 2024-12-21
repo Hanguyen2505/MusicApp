@@ -10,9 +10,8 @@
         android:id="@+id/coverImg"
         android:layout_width="150dp"
         android:layout_height="200dp"
-        android:src="@drawable/milet_cover"
         android:scaleType="centerCrop"
-        />
+        android:src="@drawable/milet_cover" />
 
     <TextView
         android:id="@+id/title"
