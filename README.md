@@ -27,14 +27,14 @@ Others: Dagger-Hilt, Coroutines, Navigation Component, LiveData...
 3. Classifying songs into different genres, artists, playlists and ability to search for artist and songs.
 ![image](https://github.com/user-attachments/assets/98297922-d655-478d-a78c-eee499b07317) ![image](https://github.com/user-attachments/assets/fd9ddbcf-34d5-43e9-813a-8fde0d30284b) ![image](https://github.com/user-attachments/assets/a3d78e45-312b-4472-8a61-d3825b6b7601) ![image](https://github.com/user-attachments/assets/0e9be7a2-57f7-4af2-ab62-e751a8e4bdbb)
 
-4. Custom control for media player like play, pause, rewind, skip to the next song...
+4. Custom control for media player like play, pause, rewind, skip to the next song...                                     
 ![{524914EB-B5BA-464E-95D2-627D960CC6E8}](https://github.com/user-attachments/assets/fcb0179a-297f-4430-b7a2-04ecbaa9a3fc)
 
-5. Authentication via Email or google Sign-In.
+5. Authentication via Email or google Sign-In.                                          
 ![image](https://github.com/user-attachments/assets/60a3c257-b195-4be8-a3c3-575e95699128)
 ![{2304A3A4-74C5-4580-8340-E5D0ED35D526}](https://github.com/user-attachments/assets/28f8262c-a19c-4b46-a64d-9cc050417142)
 
-7. Personalize playlist.
+7. Personalize playlist.                                                                     
 ![{5364FE30-48FA-4C9B-A37D-7AAA2BEB1912}](https://github.com/user-attachments/assets/fe1f8b0c-836c-4046-a716-15cfc9f93a6f) ![{B616A415-D2B3-41AB-941F-2FAF81592D8F}](https://github.com/user-attachments/assets/a45bc1f0-bfa1-4a8b-9922-891662b6cac**8)
 
 **Detail in work flow: **
@@ -50,7 +50,7 @@ Others: Dagger-Hilt, Coroutines, Navigation Component, LiveData...
   Viewmodel will collect data from Media Factory and return the results as livedata.
   With this approach, the applicaton is guaranteed to follow MVVM and Observer Pattern, the Viewmodel will not need to inform the change to the UI, the UI will be able to observe and if any changes happen, It will update itselft.
 
-**Here is the process flow diagram:**
+**Here is the process flow diagram:**                                                                                  
 ![{14F1E32B-DBF3-419F-8F29-A75A103CEEF0}](https://github.com/user-attachments/assets/1e540b6b-81e2-4824-8fa2-64f4cda80427)
 
 
