@@ -31,9 +31,10 @@ Others: Dagger-Hilt, Coroutines, Navigation Component, LiveData...
 ![{524914EB-B5BA-464E-95D2-627D960CC6E8}](https://github.com/user-attachments/assets/fcb0179a-297f-4430-b7a2-04ecbaa9a3fc)
 
 5. Authentication via Email or google Sign-In.
-![image](https://github.com/user-attachments/assets/60a3c257-b195-4be8-a3c3-575e95699128) ![{2304A3A4-74C5-4580-8340-E5D0ED35D526}](https://github.com/user-attachments/assets/28f8262c-a19c-4b46-a64d-9cc050417142)
+![image](https://github.com/user-attachments/assets/60a3c257-b195-4be8-a3c3-575e95699128)
+![{2304A3A4-74C5-4580-8340-E5D0ED35D526}](https://github.com/user-attachments/assets/28f8262c-a19c-4b46-a64d-9cc050417142)
 
-6. Personalize playlist.
+7. Personalize playlist.
 ![{5364FE30-48FA-4C9B-A37D-7AAA2BEB1912}](https://github.com/user-attachments/assets/fe1f8b0c-836c-4046-a716-15cfc9f93a6f) ![{B616A415-D2B3-41AB-941F-2FAF81592D8F}](https://github.com/user-attachments/assets/a45bc1f0-bfa1-4a8b-9922-891662b6cac**8)
 
 **Detail in work flow: **
